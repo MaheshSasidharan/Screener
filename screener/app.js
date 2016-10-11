@@ -4,15 +4,20 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var sessions = require("client-sessions");
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
+
+var Helper = require('./CommonFactory/helper');
+var DB = require('./CommonFactory/databaseManager');
 
 var app = express();
 
 app.use(function (req, res, next) {
     // Website you wish to allow to connect
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+    res.setHeader('Access-Control-Allow-Origin', 'http://127.0.0.1:8000');
 
     // Request methods you wish to allow
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
@@ -26,6 +31,40 @@ app.use(function (req, res, next) {
 
     // Pass to next layer of middleware
     next();
+});
+
+app.use(sessions({
+  cookieName: 'session', // cookie name dictates the key name added to the request object
+  secret: Helper.GUID(), // should be a large unguessable string
+  duration: 30 * 24 * 60 * 60 * 1000, //(1 month) how long the session will stay valid in ms
+  activeDuration: 30 * 24 * 60 * 60 * 1000 //(1 month) if expiresIn < activeDuration, the session will be extended by activeDuration milliseconds
+}));
+
+app.use(function(req, res, next) {  
+  if (req.session && req.session.id) {
+    DB.FindUser(req.session.id, function(err, id) {
+      if (err) throw err;
+      if (id) {
+        //req.user = user;        
+        //req.session.id = id;  //refresh the session value
+        //res.locals.user = user;
+        res.setHeader('X-Seen-You', 'true');
+        // finishing processing the middleware and run the route
+        next();
+      }else{
+        // Valid session has id, but that id is not valid
+        res.json({code : 100, status : false, msg :"Error in connection database"});
+      }      
+    });
+  } else {    
+    DB.AddUser({ sessionId: Helper.GUID(), ip: req.headers.origin}, function(err, id){
+      if(id){
+        req.session.id = id;
+        res.setHeader('X-Seen-You', 'false'); // Seeing you for the first time
+      }
+      next();
+    });
+  }
 });
 
 // view engine setup
