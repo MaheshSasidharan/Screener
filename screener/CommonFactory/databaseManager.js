@@ -15,7 +15,7 @@ var AddUser = function(user, callback) {
         }   
         //if(res && res.locals){}
         var insertVals = user;
-		connection.query('INSERT INTO User SET ?', insertVals, function(err, result) {
+		connection.query('INSERT INTO Users SET ?', insertVals, function(err, result) {
 		  if (err) throw err;
 		  console.log(result.insertId);
 		  callback(err, result.insertId);		  
@@ -35,7 +35,7 @@ var FindUser = function(id, callback) {
           return;
         }
         var whereVals = [id];
-		connection.query('SELECT * FROM User where id = ? LIMIT 1'
+		connection.query('SELECT * FROM Users where userId = ? LIMIT 1'
 			, whereVals
 			, function(err, result) {
 			  if (err) throw err;
