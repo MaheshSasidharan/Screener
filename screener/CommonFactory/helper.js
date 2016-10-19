@@ -6,7 +6,27 @@ var Helper = {
 	      .substring(1);
 	  }
 	  return s4() + '-' + s4() + '-' + s4() + '-' + s4();
-	}
+	},
+	FindItemInArray: function (array, keyName, keyVal, returnType) {
+        var found = false;
+        if (undefined === keyVal || null === keyVal) {
+            return null;
+        }
+        for (var i in array) {
+            if (array[i][keyName] == keyVal) {
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            return null;
+        }
+        if (returnType === "index") {
+            return i;
+        } else {
+            return array[i];
+        }
+    }
 };
 
 module.exports = Helper;

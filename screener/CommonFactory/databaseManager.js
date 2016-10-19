@@ -1,5 +1,6 @@
 // Database manager
 var mysql = require('mysql');
+var Constants = require('../CommonFactory/constants');
 
 var GetPool = function () {
 	var env = process.env.NODE_ENV || 'development';
