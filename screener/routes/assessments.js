@@ -1,8 +1,14 @@
 var express = require('express');
 var mysql = require('mysql');
+var fs = require("fs");
 var router = express.Router();
+
+//var multiparty = require('../node_modules/multiparty/index');
+var multiparty = require('multiparty');
 var Helper = require('../CommonFactory/helper');
 var Constants = require('../CommonFactory/constants');
+
+//var multipartyMiddleware = multiparty();
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -108,6 +114,21 @@ router.post('/SaveAssessments', function(req, res) {
                 handle_database(req, res, params);
             });
         }
+    }
+});
+
+router.post('/audioUpload', function(req, res, next) {
+    if (req.body.oSaveItem) {
+        var buf = new Buffer(req.body.oSaveItem.blob, 'base64'); // decode
+        fs.writeFile("test.wav", buf, function(err) {
+            if (err) {
+                console.log("err", err);
+            } else {
+                return res.json({ status: true });
+            }
+        })
+    }else{
+        return res.json({ status: false });
     }
 });
 
