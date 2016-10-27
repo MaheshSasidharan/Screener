@@ -1,7 +1,8 @@
 var express = require('express');
 var mysql = require('mysql');
-var fs = require("fs");
 var router = express.Router();
+var path = require('path');
+var fs = require("fs");
 
 //var multiparty = require('../node_modules/multiparty/index');
 var multiparty = require('multiparty');
@@ -117,19 +118,30 @@ router.post('/SaveAssessments', function(req, res) {
     }
 });
 
-router.post('/audioUpload', function(req, res, next) {
+router.post('/AudioUpload', function(req, res, next) {
     if (req.body.oSaveItem) {
+        // Create folder for user if it does not exist
+        var userDir = req.session.id;
+        Helper.CreateUserDirectories(userDir);
         var buf = new Buffer(req.body.oSaveItem.blob, 'base64'); // decode
-        fs.writeFile("test.wav", buf, function(err) {
-            if (err) {
-                console.log("err", err);
-            } else {
-                return res.json({ status: true });
-            }
-        })
-    }else{
+        Helper.SaveFileToDisk(userDir, "audio", "assessment_1.mp3", buf, res);
+    } else {
         return res.json({ status: false });
     }
+});
+
+router.get('/GetAudioAssessment', function(req, res, next) {
+    /*
+    res.set({ 'Content-Type': 'audio/mpeg' });
+    var root = __dirname.split('/routes')[0];
+    var filepath = path.resolve(root + "/bin/1/audio/assessment_2.mp3");
+    var readStream = fs.createReadStream(filepath);
+    readStream.pipe(res);
+    return;
+    */
+    //res.sendFile('bin/1/audio/assessment_1.wav');
+    var root = __dirname.split('/routes')[0];
+    res.sendFile(path.resolve(root + "/bin/1/audio/assessment_2.mp3"));
 });
 
 var env = process.env.NODE_ENV || 'development';
@@ -180,6 +192,5 @@ function handle_database(req, res, params) {
         });
     });
 }
-
 
 module.exports = router;
