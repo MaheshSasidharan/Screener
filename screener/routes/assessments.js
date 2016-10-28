@@ -3,6 +3,7 @@ var mysql = require('mysql');
 var router = express.Router();
 var path = require('path');
 var fs = require("fs");
+var glob = require("glob");
 
 //var multiparty = require('../node_modules/multiparty/index');
 var multiparty = require('multiparty');
@@ -130,6 +131,7 @@ router.post('/AudioUpload', function(req, res, next) {
     }
 });
 
+/*
 router.get('/GetAudioAssessment', function(req, res, next) {
     /*
     res.set({ 'Content-Type': 'audio/mpeg' });
@@ -139,9 +141,33 @@ router.get('/GetAudioAssessment', function(req, res, next) {
     readStream.pipe(res);
     return;
     */
+/*
     //res.sendFile('bin/1/audio/assessment_1.wav');
     var root = __dirname.split('/routes')[0];
     res.sendFile(path.resolve(root + "/bin/1/audio/assessment_2.mp3"));
+});
+*/
+
+router.get('/GetAudioAssessment', function(req, res, next) {
+    var nAssmntNum = req.query.nAssmntNum;
+    var pattern = "soundClips/" + nAssmntNum + "_[a-z]*.mp3";    
+    var mg = new glob.Glob(pattern, { 'nocase': true }, cb);
+    function cb(er, files) {
+        var files = files;
+        if (files.length) { // Found matches
+            if (files.length > 1) { // Found multiple matches
+                res.json({ code: 405, status: false, msg: "Multiple matches found" });
+            }
+            //soundClips/1_1_PREEFS.MP3
+            res.set({ 'Content-Type': 'audio/mpeg' });
+            var root = __dirname.split('/routes')[0];
+            var filepath = path.resolve(root + "/bin/" + files[0]);
+            var readStream = fs.createReadStream(filepath);
+            readStream.pipe(res);
+        }else{
+            res.json({ code: 404, status: false, msg: "File not found" });
+        }
+    }
 });
 
 var env = process.env.NODE_ENV || 'development';

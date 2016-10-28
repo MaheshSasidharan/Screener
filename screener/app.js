@@ -39,7 +39,7 @@ app.use(sessions({
 app.use(function(req, res, next) {
     if (req.method !== "OPTIONS") {
         if (req.session && req.session.id) {
-            DB.FindUser(req.session.id, function(err, id) {
+            DB.FindUser(req.session.id, res, function(err, id) {
                 if (err) throw err;
                 if (id) {
                     //req.user = user;        
@@ -56,7 +56,7 @@ app.use(function(req, res, next) {
                 }
             });
         } else {
-            DB.AddUser({ sessionId: Helper.GUID(), ip: req.headers.origin }, function(err, id) {
+            DB.AddUser({ sessionId: Helper.GUID(), ip: req.headers.origin },  res, function(err, id) {
                 if (id) {
                     req.session.id = id;
                     req.session.id = 1; // For development, use userID 1                    
@@ -65,8 +65,8 @@ app.use(function(req, res, next) {
                 next();
             });
         }
-    }else{
-      next();
+    } else {
+        next();
     }
 });
 
@@ -80,8 +80,8 @@ app.use(logger('dev'));
 //app.use(bodyParser.json());
 //app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use(bodyParser.json({limit: '50mb'}));
-app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
 
 app.use(cookieParser());
