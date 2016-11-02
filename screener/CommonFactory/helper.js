@@ -34,12 +34,20 @@ var Helper = {
         if (!fs.existsSync(root)) {
             fs.mkdirSync(root);
             fs.mkdirSync(root + "/audio");
+            fs.mkdirSync(root + "/audio" + "/audioAssessment");
+            fs.mkdirSync(root + "/audio" + "/voiceAssessment");            
             fs.mkdirSync(root + "/video");
             fs.mkdirSync(root + "/image");
         }
     },
-    SaveFileToDisk: function(userDir, sType, fileName, fileBuffer, res) {
-        fs.writeFile(userDir + "/" + sType + "/" + fileName, fileBuffer, function(err) {
+    SaveFileToDisk: function(arrPath, fileBuffer, res) {
+        var sPath = "";
+        arrPath.forEach(function(sIndiPath){
+            sPath += sIndiPath + "/";
+        });
+        sPath = sPath.slice(0, -1);
+
+        fs.writeFile(sPath, fileBuffer, function(err) {
             if (err) {
                 console.log("err", err);
             } else {

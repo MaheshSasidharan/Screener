@@ -107,7 +107,6 @@ router.post('/SaveAssessments', function(req, res) {
                     query: Constants.Queries.Assessments.UpdateResponse.query,
                     whereVals: whereVals,
                     callback: function(rowsInner) {
-                        console.log(rowsInner);
                         if (!(--pendingUpdates)) {
                             res.json({ status: true, message: "Updated" });
                         }
@@ -125,7 +124,37 @@ router.post('/AudioUpload', function(req, res, next) {
         var userDir = req.session.id;
         Helper.CreateUserDirectories(userDir);
         var buf = new Buffer(req.body.oSaveItem.blob, 'base64'); // decode
-        Helper.SaveFileToDisk(userDir, "audio", "assessment_1.mp3", buf, res);
+        Helper.SaveFileToDisk([userDir, "audio", "voiceAssessment", req.body.oSaveItem.character + ".mp3"], buf, res);
+    } else {
+        return res.json({ status: false });
+    }
+});
+
+router.post('/AudioUploadWord', function(req, res, next) {
+    if (req.body.oSaveItem) {
+        var sourceFolderName = 'soundClips';
+        // Create folder for user if it does not exist
+        var userDir = req.session.id;
+        Helper.CreateUserDirectories(userDir);
+
+        var nAssmntNum = req.body.oSaveItem.sVoicePrefix;
+        var pattern = sourceFolderName + "/" + nAssmntNum + "_[a-z]*.mp3";
+        var mg = new glob.Glob(pattern, { 'nocase': true }, cb);
+
+        function cb(er, files) {
+            var files = files;
+            if (files.length) { // Found matches
+                if (files.length > 1) { // Found multiple matches
+                    res.json({ code: 405, status: false, msg: "Multiple matches found" });
+                }
+                //soundClips/1_1_PREEFS.MP3
+                var fileName = files[0].split(sourceFolderName + '/')[1];
+                var buf = new Buffer(req.body.oSaveItem.blob, 'base64'); // decode
+                Helper.SaveFileToDisk([userDir, "audio", "audioAssessment" ,fileName], buf, res);
+            } else {
+                res.json({ code: 404, status: false, msg: "File not found" });
+            }
+        }
     } else {
         return res.json({ status: false });
     }
@@ -150,8 +179,9 @@ router.get('/GetAudioAssessment', function(req, res, next) {
 
 router.get('/GetAudioAssessment', function(req, res, next) {
     var nAssmntNum = req.query.nAssmntNum;
-    var pattern = "soundClips/" + nAssmntNum + "_[a-z]*.mp3";    
+    var pattern = "soundClips/" + nAssmntNum + "_[a-z]*.mp3";
     var mg = new glob.Glob(pattern, { 'nocase': true }, cb);
+
     function cb(er, files) {
         var files = files;
         if (files.length) { // Found matches
@@ -164,7 +194,7 @@ router.get('/GetAudioAssessment', function(req, res, next) {
             var filepath = path.resolve(root + "/bin/" + files[0]);
             var readStream = fs.createReadStream(filepath);
             readStream.pipe(res);
-        }else{
+        } else {
             res.json({ code: 404, status: false, msg: "File not found" });
         }
     }
