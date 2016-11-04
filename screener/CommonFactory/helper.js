@@ -30,7 +30,7 @@ var Helper = {
         }
     },
     CreateUserDirectories: function(userRoot) {
-        var root = userRoot.toString();
+        var root = "AllUsersAssessments/" + userRoot.toString();
         if (!fs.existsSync(root)) {
             fs.mkdirSync(root);
             fs.mkdirSync(root + "/audio");
