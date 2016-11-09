@@ -132,7 +132,7 @@ router.post('/AudioUpload', function(req, res, next) {
 
 router.post('/AudioUploadWord', function(req, res, next) {
     if (req.body.oSaveItem) {
-        var sourceFolderName = 'soundClips';
+        var sourceFolderName = 'AssessmentAssets/soundClips';
         // Create folder for user if it does not exist
         var userDir = req.session.id;
         Helper.CreateUserDirectories(userDir);
@@ -147,10 +147,9 @@ router.post('/AudioUploadWord', function(req, res, next) {
                 if (files.length > 1) { // Found multiple matches
                     res.json({ code: 405, status: false, msg: "Multiple matches found" });
                 }
-                //soundClips/1_1_PREEFS.MP3
                 var fileName = files[0].split(sourceFolderName + '/')[1];
                 var buf = new Buffer(req.body.oSaveItem.blob, 'base64'); // decode
-                Helper.SaveFileToDisk(["AllUsersAssessments", userDir, "audio", "audioAssessment" ,fileName], buf, res);
+                Helper.SaveFileToDisk(["AllUsersAssessments", userDir, "audio", "audioAssessment", fileName], buf, res);
             } else {
                 res.json({ code: 404, status: false, msg: "File not found" });
             }
@@ -160,26 +159,9 @@ router.post('/AudioUploadWord', function(req, res, next) {
     }
 });
 
-/*
-router.get('/GetAudioAssessment', function(req, res, next) {
-    /*
-    res.set({ 'Content-Type': 'audio/mpeg' });
-    var root = __dirname.split('/routes')[0];
-    var filepath = path.resolve(root + "/bin/1/audio/assessment_2.mp3");
-    var readStream = fs.createReadStream(filepath);
-    readStream.pipe(res);
-    return;
-    */
-/*
-    //res.sendFile('bin/1/audio/assessment_1.wav');
-    var root = __dirname.split('/routes')[0];
-    res.sendFile(path.resolve(root + "/bin/1/audio/assessment_2.mp3"));
-});
-*/
-
 router.get('/GetAudioAssessment', function(req, res, next) {
     var nAssmntNum = req.query.nAssmntNum;
-    var pattern = "soundClips/" + nAssmntNum + "_[a-z]*.mp3";
+    var pattern = "AssessmentAssets/soundClips/" + nAssmntNum + "_[a-z]*.mp3";
     var mg = new glob.Glob(pattern, { 'nocase': true }, cb);
 
     function cb(er, files) {
@@ -188,12 +170,36 @@ router.get('/GetAudioAssessment', function(req, res, next) {
             if (files.length > 1) { // Found multiple matches
                 res.json({ code: 405, status: false, msg: "Multiple matches found" });
             }
-            //soundClips/1_1_PREEFS.MP3
             res.set({ 'Content-Type': 'audio/mpeg' });
             var root = __dirname.split('/routes')[0];
             var filepath = path.resolve(root + "/bin/" + files[0]);
             var readStream = fs.createReadStream(filepath);
             readStream.pipe(res);
+        } else {
+            res.json({ code: 404, status: false, msg: "File not found" });
+        }
+    }
+});
+
+router.get('/GetMatrixAssessment', function(req, res, next) {
+    var sSetNum = req.query.sSetNum;
+    var sSetType = req.query.sSetType;
+    var sPicNum = req.query.sPicNum;
+    //var pattern = "AssessmentAssets/matrixPics/" + sSetNum + "[a-z\/]*\.*";
+    var pattern = "AssessmentAssets/matrixPics/" + sSetNum + "/" + sSetType + "/" + sPicNum;
+    //var pattern = "AssessmentAssets/matrixPics/set1/frameSets/1_square.png";
+    var mg = new glob.Glob(pattern, { 'nocase': true }, cb);
+
+    function cb(er, files) {
+        var files = files;
+        if (files.length) { // Found matches
+            if (files.length > 1) { // Found multiple matches
+                res.json({ code: 405, status: false, msg: "Multiple matches found" });
+            }
+            var root = __dirname.split('/routes')[0];
+            var img = fs.readFileSync(root + "/bin/" + files[0]);
+            res.writeHead(200, { 'Content-Type': 'image/png' });
+            res.end(img, 'binary');
         } else {
             res.json({ code: 404, status: false, msg: "File not found" });
         }

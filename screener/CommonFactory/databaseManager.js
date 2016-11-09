@@ -38,7 +38,7 @@ var FindUser = function(id, res, callback) {
         var whereVals = [id];
         connection.query('SELECT * FROM Users where userId = ? LIMIT 1', whereVals, function(err, result) {
             if (err) throw err;
-            console.log(result);
+            //console.log(result);
             callback(err, result);
         });
 
