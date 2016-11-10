@@ -142,7 +142,6 @@ router.post('/AudioUploadWord', function(req, res, next) {
         var mg = new glob.Glob(pattern, { 'nocase': true }, cb);
 
         function cb(er, files) {
-            var files = files;
             if (files.length) { // Found matches
                 if (files.length > 1) { // Found multiple matches
                     res.json({ code: 405, status: false, msg: "Multiple matches found" });
@@ -165,7 +164,6 @@ router.get('/GetAudioAssessment', function(req, res, next) {
     var mg = new glob.Glob(pattern, { 'nocase': true }, cb);
 
     function cb(er, files) {
-        var files = files;
         if (files.length) { // Found matches
             if (files.length > 1) { // Found multiple matches
                 res.json({ code: 405, status: false, msg: "Multiple matches found" });
@@ -181,24 +179,43 @@ router.get('/GetAudioAssessment', function(req, res, next) {
     }
 });
 
+router.get('/GetPicNamesMatrixAssessment', function(req, res, next) {
+    var initPath = "AssessmentAssets/matrixPics/";
+    var pattern = initPath + "**/*";
+    var mg = new glob.Glob(pattern, { 'nocase': true }, cb);
+
+    function cb(er, files) {
+        if (files.length) {
+            var arrPicNames = [];
+            files.forEach(function(filePath) {
+                filePath = filePath.substring(filePath.indexOf(initPath) + initPath.length);
+                //if (filePath.indexOf(".") >= 0) {
+                arrPicNames.push(filePath);
+                //}
+            });
+            res.json({ status: true, arrPicNames: arrPicNames });
+        } else {
+            res.json({ code: 404, status: false, msg: "File not found" });
+        }
+    }
+});
+
 router.get('/GetMatrixAssessment', function(req, res, next) {
     var sSetNum = req.query.sSetNum;
     var sSetType = req.query.sSetType;
     var sPicNum = req.query.sPicNum;
-    //var pattern = "AssessmentAssets/matrixPics/" + sSetNum + "[a-z\/]*\.*";
     var pattern = "AssessmentAssets/matrixPics/" + sSetNum + "/" + sSetType + "/" + sPicNum;
-    //var pattern = "AssessmentAssets/matrixPics/set1/frameSets/1_square.png";
     var mg = new glob.Glob(pattern, { 'nocase': true }, cb);
 
     function cb(er, files) {
-        var files = files;
         if (files.length) { // Found matches
             if (files.length > 1) { // Found multiple matches
                 res.json({ code: 405, status: false, msg: "Multiple matches found" });
             }
             var root = __dirname.split('/routes')[0];
             var img = fs.readFileSync(root + "/bin/" + files[0]);
-            res.writeHead(200, { 'Content-Type': 'image/png' });
+            var fileExtenstion = files[0].substring(files[0].indexOf(".") + 1);
+            res.writeHead(200, { 'Content-Type': 'image/' + fileExtenstion });
             res.end(img, 'binary');
         } else {
             res.json({ code: 404, status: false, msg: "File not found" });
