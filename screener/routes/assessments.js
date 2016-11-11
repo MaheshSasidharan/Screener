@@ -201,10 +201,10 @@ router.get('/GetPicNamesMatrixAssessment', function(req, res, next) {
 });
 
 router.get('/GetMatrixAssessment', function(req, res, next) {
-    var sSetNum = req.query.sSetNum;
+    var sSetName = req.query.sSetName;
     var sSetType = req.query.sSetType;
-    var sPicNum = req.query.sPicNum;
-    var pattern = "AssessmentAssets/matrixPics/" + sSetNum + "/" + sSetType + "/" + sPicNum;
+    var sPicName = req.query.sPicName;
+    var pattern = "AssessmentAssets/matrixPics/" + sSetName + "/" + sSetType + "/" + sPicName;
     var mg = new glob.Glob(pattern, { 'nocase': true }, cb);
 
     function cb(er, files) {
