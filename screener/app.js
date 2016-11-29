@@ -5,6 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var sessions = require("client-sessions");
+var cors = require('cors');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
@@ -14,20 +15,36 @@ var Helper = require('./CommonFactory/helper');
 var DB = require('./CommonFactory/databaseManager');
 
 var app = express();
+app.enable('trust proxy');
 
 app.use(function(req, res, next) {
     // Website you wish to allow to connect    
-    res.setHeader('Access-Control-Allow-Origin', 'http://127.0.0.1:8000');
+    //res.setHeader('Access-Control-Allow-Origin', 'http://127.0.0.1:8000');
+    //res.setHeader('Access-Control-Allow-Origin', 'http://127.0.0.1:3000');    
+    //res.setHeader('Access-Control-Allow-Origin', '*');   
+    if (req.headers.origin) {
+        res.setHeader('Access-Control-Allow-Origin', req.headers.origin);
+    } else {
+        res.setHeader('Access-Control-Allow-Origin', "*");
+    }
     // Request methods you wish to allow
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     // Request headers you wish to allow
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type,x-forwarded-for');
+
+    //res.setHeader('Access-Control-Allow-Headers', 'x-forwarded-for');
     // Set to true if you need the website to include cookies in the requests sent
     // to the API (e.g. in case you use sessions)
     res.setHeader('Access-Control-Allow-Credentials', true);
     // Pass to next layer of middleware
     next();
 });
+
+/*
+//cors({credentials: false, origin: true});
+cors({credentials: true, origin: true});
+app.use(cors());
+*/
 
 app.use(sessions({
     cookieName: 'session', // cookie name dictates the key name added to the request object
@@ -56,10 +73,14 @@ app.use(function(req, res, next) {
                 }
             });
         } else {
-            DB.AddUser({ sessionId: Helper.GUID(), ip: req.headers.origin },  res, function(err, id) {
+            var sIP = req.headers.origin;
+            if (!sIP) {
+                sIP = "IP NOT RETRIEVED";
+            }
+            DB.AddUser({ sessionId: Helper.GUID(), ip: sIP }, res, function(err, id) {
                 if (id) {
                     req.session.id = id;
-                    req.session.id = 1; // For development, use userID 1                    
+                    //req.session.id = 1; // For development, use userID 1                    
                     res.setHeader('X-Seen-You', 'false'); // Seeing you for the first time
                 }
                 next();

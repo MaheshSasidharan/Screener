@@ -1,4 +1,4 @@
-INSERT INTO Users (ip, sessionId) VALUES ('http://127.0.0.1:8000', '1234-1234-1234-1234');
+#INSERT INTO Users (ip, sessionId) VALUES ('http://127.0.0.1:8000', '1234-1234-1234-1234');
 
 INSERT INTO Assessments (sequence, nickName, name, description) VALUES (1, 'text', 'Basic Information', 'This is used to collect basic non-identifiable information from the user'),(2, 'timeDuration', 'Time Duration', 'Here you guess how much time has passed between the beginning and end of an event on the screen'),(3, 'metronome', 'Metronome', 'Sychonizing with the tone'),(4, 'matrixReasoning', 'Matrix Reasoning', 'Here you will try to select an image that you feel will best fit the matrix.'),(5, 'audioWords', 'Audio Assessment', 'Here we collect your voice sample'),(6, 'voice', 'Voice Assessment', 'Get voice of participant'),(7, 'video', 'Video Assessment', 'Here we collect your video');
 
