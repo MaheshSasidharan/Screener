@@ -1,0 +1,5 @@
+CREATE TABLE User (
+	id INT() UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+	question varchar(300) NOT NULL,
+	reg_date TIMESTAMP
+)
