@@ -1,0 +1,30 @@
+<div ng-include="'templates/assessments/questions.html'"></div>
+<script type="text/ng-template" id="1">
+    <p class="input-group">
+        <input type="text" class="form-control" uib-datepicker-popup="MMMM/dd/yyyy" ng-model="assessment.response" is-open="dob" datepicker-options="{showWeeks: false}" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+        <span class="input-group-btn">
+            <button type="button" class="btn btn-default" ng-click="dob=true"><i class="glyphicon glyphicon-calendar"></i></button>
+          </span>
+    </p>
+</script>
+<script type="text/ng-template" id="2">
+    <select class="form-control" ng-model="assessment.response">
+        <option ng-repeat="o in vm.arrDropDowns.Gender" value="{{o.val}}">
+            {{o.label}}
+        </option>
+    </select>
+</script>
+<script type="text/ng-template" id="3">
+    <select class="form-control" ng-model="assessment.response">
+        <option ng-repeat="o in vm.arrDropDowns.Ethnicity" value="{{o.val}}">
+            {{o.label}}
+        </option>
+    </select>
+</script>
+<script type="text/ng-template" id="4">
+    <select class="form-control" ng-model="assessment.response">
+        <option ng-repeat="o in vm.arrDropDowns.Education" value="{{o.val}}">
+            {{o.label}}
+        </option>
+    </select>
+</script>

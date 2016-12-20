@@ -1,0 +1,35 @@
+<h1>{{vm.test}}</h1>
+
+<div class="row-fluid">
+    <div class="span6">
+        <webcam class="well-small pull-right"
+            on-stream="onStream(stream)"
+            on-error="onError(err)"
+            on-streaming="onSuccess()"
+            channel="channel"
+            placeholder="'img/appResources/ajax-loader.gif'">
+            <div class="alert alert-error" ng-show="webcamError">
+                <span>Webcam could not be started. Did you give access to it?</span>
+            </div>
+        </webcam>
+    </div>
+</div>
+
+<div class="demos" ng-show="showDemos">
+    <h1 style="margin-top: 2.5em;">Capture video data</h1>
+    <div class="row-fluid">
+        <div class="span6">
+            <label>Pos X <input type="number" ng-model="patOpts.x"></label>
+            <label>Pos Y <input type="number" ng-model="patOpts.y"></label>
+            <label>Width <input type="number" ng-model="patOpts.w"></label>
+            <label>Height <input type="number" ng-model="patOpts.h"></label>
+            <button class="btn btn-large btn-primary" ng-click="makeSnapshot()">Take snapshot!</button>
+        </div>
+        <div class="span6">
+            <canvas id="snapshot" class="well pull-right"></canvas>
+            <button ng-click="downloadSnapshot(snapshotData)" ng-disabled="!snapshotData" class="btn btn-large btn-primary">Download ^^</button>
+            <button class="btn btn-small" ng-click="showBase64 = !showBase64">Show as base64 encoded URL</button>
+            <textarea class="snapshot-data" ng-model="snapshotData" ng-show="showBase64"></textarea>
+        </div>
+    </div>
+</div>

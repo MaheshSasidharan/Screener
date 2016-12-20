@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html lang="en" ng-app="app" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html lang="en" ng-app="app" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html lang="en" ng-app="app" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html lang="en" ng-app="app" class="no-js">
+<!--<![endif]-->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>My AngularJS App</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel='shortcut icon' href='img/favicon.ico' type='image/x-icon' />
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/angular-ui-notification.min.css" />    
+    <link type="text/css" rel="stylesheet" href="css/app.css" />
+    <link type="text/css" rel="stylesheet" href="css/screener.css" />
+    <link type="text/css" rel="stylesheet" href="css/orbicular.css" />
+</head>
+
+<body ng-app="app">
+    <!--[if lt IE 7]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+  <![endif]-->
+    <div ng-include="'templates/main/topNav.html'"></div>
+    <!-- <div ui-view="navbar"></div> -->
+    <div class="main" ui-view="main"></div>
+    <!-- In production use:
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
+  -->
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/ui-bootstrap-tpls-2.2.0.min.js"></script>
+    <!-- Third Party -->
+    <script src="bower_components/webcam-directive/dist/webcam.min.js"></script>
+    <script src="bower_components/angularAudioRecorder/dist/angular-audio-recorder.min.js"></script>
+    <script src="bower_components/wavesurfer/dist/wavesurfer.min.js"></script>
+    <script src="bower_components/orbicular/orbicular.js"></script>
+    <script src="js/core/library/audiolib.min.js"></script>
+    <script src="js/core/library/thatsright.js"></script>
+    <script src="js/core/library/angular-ui-notification.min.js"></script>    
+    <!-- APP -->
+    <script src="js/app.js"></script>
+    <script src="js/main/common/CommonRoutines.js"></script>
+    <script src="js/main/common/Constants.js"></script>
+    <script src="js/main/common/DataService.js"></script>
+    <script src="js/main/common/Directives.js"></script>
+    <script src="js/main/common/AudioBufferLoader.js"></script>
+    <!-- CORE -->
+    <script src="js/core/services/VersionService.js"></script>
+    <script src="js/core/filters/VersionFilter.js"></script>
+    <script src="js/core/directives/VersionDirective.js"></script>
+    <script src="js/core/state.js"></script>
+    <script src="js/core/controllers/AppCtrl.js"></script>
+    <script src="js/core/controllers/NavbarCtrl.js"></script>
+    <!-- MAIN -->
+    <script src="js/state.js"></script>
+    <script src="js/main/controllers/HomeCtrl.js"></script>
+    <script src="js/main/controllers/AboutCtrl.js"></script>
+    <script src="js/main/controllers/ContactCtrl.js"></script>
+    <script src="js/main/controllers/Assessments.js"></script>
+    <script src="js/main/controllers/TimeDuration.js"></script>
+    <script src="js/main/controllers/Metronome.js"></script>
+    <script src="js/main/controllers/MatrixCtrl.js"></script>
+    <script src="js/main/controllers/AudioCtrl.js"></script>
+    <script src="js/main/controllers/VoiceCtrl.js"></script>
+    <script src="js/main/controllers/VideoCtrl.js"></script>
+</body>
+
+</html>

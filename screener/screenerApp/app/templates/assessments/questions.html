@@ -1,0 +1,10 @@
+<div class="container">
+    <dl class="form-group" ng-repeat="assessment in vm.currentAssessment.arrQuestions">
+        <dt>
+            <label>{{assessment.question}}</label>
+        </dt>
+        <dd>
+            <div ng-include src="vm.Helper.GetTemplateURL(assessment.questionId)"></div>
+        </dd>
+    </dl>
+</div>
