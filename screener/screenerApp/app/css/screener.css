@@ -91,6 +91,12 @@
 
 /*End of glass*/
 
+.SC_TimeDuration .SC_ButtonPress { /* To position at the center */
+    position: absolute;
+    margin-top: 5px;
+    margin-left: 5px;
+}
+
 .SC_ButtonPress {
     height: 200px;
     width: 200px;
@@ -123,5 +129,14 @@
     box-shadow: inset -15px -5px 96px rgba(128, 0, 0, 1);
 }
 
+.SC_ButtonPress.disabledButton , .SC_ButtonPress.disabledButton:after{
+    background: #efeff7;
+    box-shadow: inset -20px -20px 96px lightblue;
+}
+
+#assess_circle{
+    width: 210px;
+    margin: 0 auto;
+}
 
 /* End TD*/

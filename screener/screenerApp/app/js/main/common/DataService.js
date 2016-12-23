@@ -42,14 +42,26 @@ function DataService($http, Constants, CommonFactory) {
                         Helper.Miscellaneous.ReturnDataDotData,
                         Helper.Miscellaneous.FailedInService)
             },
+            // GetAudioAssessment: function(nAssmntNum) {
+            //     return $http.get(Helper.app + Helper.Assessments.controller + 'GetAudioAssessment?nAssmntNum=' + nAssmntNum, { responseType: "blob" })
+            //         .then(
+            //             Helper.Miscellaneous.ReturnDataDotData,
+            //             Helper.Miscellaneous.FailedInService)
+            // },
             GetAudioAssessment: function(nAssmntNum) {
-                return $http.get(Helper.app + Helper.Assessments.controller + 'GetAudioAssessment?nAssmntNum=' + nAssmntNum, { responseType: "blob" })
+                return $http.get(Helper.app + Helper.Assessments.controller + 'GetAudioAssessment?nAssmntNum=' + nAssmntNum, { responseType: "arraybuffer" })
                     .then(
                         Helper.Miscellaneous.ReturnDataDotData,
                         Helper.Miscellaneous.FailedInService)
             },
-            GetAudioAssessment: function(nAssmntNum) {
-                return $http.get(Helper.app + Helper.Assessments.controller + 'GetAudioAssessment?nAssmntNum=' + nAssmntNum, { responseType: "arraybuffer" })
+            GetSyncVoiceAssessment: function(nAssmntNum) {
+                return $http.get(Helper.app + Helper.Assessments.controller + 'GetSyncVoiceAssessment?nAssmntNum=' + nAssmntNum, { responseType: "arraybuffer" })
+                    .then(
+                        Helper.Miscellaneous.ReturnDataDotData,
+                        Helper.Miscellaneous.FailedInService)
+            },
+            AudioSyncVoiceUpload: function(oSaveItem) {
+                return $http.post(Helper.app + Helper.Assessments.controller + 'AudioSyncVoiceUpload', { oSaveItem: oSaveItem })
                     .then(
                         Helper.Miscellaneous.ReturnDataDotData,
                         Helper.Miscellaneous.FailedInService)
@@ -83,6 +95,8 @@ function DataService($http, Constants, CommonFactory) {
         AudioUploadWord: Helper.Assessments.AudioUploadWord,
         AudioUpload: Helper.Assessments.AudioUpload,
         GetAudioAssessment: Helper.Assessments.GetAudioAssessment,
+        GetSyncVoiceAssessment: Helper.Assessments.GetSyncVoiceAssessment,
+        AudioSyncVoiceUpload: Helper.Assessments.AudioSyncVoiceUpload,
         GetSourceAddress: Helper.Assessments.GetSourceAddress,
         GetPicNamesMatrixAssessment: Helper.Assessments.GetPicNamesMatrixAssessment
     }

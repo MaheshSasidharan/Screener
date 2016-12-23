@@ -35,7 +35,8 @@ var Helper = {
             fs.mkdirSync(root);
             fs.mkdirSync(root + "/audio");
             fs.mkdirSync(root + "/audio" + "/audioAssessment");
-            fs.mkdirSync(root + "/audio" + "/voiceAssessment");            
+            fs.mkdirSync(root + "/audio" + "/voiceAssessment");
+            fs.mkdirSync(root + "/audio" + "/syncVoiceAssessment");
             fs.mkdirSync(root + "/video");
             fs.mkdirSync(root + "/image");
         }

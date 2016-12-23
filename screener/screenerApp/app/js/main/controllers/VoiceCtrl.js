@@ -8,7 +8,7 @@ function VoiceController($scope, $timeout, $interval, $sce, Constants, CommonFac
     window.AudioContext = window.AudioContext || window.webkitAudioContext;
     var context = new AudioContext();
     var source = context.createBufferSource(); // creates a sound source
-    var oAudioAssessment = $scope.$parent.vm.assessments[5].arrQuestions[0];
+    var oAudioAssessment = $scope.$parent.vm.assessments[7].arrQuestions[0];
 
     vo.TestAudio = null;
     vo.arrBuffers = null;

@@ -33,6 +33,14 @@ app.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
               templateUrl: 'templates/assessments/metronome.html',
               controller: 'Metronome as me'
             })
+            .state('screener.assessments.syncVoice', {
+              templateUrl: 'templates/assessments/syncVoice.html',
+              controller: 'SyncVoice as sv'
+            })
+            .state('screener.assessments.picturePrompt', {
+              templateUrl: 'templates/assessments/picturePrompt.html',
+              controller: 'PicturePrompt as td'
+            })
             .state('screener.assessments.matrixReasoning', {
               templateUrl: 'templates/assessments/matrixReasoning.html',
               controller: 'MatrixController as ma'

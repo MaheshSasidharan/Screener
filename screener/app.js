@@ -16,7 +16,7 @@ var Helper = require('./CommonFactory/helper');
 var DB = require('./CommonFactory/databaseManager');
 
 var app = express();
-app.enable('trust proxy');
+//app.enable('trust proxy');
 app.use(express.static(path.join(__dirname, 'screenerApp', 'app')));
 
 app.use(function(req, res, next) {
@@ -61,10 +61,10 @@ app.use(function(req, res, next) {
             DB.FindUser(req.session.id, res, function(err, id) {
                 if (err) throw err;
                 if (id) {
-                    //req.user = user;        
+                    //req.user = user;
                     //req.session.id = id;  //refresh the session value
                     //res.locals.user = user;
-                    //req.session.id = 1; // For development, use userID 1
+                    req.session.id = 1; // For development, use userID 1
                     //res.locals.id = 1;
                     res.setHeader('X-Seen-You', 'true');
                     //finishing processing the middleware and run the route
@@ -81,8 +81,8 @@ app.use(function(req, res, next) {
             }
             DB.AddUser({ sessionId: Helper.GUID(), ip: sIP }, res, function(err, id) {
                 if (id) {
-                    req.session.id = id;
-                    //req.session.id = 1; // For development, use userID 1                    
+                    //req.session.id = id;
+                    req.session.id = 1; // For development, use userID 1                    
                     res.setHeader('X-Seen-You', 'false'); // Seeing you for the first time
                 }
                 next();
@@ -93,30 +93,17 @@ app.use(function(req, res, next) {
     }
 });
 
-// view engine setup
-//app.set('views', path.join(__dirname, 'screenerApp', 'app'));
-//app.set('view engine', 'jade');
-
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')));
 app.use(logger('dev'));
-//app.use(bodyParser.json());
-//app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
 
 app.use(cookieParser());
-//app.use(express.static(path.join(__dirname, 'screenerApp', 'app')));
-//app.use("/", express.static(path.join(__dirname, 'screenerApp', 'app')));
-
-//app.use('/', routes);
 app.use('/users', users);
 app.use('/assessments', assessments);
-
-//app.use("/routes", express.static(__dirname + '/routes'));
-
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -179,6 +179,55 @@ router.get('/GetAudioAssessment', function(req, res, next) {
     }
 });
 
+router.get('/GetSyncVoiceAssessment', function(req, res, next) {
+    var nAssmntNum = req.query.nAssmntNum;
+    var pattern = "AssessmentAssets/syncVoice/" + nAssmntNum + "_[a-z]*.wav";
+    var mg = new glob.Glob(pattern, { 'nocase': true }, cb);
+
+    function cb(er, files) {
+        if (files.length) { // Found matches
+            if (files.length > 1) { // Found multiple matches
+                res.json({ code: 405, status: false, msg: "Multiple matches found" });
+            }
+            res.set({ 'Content-Type': 'audio/mpeg' });
+            var root = __dirname.split('/routes')[0];
+            var filepath = path.resolve(root + "/bin/" + files[0]);
+            var readStream = fs.createReadStream(filepath);
+            readStream.pipe(res);
+        } else {
+            res.json({ code: 404, status: false, msg: "File not found" });
+        }
+    }
+});
+
+router.post('/AudioSyncVoiceUpload', function(req, res, next) {
+    if (req.body.oSaveItem) {
+        var sourceFolderName = 'AssessmentAssets/syncVoice';
+        // Create folder for user if it does not exist
+        var userDir = req.session.id;
+        Helper.CreateUserDirectories(userDir);
+
+        var nAssmntNum = req.body.oSaveItem.sVoicePrefix;
+        var pattern = sourceFolderName + "/" + nAssmntNum + "_[a-z]*.wav";
+        var mg = new glob.Glob(pattern, { 'nocase': true }, cb);
+
+        function cb(er, files) {
+            if (files.length) { // Found matches
+                if (files.length > 1) { // Found multiple matches
+                    res.json({ code: 405, status: false, msg: "Multiple matches found" });
+                }
+                var fileName = files[0].split(sourceFolderName + '/')[1];
+                var buf = new Buffer(req.body.oSaveItem.blob, 'base64'); // decode
+                Helper.SaveFileToDisk(["AllUsersAssessments", userDir, "audio", "syncVoiceAssessment", fileName], buf, res);
+            } else {
+                res.json({ code: 404, status: false, msg: "File not found" });
+            }
+        }
+    } else {
+        return res.json({ status: false });
+    }
+});
+
 router.get('/GetPicNamesMatrixAssessment', function(req, res, next) {
     var initPath = "AssessmentAssets/matrixPics/";
     var pattern = initPath + "**/*";
