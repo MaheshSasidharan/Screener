@@ -73,7 +73,7 @@ function MatrixController($scope, $timeout, $interval, $sce, Constants, CommonFa
                                 break;
                         }
                     });
-                    arrImages = CommonFactory.RandomizeSolutionSet(arrImages);
+                    arrImages = CommonFactory.RandomizeSolutionSet(arrImages, 'matrix');
                 }
                 ma.Helper.GetMartixImages();
             });

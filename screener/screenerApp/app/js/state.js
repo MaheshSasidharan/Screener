@@ -39,7 +39,7 @@ app.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
             })
             .state('screener.assessments.picturePrompt', {
               templateUrl: 'templates/assessments/picturePrompt.html',
-              controller: 'PicturePrompt as td'
+              controller: 'PicturePrompt as pp'
             })
             .state('screener.assessments.matrixReasoning', {
               templateUrl: 'templates/assessments/matrixReasoning.html',

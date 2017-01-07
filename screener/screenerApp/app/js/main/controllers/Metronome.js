@@ -83,7 +83,7 @@ function Metronome($scope, $timeout, $interval, Constants, CommonFactory, DataSe
                         intervalBetweenStarts: me.oMetronome.intervalBetweenStarts
                     }
                     me.oMetronome.arrTimeIntervalsStartStop.push(oIntervals);
-                    console.log(oIntervals);
+                    //console.log(oIntervals);
 
                     if (--me.oMetronome.counter === 0) {
                         var oFinalResponse = {
@@ -91,7 +91,7 @@ function Metronome($scope, $timeout, $interval, Constants, CommonFactory, DataSe
                             arrTimeIntervalsStartStop: me.oMetronome.arrTimeIntervalsStartStop
                         }
                         me.oAudio.bShowResponseBox = false;
-                        console.log(oFinalResponse);
+                        //console.log(oFinalResponse);
                         $scope.$parent.vm.currentAssessment.arrQuestions[0].response = JSON.stringify(oFinalResponse);
                         $scope.$parent.vm.Helper.ShowHidePager(true, Constants.Miscellaneous.AssessmentCompleteNext);
 

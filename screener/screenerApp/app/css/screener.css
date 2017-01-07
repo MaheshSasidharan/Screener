@@ -1,3 +1,4 @@
+/* Common */
 .SC_assessmentContainer {
     border: 1px solid gray;
     border-radius: 4px;
@@ -24,7 +25,6 @@
 .main dl dt {
     margin: 5px 0px 0px 0px;
     padding: 0px 10px;
-    /*height: 22px;*/
 }
 
 .SC_Asmnt2_Letter {
@@ -35,13 +35,20 @@
 
 .SC_audioContainer {
     padding: 1px 20px;
-    text-align: center;
-    ;
+    text-align: center;    
 }
 
 .SC_assessmentInnerContainer {
     padding: 20px
 }
+
+.SC_PracticeLabel {
+    text-align: center;
+    width: 100%;
+    font-size: 30px;
+    text-shadow: 0px 0px 2px red;
+}
+/* End of common */
 
 
 /* Time Duration */
@@ -91,7 +98,8 @@
 
 /*End of glass*/
 
-.SC_TimeDuration .SC_ButtonPress { /* To position at the center */
+.SC_TimeDuration .SC_ButtonPress {
+    /* To position at the center */
     position: absolute;
     margin-top: 5px;
     margin-left: 5px;
@@ -129,14 +137,36 @@
     box-shadow: inset -15px -5px 96px rgba(128, 0, 0, 1);
 }
 
-.SC_ButtonPress.disabledButton , .SC_ButtonPress.disabledButton:after{
+.SC_ButtonPress.disabledButton,
+.SC_ButtonPress.disabledButton:after {
     background: #efeff7;
     box-shadow: inset -20px -20px 96px lightblue;
 }
 
-#assess_circle{
+#assess_circle {
     width: 210px;
     margin: 0 auto;
 }
 
+
 /* End TD*/
+
+
+/* Picture Prompt */
+
+.SC_PcturePrompt .ImageSetContainer {
+    display: inline-block;
+}
+
+.SC_PicturePrompt_ImgContainer {
+    width: 400px;
+    height: 400px;
+}
+
+.SC_PicturePromptImage {
+    max-width: 400px;
+    max-height: 400px;
+}
+
+
+/* End of prompt*/

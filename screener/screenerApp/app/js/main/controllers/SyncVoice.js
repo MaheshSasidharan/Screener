@@ -2,6 +2,7 @@ app.controller('SyncVoice', ['$scope', '$timeout', '$interval', 'Factory_Constan
 
 function SyncVoice($scope, $timeout, $interval, Constants, CommonFactory, DataService) {
     var sv = this;
+    //$scope.$parent.vm.Helper.ShowHidePager(true);
     $scope.$parent.vm.Helper.ShowHidePager(false);
     window.AudioContext = window.AudioContext || window.webkitAudioContext;
     var context = new AudioContext();
@@ -159,6 +160,5 @@ function SyncVoice($scope, $timeout, $interval, Constants, CommonFactory, DataSe
             bufferLoader.load();
         },
     }
-    sv.Helper.Init();
-    
+    sv.Helper.Init();   
 }

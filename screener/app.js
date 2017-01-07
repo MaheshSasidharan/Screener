@@ -32,7 +32,8 @@ app.use(function(req, res, next) {
     // Request methods you wish to allow
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     // Request headers you wish to allow
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type,x-forwarded-for');
+    //res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type','x-forwarded-for');
+    //res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type,x-forwarded-for');
 
     //res.setHeader('Access-Control-Allow-Headers', 'x-forwarded-for');
     // Set to true if you need the website to include cookies in the requests sent
@@ -55,7 +56,7 @@ app.use(sessions({
     activeDuration: 30 * 24 * 60 * 60 * 1000 //(1 month) if expiresIn < activeDuration, the session will be extended by activeDuration milliseconds
 }));
 
-app.use(function(req, res, next) {
+app.use(function(req, res, next) {    
     if (req.method !== "OPTIONS") {
         if (req.session && req.session.id) {
             DB.FindUser(req.session.id, res, function(err, id) {
@@ -75,7 +76,7 @@ app.use(function(req, res, next) {
                 }
             });
         } else {
-            var sIP = req.headers.origin;
+            var sIP = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.ip || req.headers.origin || req.ips;            
             if (!sIP) {
                 sIP = "IP NOT RETRIEVED";
             }

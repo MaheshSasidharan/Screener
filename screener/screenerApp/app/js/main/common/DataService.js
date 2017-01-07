@@ -66,11 +66,23 @@ function DataService($http, Constants, CommonFactory) {
                         Helper.Miscellaneous.ReturnDataDotData,
                         Helper.Miscellaneous.FailedInService)
             },
+            AudioPicturePromptVoiceUpload: function(oSaveItem) {
+                return $http.post(Helper.app + Helper.Assessments.controller + 'AudioPicturePromptVoiceUpload', { oSaveItem: oSaveItem })
+                    .then(
+                        Helper.Miscellaneous.ReturnDataDotData,
+                        Helper.Miscellaneous.FailedInService)
+            },
             GetSourceAddress: function() {
                 return Helper.app + Helper.Assessments.controller;
             },
             GetPicNamesMatrixAssessment: function() {
                 return $http.get(Helper.app + Helper.Assessments.controller + 'GetPicNamesMatrixAssessment')
+                    .then(
+                        Helper.Miscellaneous.ReturnDataDotData,
+                        Helper.Miscellaneous.FailedInService)
+            },
+            GetPicNamesPicturePrompt: function() {
+                return $http.get(Helper.app + Helper.Assessments.controller + 'GetPicNamesPicturePrompt')
                     .then(
                         Helper.Miscellaneous.ReturnDataDotData,
                         Helper.Miscellaneous.FailedInService)
@@ -97,8 +109,10 @@ function DataService($http, Constants, CommonFactory) {
         GetAudioAssessment: Helper.Assessments.GetAudioAssessment,
         GetSyncVoiceAssessment: Helper.Assessments.GetSyncVoiceAssessment,
         AudioSyncVoiceUpload: Helper.Assessments.AudioSyncVoiceUpload,
+        AudioPicturePromptVoiceUpload: Helper.Assessments.AudioPicturePromptVoiceUpload,
         GetSourceAddress: Helper.Assessments.GetSourceAddress,
-        GetPicNamesMatrixAssessment: Helper.Assessments.GetPicNamesMatrixAssessment
+        GetPicNamesMatrixAssessment: Helper.Assessments.GetPicNamesMatrixAssessment,
+        GetPicNamesPicturePrompt: Helper.Assessments.GetPicNamesPicturePrompt
     }
     return oService;
 }

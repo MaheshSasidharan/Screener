@@ -1,7 +1,8 @@
 <div class="container">
     <dl class="form-group" ng-repeat="assessment in vm.currentAssessment.arrQuestions">
         <dt>
-            <label>{{assessment.question}}</label>
+            <label class="SC_PracticeLabel" ng-if="assessment.sMode === 'Practice'">This is practice session</label>
+            <label >{{assessment.question}}</label>
         </dt>
         <dd>
             <div ng-include src="vm.Helper.GetTemplateURL(assessment.questionId)"></div>

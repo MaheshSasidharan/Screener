@@ -29,21 +29,24 @@ var Helper = {
             return array[i];
         }
     },
-    CreateUserDirectories: function(userRoot) {
+    CreateUserDirectories: function(userRoot, bSingleFolder) {
         var root = "AllUsersAssessments/" + userRoot.toString();
         if (!fs.existsSync(root)) {
             fs.mkdirSync(root);
-            fs.mkdirSync(root + "/audio");
-            fs.mkdirSync(root + "/audio" + "/audioAssessment");
-            fs.mkdirSync(root + "/audio" + "/voiceAssessment");
-            fs.mkdirSync(root + "/audio" + "/syncVoiceAssessment");
-            fs.mkdirSync(root + "/video");
-            fs.mkdirSync(root + "/image");
+            if (!bSingleFolder) {
+                fs.mkdirSync(root + "/audio");
+                fs.mkdirSync(root + "/audio" + "/audioAssessment");
+                fs.mkdirSync(root + "/audio" + "/voiceAssessment");
+                fs.mkdirSync(root + "/audio" + "/syncVoiceAssessment");
+                fs.mkdirSync(root + "/audio" + "/picturePromptAssessment");
+                fs.mkdirSync(root + "/video");
+                fs.mkdirSync(root + "/image");
+            }
         }
     },
     SaveFileToDisk: function(arrPath, fileBuffer, res) {
         var sPath = "";
-        arrPath.forEach(function(sIndiPath){
+        arrPath.forEach(function(sIndiPath) {
             sPath += sIndiPath + "/";
         });
         sPath = sPath.slice(0, -1);

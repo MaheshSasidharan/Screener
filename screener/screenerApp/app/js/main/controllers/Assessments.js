@@ -129,7 +129,22 @@ function AssessmentsCtrl($scope, $state, Constants, DataService, CommonFactory) 
         ShowHidePager: function(bShow, sMessage) {
             vm.bShowPager = bShow;
             vm.sShowPagerMessage = sMessage;
+        },
+        HasGetUserMedia: function() {
+            return !!(navigator.getUserMedia || navigator.webkitGetUserMedia ||
+                navigator.mozGetUserMedia || navigator.msGetUserMedia);
+        },
+        GetUserMedia: function() {
+            if (this.HasGetUserMedia()) {
+                navigator.webkitGetUserMedia({ audio: true, video: true }, function() {
+                    vm.Helper.Init();
+                }, function() {
+                    CommonFactory.Notification.error(Constants.Miscellaneous.FailedMediaAccess);                    
+                });
+            } else {
+                CommonFactory.Notification.error(Constants.Miscellaneous.NoBrowserSupport);
+            }
         }
     }
-    vm.Helper.Init();
+    vm.Helper.GetUserMedia();
 }

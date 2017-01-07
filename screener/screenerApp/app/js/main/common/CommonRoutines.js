@@ -227,7 +227,7 @@ function CommonRoutines(Notification) {
         },
         GetProgressType: function(nMinValue, nMaxVal) {
             var type;
-            var value = (nMinValue/nMaxVal) * 100;
+            var value = (nMinValue / nMaxVal) * 100;
             if (value < 25) {
                 type = 'success';
             } else if (value < 50) {
@@ -239,17 +239,22 @@ function CommonRoutines(Notification) {
             }
             return type;
         },
-        RandomizeSolutionSet: function(array){
-            console.log(array);
-            array.forEach(function(oItem){
-                oCommonRoutine.RandomizeArray(oItem.solutionSets.arroPics);
-            });
+        RandomizeSolutionSet: function(array, sType) {
+            if (sType === "matrix") {
+                array.forEach(function(oItem) {
+                    oCommonRoutine.RandomizeArray(oItem.solutionSets.arroPics);
+                });
+            }else if(sType === "PicturePrompt"){
+                array.forEach(function(oItem) {
+                    oCommonRoutine.RandomizeArray(oItem.arroPics);
+                });
+            }
             return array;
         },
-        RandomizeArray: function(array){            
+        RandomizeArray: function(array) {
             var nNewIndex, temp;
-            for(var i = 0; i < array.length; i++){
-                nNewIndex = Math.floor((Math.random() * ( i + 1)));
+            for (var i = 0; i < array.length; i++) {
+                nNewIndex = Math.floor((Math.random() * (i + 1)));
                 temp = array[i];
                 array[i] = array[nNewIndex];
                 array[nNewIndex] = temp;

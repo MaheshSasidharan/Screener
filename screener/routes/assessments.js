@@ -122,7 +122,7 @@ router.post('/AudioUpload', function(req, res, next) {
     if (req.body.oSaveItem) {
         // Create folder for user if it does not exist
         var userDir = req.session.id;
-        Helper.CreateUserDirectories(userDir);
+        Helper.CreateUserDirectories(userDir, false);
         var buf = new Buffer(req.body.oSaveItem.blob, 'base64'); // decode
         Helper.SaveFileToDisk(["AllUsersAssessments", userDir, "audio", "voiceAssessment", req.body.oSaveItem.character + ".mp3"], buf, res);
     } else {
@@ -135,7 +135,7 @@ router.post('/AudioUploadWord', function(req, res, next) {
         var sourceFolderName = 'AssessmentAssets/soundClips';
         // Create folder for user if it does not exist
         var userDir = req.session.id;
-        Helper.CreateUserDirectories(userDir);
+        Helper.CreateUserDirectories(userDir, false);
 
         var nAssmntNum = req.body.oSaveItem.sVoicePrefix;
         var pattern = sourceFolderName + "/" + nAssmntNum + "_[a-z]*.mp3";
@@ -205,7 +205,7 @@ router.post('/AudioSyncVoiceUpload', function(req, res, next) {
         var sourceFolderName = 'AssessmentAssets/syncVoice';
         // Create folder for user if it does not exist
         var userDir = req.session.id;
-        Helper.CreateUserDirectories(userDir);
+        Helper.CreateUserDirectories(userDir, false);
 
         var nAssmntNum = req.body.oSaveItem.sVoicePrefix;
         var pattern = sourceFolderName + "/" + nAssmntNum + "_[a-z]*.wav";
@@ -223,6 +223,26 @@ router.post('/AudioSyncVoiceUpload', function(req, res, next) {
                 res.json({ code: 404, status: false, msg: "File not found" });
             }
         }
+    } else {
+        return res.json({ status: false });
+    }
+});
+
+router.post('/AudioPicturePromptVoiceUpload', function(req, res, next) {
+    if (req.body.oSaveItem) {        
+        // Create folder for user if it does not exist
+        var userDir = req.session.id;
+        Helper.CreateUserDirectories(userDir, false);
+
+        // Next create only folders related to Picture Prompt
+        var sSetName = req.body.oSaveItem.sSetName;
+        
+        var picturePromptDir = userDir + "/audio" + "/picturePromptAssessment" + "/" + sSetName;
+        Helper.CreateUserDirectories(picturePromptDir, true);
+        
+        var sPicName = req.body.oSaveItem.sPicName + ".wav";
+        var buf = new Buffer(req.body.oSaveItem.blob, 'base64'); // decode
+        Helper.SaveFileToDisk(["AllUsersAssessments", userDir, "audio", "picturePromptAssessment", sSetName, sPicName], buf, res);
     } else {
         return res.json({ status: false });
     }
@@ -254,6 +274,49 @@ router.get('/GetMatrixAssessment', function(req, res, next) {
     var sSetType = req.query.sSetType;
     var sPicName = req.query.sPicName;
     var pattern = "AssessmentAssets/matrixPics/" + sSetName + "/" + sSetType + "/" + sPicName;
+    var mg = new glob.Glob(pattern, { 'nocase': true }, cb);
+
+    function cb(er, files) {
+        if (files.length) { // Found matches
+            if (files.length > 1) { // Found multiple matches
+                res.json({ code: 405, status: false, msg: "Multiple matches found" });
+            }
+            var root = __dirname.split('/routes')[0];
+            var img = fs.readFileSync(root + "/bin/" + files[0]);
+            var fileExtenstion = files[0].substring(files[0].indexOf(".") + 1);
+            res.writeHead(200, { 'Content-Type': 'image/' + fileExtenstion });
+            res.end(img, 'binary');
+        } else {
+            res.json({ code: 404, status: false, msg: "File not found" });
+        }
+    }
+});
+
+router.get('/GetPicNamesPicturePrompt', function(req, res, next) {
+    var initPath = "AssessmentAssets/picturePrompt/";
+    var pattern = initPath + "**/*";
+    var mg = new glob.Glob(pattern, { 'nocase': true }, cb);
+
+    function cb(er, files) {
+        if (files.length) {
+            var arrPicNames = [];
+            files.forEach(function(filePath) {
+                filePath = filePath.substring(filePath.indexOf(initPath) + initPath.length);
+                //if (filePath.indexOf(".") >= 0) {
+                arrPicNames.push(filePath);
+                //}
+            });
+            res.json({ status: true, arrPicNames: arrPicNames });
+        } else {
+            res.json({ code: 404, status: false, msg: "File not found" });
+        }
+    }
+});
+
+router.get('/GetPicturePromptAssessment', function(req, res, next) {
+    var sSetName = req.query.sSetName;
+    var sPicName = req.query.sPicName;
+    var pattern = "AssessmentAssets/picturePrompt/" + sSetName + "/" + sPicName;
     var mg = new glob.Glob(pattern, { 'nocase': true }, cb);
 
     function cb(er, files) {
