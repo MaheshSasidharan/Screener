@@ -70,10 +70,12 @@ function Constants() {
             }
         },
         AudioAssessment: {
-            audioRecordLength: 2, // seconds
+            //audioRecordLength: 2, // seconds
+            audioRecordLength: 1, // seconds
             arrVoices: [
+                '1_0',
                 '1_1',
-                '1_2',
+                //'1_2',
                 //'1_3',
                 // '2_1',
                 // '2_2',
@@ -84,8 +86,9 @@ function Constants() {
             ]
         },
         SyncVoiceAssessment: {
-            audioRecordLength: 2, // seconds
+            audioRecordLength: 1, // seconds
             arrVoices: [
+                '1_0',
                 '1_1',
                 //'1_2',
                 //'1_3',
@@ -98,7 +101,7 @@ function Constants() {
             ]
         },
         PicturePrompt: {
-            audioRecordLength: 2,
+            audioRecordLength: 1,
         }
     }
     return oConstants;

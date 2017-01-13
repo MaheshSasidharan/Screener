@@ -1,26 +1,9 @@
 <div ng-include="'templates/assessments/questions.html'"></div>
-<script type="text/ng-template" id="10">
-    <!-- <div ng-include="'templates/assessments/audioController.html'"></div> -->
+<script type="text/ng-template" id="10">    
     <div class="SC_audioContainer">
-        <div ng-show="false">
-            <button ng-click="au.test1()">test1</button>
-            <!-- <audio>
-            <source ng-src="{{au.TestAudio}}" />
-        </audio> -->
-            <audio controls ng-src="{{au.TestAudio}}"></audio>
-            <!-- <button ng-click="au.test2()">test2</button> -->
-            <button ng-click="au.test3('prev')">Previous</button>
-            <button ng-click="au.test3('next')">Next</button>
-            <!-- <button ng-click="au.Helper.GetAudioAssessment('audioOne')">test4</button> -->
-        </div>
-        <div ng-show="false">
-            <button ng-click="au.test3('prev')">Previous</button>
-            <button ng-click="au.oAudio.StartProgressBar()">Start Progress</button>
-        </div>
-        <!-- <button class="btn btn-md btn-success" ng-init="showStart = true" ng-click="au.oAudio.StartRecorderCountDown(); showStart = false" ng-show="showStart">START</button> -->
         <div class="text-center">
             <uib-progressbar class="progress-striped_1 active_1" max="au.oAudio.nMaxTime" value="au.oAudio.nSpentTime" type="{{au.oAudio.sType}}" ng-show="au.oAudio.bShowProgressBar"></uib-progressbar>
-            <button class="btn btn-md btn-success" ng-click="au.Helper.PlayNext('next')" ng-show="au.oAudio.bShowPlayButton">{{au.sTextOnPlayButton}}</button>
+            <button class="btn btn-md btn-success" ng-click="au.Helper.PlayNext('next')" ng-show="au.oAudio.bShowStartButton">{{au.sTextOnPlayButton}}</button>
         </div>
         <div class="SC_Asmnt2_Letter">{{au.oAudio.displayedResponse}}</div>
         <div ng-audio-recorder id="mainAudio" audio-model="au.oAudioRecorder.recorded" time-limit="au.oAudioRecorder.timeLimit" show-player="false" convert-mp3="true" on-record-start="au.oAudioRecorder.OnRecordStart()" on-conversion-complete="au.oAudioRecorder.OnRecordAndConversionComplete()" auto-start="au.oAudioRecorder.autoStart" ng-if="au.oAudioRecorder.autoStart">

@@ -3,16 +3,12 @@
 <div class="SC_assessmentInnerContainer SC_PcturePrompt">
     <div class="SC_audioContainer">
         <div class="text-center">
-            <uib-progressbar class="progress-striped_1 active_1" max="pp.oAudio.nMaxTime" value="pp.oAudio.nSpentTime" type="{{pp.oAudio.sType}}" ng-show="pp.oAudio.bShowProgressBar"></uib-progressbar>
-            <button class="btn btn-md btn-success" ng-click="pp.Helper.PlayNext('next')" ng-show="pp.oAudio.bShowPlayButton">{{pp.sTextOnPlayButton}}</button>
-        </div>
-        <div class="text-center MA_NextButton">
-            <button class="btn btn-md btn-success" ng-click="pp.Helper.GetPicturePrompt()" ng-show="pp.bShowNextButton">NEXT</button>
+            <button class="btn btn-md btn-success" ng-click="pp.Helper.PlayNext('next')" ng-show="pp.oAudio.bShowStartButton">{{pp.sTextOnPlayButton}}</button>
         </div>
         <div ng-show="pp.bShowCurrentPic">
             <div class="ImageSetContainer">
                 <div class="SC_PicturePrompt_ImgContainer">
-                    <img class="SC_PicturePromptImage" ng-src="{{pp.oCurrentPic.sPicURL}}" />
+                    <img class="SC_PicturePromptImage img-responsive" ng-src="{{pp.oCurrentPic.sPicURL}}" />
                 </div>
             </div>
         </div>

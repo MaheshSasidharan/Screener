@@ -1,15 +1,18 @@
 app.controller('MatrixController', ['$scope', '$timeout', '$interval', '$sce', 'Factory_Constants', 'Factory_CommonRoutines', 'Factory_DataService', MatrixController]);
 
 function MatrixController($scope, $timeout, $interval, $sce, Constants, CommonFactory, DataService) {
-    $scope.$parent.vm.Helper.ShowHidePager(false);
     var ma = this;
+    var bFirst = true;
     ma.src = null;
     var arrImages = null;
     var arrImageResponse = [];
     var responseTime = null;
     ma.nCurrentPicSetIndex = 0;
     ma.oCurrentPic = null;
-    ma.bShowNextButton = false;
+    ma.bShowStartButton = true;
+    ma.sTextOnPlayButton = "Start Practice";
+
+
     ma.oService = {
         GetSourceAddress: function() {
             return DataService.GetSourceAddress();
@@ -28,6 +31,10 @@ function MatrixController($scope, $timeout, $interval, $sce, Constants, CommonFa
 
     ma.Helper = {
         Init: function() {
+            // Hide NextAssessment button
+            $scope.$parent.vm.Helper.ShowHidePager(false);
+            // Turn on practice mode
+            $scope.$parent.vm.currentAssessment.arrQuestions[0].sMode = "Practice";
             ma.oService.GetPicNamesMatrixAssessment().then(function(arrPicNames) {
                 if (arrPicNames.length) {
                     arrPicNames.forEach(function(sPicName) {
@@ -75,13 +82,24 @@ function MatrixController($scope, $timeout, $interval, $sce, Constants, CommonFa
                     });
                     arrImages = CommonFactory.RandomizeSolutionSet(arrImages, 'matrix');
                 }
-                ma.Helper.GetMartixImages();
             });
         },
+        PlayNext: function(sType) {
+            if (sType == "next") {
+                ma.Helper.GetMartixImages();
+                if (bFirst) {
+                    ma.sTextOnPlayButton = "Start";                    
+                    bFirst = false;
+                } else {
+                    $scope.$parent.vm.currentAssessment.arrQuestions[0].sMode = "Final";
+                    ma.sTextOnPlayButton = "Next";
+                }
+            }
+        },
         GetMartixImages: function() {
-            if(ma.oCurrentPic){ // If an answer is selected, save that
+            if (ma.oCurrentPic) { // If an answer is selected, save that
                 var selectOptions = [];
-                ma.oCurrentSet.solutionSets.arroPics.forEach(function(oPic){
+                ma.oCurrentSet.solutionSets.arroPics.forEach(function(oPic) {
                     selectOptions.push(oPic.sPicName);
                 });
                 var oImageResponse = {
@@ -95,12 +113,12 @@ function MatrixController($scope, $timeout, $interval, $sce, Constants, CommonFa
             if (arrImages.length === ma.nCurrentPicSetIndex) {
                 ma.oCurrentSet = null;
                 $scope.$parent.vm.Helper.ShowHidePager(true, Constants.Miscellaneous.AssessmentCompleteNext);
-                ma.bShowNextButton = false;
+                ma.bShowStartButton = false;
                 $scope.$parent.vm.currentAssessment.arrQuestions[0].response = JSON.stringify(arrImageResponse);
                 return;
             }
             ma.oCurrentPic = null;
-            ma.bShowNextButton = false;
+            ma.bShowStartButton = false;
             var oCurrentSet = arrImages[ma.nCurrentPicSetIndex++];
 
             var arrImageTypes = ["frameSets", "solutionSets"];
@@ -121,8 +139,8 @@ function MatrixController($scope, $timeout, $interval, $sce, Constants, CommonFa
         },
         AnswerSelected: function(oPic) {
             responseTime = new Date() - responseTime;
-            ma.oCurrentPic = oPic;            
-            ma.bShowNextButton = true;
+            ma.oCurrentPic = oPic;
+            ma.bShowStartButton = true;            
         }
     }
     ma.Helper.Init();

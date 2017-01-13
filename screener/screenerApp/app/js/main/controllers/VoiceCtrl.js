@@ -2,8 +2,14 @@ app.controller('VoiceController', ['$scope', '$timeout', '$interval', '$sce', 'F
 
 function VoiceController($scope, $timeout, $interval, $sce, Constants, CommonFactory, DataService, Upload) {
     var vo = this;
+    var bFirst = true;
+    vo.bShowStartButton = true;
+    vo.sTextOnPlayButton = "Start Practice";
+    var cRandomCharacter = null;
+    var nCurrentRound = 0;
+    var nTotalRounds = 2;
+
     vo.SoundBuffer = null;
-    $scope.$parent.vm.Helper.ShowHidePager(false);
     var oIntervalPromise = null;
     window.AudioContext = window.AudioContext || window.webkitAudioContext;
     var context = new AudioContext();
@@ -13,61 +19,44 @@ function VoiceController($scope, $timeout, $interval, $sce, Constants, CommonFac
     vo.TestAudio = null;
     vo.arrBuffers = null;
     vo.audioIndex = -1;
-    vo.test1 = function() {
-        var reader = new FileReader();
-        reader.onload = function() {
-            vo.TestAudio = $sce.trustAsResourceUrl(reader.result);
-            var x = reader.result.split(',')[1];
-            $scope.$apply();
-        };
-        reader.readAsDataURL(vo.oAudio.recorded);
-    }
-
-    vo.test3 = function(sType) {
-        if (sType == "next") {
-            if (vo.arrBuffers.length - 1 !== vo.audioIndex) {
-                ++vo.audioIndex;
-            }
-        } else { // prev
-            if (vo.audioIndex !== 0) {
-                --vo.audioIndex;
-            }
-        }
-        vo.Helper.PlaySound(vo.arrBuffers[vo.audioIndex]);
-    }
 
     vo.oService = {
-        AudioUpload: function() {
+        AudioUpload: function(sRandomCharacter) {
             CommonFactory.BlobToBase64(vo.oAudio.recorded, function(base64) { // encode
-                var oSaveItem = { 'blob': base64, 'character': oAudioAssessment.response };
+                var oSaveItem = { 'blob': base64, 'character': sRandomCharacter };
                 DataService.AudioUpload(oSaveItem).then(function(data) {
-                    $scope.$parent.vm.Helper.ShowHidePager(true, Constants.Miscellaneous.AssessmentCompleteNext);
+
                 });
-            });
-        },
-        GetAudioAssessment: function(audioName) {
-            return DataService.GetAudioAssessment(audioName).then(function(data) {
-                return data;
             });
         }
     }
 
     vo.Helper = {
-        GetAudioAssessment: function(audioName) {
-            vo.oService.GetAudioAssessment(audioName).then(function(data) {
-                vo.test2(data);
-                return;
-            });
+        Init: function() {
+            // Hide NextAssessment button
+            $scope.$parent.vm.Helper.ShowHidePager(false);
+            // Turn on practice mode
+            $scope.$parent.vm.currentAssessment.arrQuestions[0].sMode = "Practice";
         },
-        PlaySound: function(buffer) {
-            if (source.buffer) {
-                source.disconnect();
-                source = context.createBufferSource();
+        PlayNext: function(sType) {
+            if (sType == "next") {
+                vo.bShowStartButton = false;
+                // if (nCurrentRound === nTotalRounds) {
+                //     $scope.$parent.vm.Helper.ShowHidePager(true, Constants.Miscellaneous.AssessmentCompleteNext);
+                // } else {
+                nCurrentRound++;
+                cRandomCharacter = CommonFactory.GetRandomCharacter();
+                vo.oAudio.StartRecorderCountDown();
+                //}
+                if (bFirst) {
+                    vo.sTextOnPlayButton = "Start";
+                    bFirst = false;
+                } else {
+                    //$scope.$parent.vm.currentAssessment.arrQuestions[0].sMode = "Final";
+                    vo.sTextOnPlayButton = "Next";
+                }
             }
-            source.buffer = buffer; // tell the source which sound to play
-            source.connect(context.destination); // connect the source to the context's destination (the speakers)
-            source.start(0); // play the source now
-        },
+        }
     }
 
     vo.oAudio = {
@@ -75,13 +64,11 @@ function VoiceController($scope, $timeout, $interval, $sce, Constants, CommonFac
         timeLimit: 3, // make this 3
         autoStart: false,
         StartRecorderCountDown: function() {
-            $scope.$parent.vm.Helper.ShowHidePager(false);
-            
             var nTimer = 3; // make this 3
             oAudioAssessment.displayedResponse = nTimer;
             oIntervalPromise = $interval(function() {
                 if (nTimer == 0) {
-                    oAudioAssessment.displayedResponse = oAudioAssessment.response;
+                    oAudioAssessment.displayedResponse = cRandomCharacter;
                     vo.oAudio.autoStart = true;
                     $interval.cancel(oIntervalPromise);
                 } else {
@@ -93,7 +80,21 @@ function VoiceController($scope, $timeout, $interval, $sce, Constants, CommonFac
             console.log("RECORDING STARTED");
         },
         OnRecordAndConversionComplete: function() {
-            $timeout(vo.oService.AudioUpload, 0);
+            $timeout(function() {
+                vo.oService.AudioUpload(cRandomCharacter);
+
+                if (nCurrentRound === nTotalRounds) {
+                    $scope.$parent.vm.Helper.ShowHidePager(true, Constants.Miscellaneous.AssessmentCompleteNext);
+                } else {
+                    $scope.$parent.vm.currentAssessment.arrQuestions[0].sMode = "Final";
+                    vo.bShowStartButton = true;                    
+                }
+                
+                vo.oAudio.autoStart = false;
+                oAudioAssessment.displayedResponse = "---";
+            }, 0);
         }
     }
+
+    vo.Helper.Init();
 }

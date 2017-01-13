@@ -1,17 +1,23 @@
 app.controller('Metronome', ['$scope', '$timeout', '$interval', 'Factory_Constants', 'Factory_CommonRoutines', 'Factory_DataService', Metronome]);
 
 function Metronome($scope, $timeout, $interval, Constants, CommonFactory, DataService) {
-    $scope.$parent.vm.Helper.ShowHidePager(false);
     var me = this;
-
+    var bFirst = true;
+    var firstTime = true; // audio context
     var timeDuration = 4; //Constants.AudioAssessment.audioRecordLength;
+    var nCurrentRound = 0;
+    var nTotalRounds = 2;
+    var arrResponse = [];
 
     var playing = false;
-    var firstTime = true;
+
+
+    me.sTextOnPlayButton = "Start Practice";
+    var nMetronomeClickCounter = 5;
 
     me.oMetronome = {
         arrTimeIntervalsStartStop: [],
-        counter: 5,
+        counter: nMetronomeClickCounter,
         start: null,
         end: null,
         intervalBetweenStarts: null
@@ -26,6 +32,7 @@ function Metronome($scope, $timeout, $interval, Constants, CommonFactory, DataSe
         nRefreshRate: 500,
         sType: null,
         displayedResponse: null,
+        /*
         StartProgressBar: function() {
             this.bShowProgressBar = true;
             this.sType = null;
@@ -43,36 +50,59 @@ function Metronome($scope, $timeout, $interval, Constants, CommonFactory, DataSe
                 }
             }, this.nRefreshRate, this.nMaxTime / this.nRefreshRate);
         },
+        */
         StartProgressBarNew: function() {
             this.bShowStartButton = true;
-
         }
     }
 
     me.Helper = {
+        Init: function() {
+            // Hide NextAssessment button
+            $scope.$parent.vm.Helper.ShowHidePager(false);
+            // Turn on practice mode
+            $scope.$parent.vm.currentAssessment.arrQuestions[0].sMode = "Practice";
+            // Reset response
+            $scope.$parent.vm.currentAssessment.arrQuestions[0].response = null;
+        },
         PlayPause: function() {
             playing = !playing;
+
+            me.oAudio.bShowStartButton = false;
+            me.oAudio.bShowResponseBox = true;
+            me.oMetronome.initializedTime = new Date();
+
             if (firstTime) {
-                me.oAudio.bShowStartButton = false;
-                me.oAudio.bShowResponseBox = true;
                 me.Play();
                 firstTime = false;
-                me.oMetronome.initializedTime = new Date();
             }
         },
-        Next: function() {
-            me.oAudio.StartProgressBarNew();
+        PlayNext: function(sType) {
+            if (sType == "next") {
+                this.PlayPause();
+                if (bFirst) {
+                    me.sTextOnPlayButton = "Start";
+                    bFirst = false;
+                } else {
+                    $scope.$parent.vm.currentAssessment.arrQuestions[0].sMode = "Final";
+                    me.sTextOnPlayButton = "Next";
+                }
+
+            }
         },
+        // Next: function() {
+        //     me.oAudio.StartProgressBarNew();
+        // },
         RecordTimeDuration: function(sType) {
             switch (sType) {
                 case 'start':
                     if (me.oMetronome.start === null) {
                         me.oMetronome.intervalBetweenStarts = 0;
                         me.oMetronome.start = new Date();
-                    }else{
+                    } else {
                         me.oMetronome.intervalBetweenStarts = new Date() - me.oMetronome.start;
                         me.oMetronome.start = new Date();
-                    }                    
+                    }
                     break;
                 case 'stop':
                     me.oMetronome.end = new Date();
@@ -80,24 +110,34 @@ function Metronome($scope, $timeout, $interval, Constants, CommonFactory, DataSe
                         start: me.oMetronome.start,
                         end: me.oMetronome.end,
                         intervalBetweenStartEnd: me.oMetronome.end - me.oMetronome.start,
-                        intervalBetweenStarts: me.oMetronome.intervalBetweenStarts
+                        intervalBetweenStarts: me.oMetronome.intervalBetweenStarts,
                     }
                     me.oMetronome.arrTimeIntervalsStartStop.push(oIntervals);
-                    //console.log(oIntervals);
 
                     if (--me.oMetronome.counter === 0) {
-                        var oFinalResponse = {
+                        var oResponse = {
                             initializedTime: me.oMetronome.initializedTime,
-                            arrTimeIntervalsStartStop: me.oMetronome.arrTimeIntervalsStartStop
+                            arrTimeIntervalsStartStop: me.oMetronome.arrTimeIntervalsStartStop,
+                            nCurrentRound: ++nCurrentRound
                         }
-                        me.oAudio.bShowResponseBox = false;
-                        //console.log(oFinalResponse);
-                        $scope.$parent.vm.currentAssessment.arrQuestions[0].response = JSON.stringify(oFinalResponse);
-                        $scope.$parent.vm.Helper.ShowHidePager(true, Constants.Miscellaneous.AssessmentCompleteNext);
 
-                        playing = false;
+                        arrResponse.push(oResponse);
+
+                        if (nCurrentRound === nTotalRounds) {
+                            me.oAudio.bShowResponseBox = false;
+                            $scope.$parent.vm.currentAssessment.arrQuestions[0].response = JSON.stringify(arrResponse);
+                            $scope.$parent.vm.Helper.ShowHidePager(true, Constants.Miscellaneous.AssessmentCompleteNext);
+                            playing = false;
+                        } else {
+                            me.oMetronome.start = null;
+                            me.oAudio.bShowStartButton = true;
+                            me.oAudio.bShowResponseBox = false;
+                            me.oMetronome.counter = nMetronomeClickCounter;
+                            me.oMetronome.arrTimeIntervalsStartStop = [];
+                            $scope.$parent.vm.currentAssessment.arrQuestions[0].sMode = "Final";
+                            playing = false;
+                        }
                     }
-
                     break;
             }
         }
@@ -140,6 +180,7 @@ function Metronome($scope, $timeout, $interval, Constants, CommonFactory, DataSe
             }
         });
     }
+    me.Helper.Init();
 }
 //me.Helper.PlayPause();
 //me.InitMetronome = function() {

@@ -109,7 +109,7 @@ function AssessmentsCtrl($scope, $state, Constants, DataService, CommonFactory) 
             delete vm.tempAssessments;
             // Individual formatting
             vm.assessments[0].arrQuestions[0].response = CommonFactory.TryConvertStringToDate(vm.assessments[0].arrQuestions[0].response);
-            vm.assessments[7].arrQuestions[0].response = CommonFactory.GetRandomCharacter();
+            //vm.assessments[7].arrQuestions[0].response = CommonFactory.GetRandomCharacter();
             vm.assessments[7].arrQuestions[0].displayedResponse = "---";
         },
         InitTab: function() {

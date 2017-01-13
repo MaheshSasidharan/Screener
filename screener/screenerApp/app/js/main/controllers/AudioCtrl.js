@@ -2,18 +2,20 @@ app.controller('AudioController', ['$scope', '$timeout', '$interval', '$sce', 'F
 
 function AudioController($scope, $timeout, $interval, $sce, Constants, CommonFactory, DataService, Upload) {
     var au = this;
-    $scope.$parent.vm.Helper.ShowHidePager(false);
+    var bFirst = true;
+
     window.AudioContext = window.AudioContext || window.webkitAudioContext;
     var context = new AudioContext();
     var source = context.createBufferSource(); // creates a sound source
 
+    au.sTextOnPlayButton = "Start Practice";
+
     au.audioIndex = -1;
-    au.sTextOnPlayButton = "Start";
     au.arrVoiceOPAndIP = [];
     au.audioRecordLength = Constants.AudioAssessment.audioRecordLength;
 
     au.oAudio = {
-        bShowPlayButton: false,
+        bShowStartButton: true,
         bShowProgressBar: false,
         nMaxTime: au.audioRecordLength * 1000,
         nSpentTime: 0,
@@ -33,12 +35,13 @@ function AudioController($scope, $timeout, $interval, $sce, Constants, CommonFac
                         // Give a gap of 1 second
                         that.nSpentTime = 0;
                         that.bShowProgressBar = false;
-                        //au.oAudio.bShowPlayButton = true;
+                        //au.oAudio.bShowStartButton = true;
                         if (au.arrVoiceOPAndIP.length - 1 !== au.audioIndex) {
-                            au.oAudio.bShowPlayButton = true;
-                            au.sTextOnPlayButton = "Next audio";
+                            au.oAudio.bShowStartButton = true;
+                            $scope.$parent.vm.currentAssessment.arrQuestions[0].sMode = "Final";
+                            //au.sTextOnPlayButton = "Next audio";
                         } else if (au.arrVoiceOPAndIP.length - 1 == au.audioIndex) {
-                            au.oAudio.bShowPlayButton = false;
+                            au.oAudio.bShowStartButton = false;
                             $scope.$parent.vm.Helper.ShowHidePager(true, Constants.Miscellaneous.AssessmentCompleteNext);
                         }
                     }, 1000);
@@ -107,6 +110,13 @@ function AudioController($scope, $timeout, $interval, $sce, Constants, CommonFac
             if (sType == "next") {
                 if (au.arrVoiceOPAndIP.length - 1 !== au.audioIndex) {
                     ++au.audioIndex;
+                    if (bFirst) {
+                        au.sTextOnPlayButton = "Start";
+                        bFirst = false;
+                    } else {
+                    // $scope.$parent.vm.currentAssessment.arrQuestions[0].sMode = "Final";
+                        au.sTextOnPlayButton = "Next Audio";
+                    }
                 }
             } else { // prev
                 if (au.audioIndex !== 0) {
@@ -124,7 +134,7 @@ function AudioController($scope, $timeout, $interval, $sce, Constants, CommonFac
             source.buffer = buffer; // tell the source which sound to play
             source.connect(context.destination); // connect the source to the context's destination (the speakers)
             source.start(0); // play the source now
-            au.oAudio.bShowPlayButton = false;
+            au.oAudio.bShowStartButton = false;
         },
         EndOfAudioPlay: function() {
             au.oAudioRecorder.StartRecorderCountDown();
@@ -134,7 +144,7 @@ function AudioController($scope, $timeout, $interval, $sce, Constants, CommonFac
                 au.arrVoiceOPAndIP[i].oVoice = oVoice;
                 au.arrVoiceOPAndIP[i].sStatus = 'voiceAdded';
             });
-            au.oAudio.bShowPlayButton = true;
+            au.oAudio.bShowStartButton = true;
             $scope.$apply();
         },
         AudioUploadWord: function() {
@@ -142,6 +152,10 @@ function AudioController($scope, $timeout, $interval, $sce, Constants, CommonFac
             au.oService.AudioUploadWord(audioIndex);
         },
         Init: function() {
+            // Hide NextAssessment button
+            $scope.$parent.vm.Helper.ShowHidePager(false);
+            // Turn on practice mode
+            $scope.$parent.vm.currentAssessment.arrQuestions[0].sMode = "Practice";
             Constants.AudioAssessment.arrVoices.forEach(function(sVoicePrefix) {
                 var oVoiceOPAndIP = {
                     sVoicePrefix: sVoicePrefix,

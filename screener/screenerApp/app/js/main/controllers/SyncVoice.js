@@ -2,19 +2,19 @@ app.controller('SyncVoice', ['$scope', '$timeout', '$interval', 'Factory_Constan
 
 function SyncVoice($scope, $timeout, $interval, Constants, CommonFactory, DataService) {
     var sv = this;
-    //$scope.$parent.vm.Helper.ShowHidePager(true);
-    $scope.$parent.vm.Helper.ShowHidePager(false);
+    var bFirst = true;
+
     window.AudioContext = window.AudioContext || window.webkitAudioContext;
     var context = new AudioContext();
     var source = context.createBufferSource(); // creates a sound source
 
+    sv.sTextOnPlayButton = "Start Practice";
     sv.audioIndex = -1;
-    sv.sTextOnPlayButton = "Start";
     sv.arrVoiceOPAndIP = [];
     sv.audioRecordLength = Constants.SyncVoiceAssessment.audioRecordLength;
 
     sv.oAudio = {
-        bShowPlayButton: false,
+        bShowStartButton: false,
         bShowProgressBar: false,
         nMaxTime: sv.audioRecordLength * 1000,
         nSpentTime: 0,
@@ -34,12 +34,13 @@ function SyncVoice($scope, $timeout, $interval, Constants, CommonFactory, DataSe
                         // Give a gap of 1 second
                         that.nSpentTime = 0;
                         that.bShowProgressBar = false;
-                        //sv.oAudio.bShowPlayButton = true;
+                        //sv.oAudio.bShowStartButton = true;
+
                         if (sv.arrVoiceOPAndIP.length - 1 !== sv.audioIndex) {
-                            sv.oAudio.bShowPlayButton = true;
-                            sv.sTextOnPlayButton = "Next audio";
+                            sv.oAudio.bShowStartButton = true;
+                            $scope.$parent.vm.currentAssessment.arrQuestions[0].sMode = "Final";
                         } else if (sv.arrVoiceOPAndIP.length - 1 == sv.audioIndex) {
-                            sv.oAudio.bShowPlayButton = false;
+                            sv.oAudio.bShowStartButton = false;
                             $scope.$parent.vm.Helper.ShowHidePager(true, Constants.Miscellaneous.AssessmentCompleteNext);
                         }
                     }, 1000);
@@ -61,6 +62,7 @@ function SyncVoice($scope, $timeout, $interval, Constants, CommonFactory, DataSe
             $scope.$apply();
             var oIntervalPromise = $interval(function() {
                 if (nTimer == 0) {
+                //if (nTimer == 3) {
                     sv.oAudioRecorder.recorded = null;
                     sv.oAudio.displayedResponse = null;
                     sv.oAudio.StartProgressBar();
@@ -109,6 +111,13 @@ function SyncVoice($scope, $timeout, $interval, Constants, CommonFactory, DataSe
                 if (sv.arrVoiceOPAndIP.length - 1 !== sv.audioIndex) {
                     ++sv.audioIndex;
                 }
+                if (bFirst) {
+                    sv.sTextOnPlayButton = "Start";
+                    bFirst = false;
+                } else {
+                // $scope.$parent.vm.currentAssessment.arrQuestions[0].sMode = "Final";
+                    sv.sTextOnPlayButton = "Next";
+                }
             } else { // prev
                 if (sv.audioIndex !== 0) {
                     --sv.audioIndex;
@@ -125,7 +134,7 @@ function SyncVoice($scope, $timeout, $interval, Constants, CommonFactory, DataSe
             source.buffer = buffer; // tell the source which sound to play
             source.connect(context.destination); // connect the source to the context's destination (the speakers)
             source.start(0); // play the source now
-            sv.oAudio.bShowPlayButton = false;
+            sv.oAudio.bShowStartButton = false;
         },
         EndOfAudioPlay: function() {
             sv.oAudioRecorder.StartRecorderCountDown();
@@ -135,7 +144,7 @@ function SyncVoice($scope, $timeout, $interval, Constants, CommonFactory, DataSe
                 sv.arrVoiceOPAndIP[i].oVoice = oVoice;
                 sv.arrVoiceOPAndIP[i].sStatus = 'voiceAdded';
             });
-            sv.oAudio.bShowPlayButton = true;
+            sv.oAudio.bShowStartButton = true;
             $scope.$apply();
         },
         AudioSyncVoiceUpload: function() {
@@ -143,6 +152,11 @@ function SyncVoice($scope, $timeout, $interval, Constants, CommonFactory, DataSe
             sv.oService.AudioSyncVoiceUpload(audioIndex);
         },
         Init: function() {
+            // Hide NextAssessment button
+            $scope.$parent.vm.Helper.ShowHidePager(false);
+            // Turn on practice mode
+            $scope.$parent.vm.currentAssessment.arrQuestions[0].sMode = "Practice";
+
             Constants.SyncVoiceAssessment.arrVoices.forEach(function(sVoicePrefix) {
                 var oVoiceOPAndIP = {
                     sVoicePrefix: sVoicePrefix,
@@ -160,5 +174,5 @@ function SyncVoice($scope, $timeout, $interval, Constants, CommonFactory, DataSe
             bufferLoader.load();
         },
     }
-    sv.Helper.Init();   
+    sv.Helper.Init();
 }

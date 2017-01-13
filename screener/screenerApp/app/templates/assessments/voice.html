@@ -1,20 +1,10 @@
 <div ng-include="'templates/assessments/questions.html'"></div>
 <script type="text/ng-template" id="11">
-    <div class="SC_Asmnt2_Letter">{{assessment.displayedResponse}}</div>
-    <!-- <div ng-include="'templates/assessments/voiceController.html'"></div> -->
+    <div class="text-center">
+        <button class="btn btn-md btn-success" ng-click="vo.Helper.PlayNext('next')" ng-show="vo.bShowStartButton">{{vo.sTextOnPlayButton}}</button>
+    </div>
+    <div class="SC_Asmnt2_Letter" ng-show="!vo.bShowStartButton">{{assessment.displayedResponse}}</div>
     <div class="SC_audioContainer">
-        <div ng-show="false">
-            <button ng-click="vo.test1()">test1</button>
-            <!-- <audio>
-            <source ng-src="{{vo.TestAudio}}" />
-        </audio> -->
-            <audio controls ng-src="{{vo.TestAudio}}"></audio>
-            <!-- <button ng-click="vo.test2()">test2</button> -->
-            <button ng-click="vo.test3('prev')">Previous</button>
-            <button ng-click="vo.test3('next')">Next</button>
-            <!-- <button ng-click="vo.Helper.GetAudioAssessment('audioOne')">test4</button> -->
-        </div>
-        <button class="btn btn-md btn-success" ng-init="showStart = true" ng-click="vo.oAudio.StartRecorderCountDown(); showStart = false" ng-show="showStart">START</button>
         <div ng-audio-recorder id="mainAudio" audio-model="vo.oAudio.recorded" time-limit="vo.oAudio.timeLimit" show-player="false" convert-mp3="true" on-record-start="vo.oAudio.OnRecordStart()" on-conversion-complete="vo.oAudio.OnRecordAndConversionComplete()" auto-start="vo.oAudio.autoStart" ng-if="vo.oAudio.autoStart">
             <div ng-if="recorder.isAvailable">
                 <div class="panel panel-primary">

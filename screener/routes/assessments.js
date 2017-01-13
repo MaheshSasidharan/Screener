@@ -138,7 +138,7 @@ router.post('/AudioUploadWord', function(req, res, next) {
         Helper.CreateUserDirectories(userDir, false);
 
         var nAssmntNum = req.body.oSaveItem.sVoicePrefix;
-        var pattern = sourceFolderName + "/" + nAssmntNum + "_[a-z]*.mp3";
+        var pattern = sourceFolderName + "/" + nAssmntNum + "_[a-z0-9]*.mp3";
         var mg = new glob.Glob(pattern, { 'nocase': true }, cb);
 
         function cb(er, files) {
@@ -160,7 +160,7 @@ router.post('/AudioUploadWord', function(req, res, next) {
 
 router.get('/GetAudioAssessment', function(req, res, next) {
     var nAssmntNum = req.query.nAssmntNum;
-    var pattern = "AssessmentAssets/soundClips/" + nAssmntNum + "_[a-z]*.mp3";
+    var pattern = "AssessmentAssets/soundClips/" + nAssmntNum + "_[a-z0-9]*.mp3";
     var mg = new glob.Glob(pattern, { 'nocase': true }, cb);
 
     function cb(er, files) {
@@ -168,7 +168,7 @@ router.get('/GetAudioAssessment', function(req, res, next) {
             if (files.length > 1) { // Found multiple matches
                 res.json({ code: 405, status: false, msg: "Multiple matches found" });
             }
-            res.set({ 'Content-Type': 'audio/mpeg' });
+            res.set({ 'Content-Type': 'audio/mp3' });
             var root = __dirname.split('/routes')[0];
             var filepath = path.resolve(root + "/bin/" + files[0]);
             var readStream = fs.createReadStream(filepath);

@@ -1,7 +1,7 @@
 <div ng-include="'templates/assessments/questions.html'"></div>
 <div class="SC_assessmentInnerContainer">
-    <div class="text-center MA_NextButton">
-        <button class="btn btn-md btn-success" ng-click="ma.Helper.GetMartixImages()" ng-show="ma.bShowNextButton">NEXT</button>
+    <div class="text-center">
+        <button class="btn btn-md btn-success" ng-click="ma.Helper.PlayNext('next')" ng-show="ma.bShowStartButton">{{ma.sTextOnPlayButton}}</button>
     </div>
     <div ng-show="ma.oCurrentSet">
         <div class="ImageSetContainer center-block">
@@ -22,11 +22,8 @@
             <table class="table table-bordered">
                 <tbody>
                     <tr ng-repeat="arrURLs in ma.oCurrentSet.solutionSets.arrURLs track by $index">
-                        <td ng-repeat="oPic in arrURLs track by $index" 
-                        ng-click="ma.Helper.AnswerSelected(oPic)" 
-                        ng-class="{'PicSelected': ma.oCurrentPic.sPicName === oPic.sPicName}">
-                            <img ng-src="{{oPic.sPicURL}}" />
-                            {{selectedPic}}
+                        <td ng-repeat="oPic in arrURLs track by $index" ng-click="ma.Helper.AnswerSelected(oPic)" ng-class="{'PicSelected': ma.oCurrentPic.sPicName === oPic.sPicName}">
+                            <img ng-src="{{oPic.sPicURL}}" /> {{selectedPic}}
                         </td>
                     </tr>
                 </tbody>
