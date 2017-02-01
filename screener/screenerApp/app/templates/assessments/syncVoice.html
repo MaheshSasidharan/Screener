@@ -1,9 +1,8 @@
 <div ng-include="'templates/assessments/questions.html'"></div>
-<script type="text/ng-template" id="7">
-    <!-- <div ng-include="'templates/assessments/audioController.html'"></div> -->
+<script type="text/ng-template" id="8">
     <div class="SC_audioContainer">
         <div class="text-center">
-            <uib-progressbar class="progress-striped_1 active_1" max="sv.oAudio.nMaxTime" value="sv.oAudio.nSpentTime" type="{{sv.oAudio.sType}}" ng-show="sv.oAudio.bShowProgressBar"></uib-progressbar>
+            <uib-progressbar max="sv.oAudio.nMaxTime" value="sv.oAudio.nSpentTime" type="{{sv.oAudio.sType}}" ng-show="sv.oAudio.bShowProgressBar"></uib-progressbar>
             <button class="btn btn-md btn-success" ng-click="sv.Helper.PlayNext('next')" ng-show="sv.oAudio.bShowStartButton">{{sv.sTextOnPlayButton}}</button>
         </div>
         <div class="SC_Asmnt2_Letter">{{sv.oAudio.displayedResponse}}</div>

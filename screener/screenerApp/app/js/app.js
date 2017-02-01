@@ -1,5 +1,6 @@
-var app = angular.module('app', ['ui.router', 'webcam', 'ui.bootstrap', 'angularAudioRecorder', 'ui-notification', 'Orbicular']);
-//var app = angular.module('app', ['ui.router', 'webcam']);
+// var app = angular.module('app', ['ui.router', 'webcam', 'ui.bootstrap', 'angularAudioRecorder', 'ui-notification', 'Orbicular']);
+var app = angular.module('app', ['ngAnimate', 'ui.router', 'webcam', 'ui.bootstrap', 'angularAudioRecorder', 'ui-notification', 'Orbicular']);
+
 
 app
     .config(function(NotificationProvider) {

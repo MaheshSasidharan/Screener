@@ -53,6 +53,10 @@ app.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
               templateUrl: 'templates/assessments/voice.html',
               controller: 'VoiceController as vo'
             })
+            .state('screener.assessments.personal', {
+              templateUrl: 'templates/assessments/personal.html',
+              controller: 'PersonalController as pe'
+            })
             .state('screener.assessments.video', {
               templateUrl: 'templates/assessments/video.html',
               controller: 'VideoCtrl as vid'

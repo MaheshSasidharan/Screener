@@ -1,11 +1,12 @@
 <div ng-include="'templates/assessments/questions.html'"></div>
-<script type="text/ng-template" id="11">
-    <div class="text-center">
-        <button class="btn btn-md btn-success" ng-click="vo.Helper.PlayNext('next')" ng-show="vo.bShowStartButton">{{vo.sTextOnPlayButton}}</button>
-    </div>
-    <div class="SC_Asmnt2_Letter" ng-show="!vo.bShowStartButton">{{assessment.displayedResponse}}</div>
-    <div class="SC_audioContainer">
-        <div ng-audio-recorder id="mainAudio" audio-model="vo.oAudio.recorded" time-limit="vo.oAudio.timeLimit" show-player="false" convert-mp3="true" on-record-start="vo.oAudio.OnRecordStart()" on-conversion-complete="vo.oAudio.OnRecordAndConversionComplete()" auto-start="vo.oAudio.autoStart" ng-if="vo.oAudio.autoStart">
+<script type="text/ng-template" id="12">
+    <div class="SC_voiceContainer">
+        <div class="SC_Asmnt2_Letter" ng-show="!vo.bShowStartButton">{{assessment.displayedResponse}}</div>
+        <div class="text-center">
+            <uib-progressbar max="vo.oAudio.nMaxTime" value="vo.oAudio.nSpentTime" type="{{vo.oAudio.sType}}" ng-show="vo.oAudio.bShowProgressBar"></uib-progressbar>
+            <button class="btn btn-md btn-success" ng-click="vo.Helper.PlayNext('next')" ng-show="vo.bShowStartButton">{{vo.sTextOnPlayButton}}</button>
+        </div>        
+        <div ng-audio-recorder id="mainAudio" audio-model="vo.oAudioRecorder.recorded" time-limit="vo.oAudioRecorder.timeLimit" show-player="false" convert-mp3="true" on-record-start="vo.oAudioRecorder.OnRecordStart()" on-conversion-complete="vo.oAudioRecorder.OnRecordAndConversionComplete()" auto-start="vo.oAudioRecorder.autoStart" ng-if="vo.oAudioRecorder.autoStart">
             <div ng-if="recorder.isAvailable">
                 <div class="panel panel-primary">
                     <div class="panel-heading" ng-hide="true">
@@ -70,6 +71,5 @@
                 Your browser does not support this feature natively, please use latest version of <a href="https://www.google.com/chrome/browser" target="_blank">Google Chrome</a> or <a href="https://www.mozilla.org/en-US/firefox/new/" target="_blank">Mozilla Firefox</a>. If you're on Safari or Internet Explorer, you can install <a href="https://get.adobe.com/flashplayer/">Adobe Flash</a> to use this feature.
             </div>
         </div>
-        <!-- <button class="btn btn-primary btn-md" ng-click="vm.oAudio.AudioUpload()">Save</button> -->
     </div>
 </script>

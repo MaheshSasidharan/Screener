@@ -5,7 +5,7 @@
 }
 
 .SC_assessmentContainer .pager {
-    margin: 2px 0px;
+    margin: 2px 0px 40px 0px;
 }
 
 .SC_tabHeaderContainer > a {
@@ -62,11 +62,11 @@
 }
 
 .progress-bar {
-    -webkit-transition-duration: 2000ms !important;
-    -moz-transition-duration: 2000ms !important;
-    -ms-transition-duration: 2000ms !important;
-    -o-transition-duration: 2000ms !important;
-    transition-duration: 2000ms;
+    -webkit-transition-duration: 1000ms !important;
+    -moz-transition-duration: 1000ms !important;
+    -ms-transition-duration: 1000ms !important;
+    -o-transition-duration: 1000ms !important;
+    transition-duration: 1000ms;
     width: 0%;
 }
 

@@ -9,7 +9,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>JML Screener</title>
+    <title>My AngularJS App</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel='shortcut icon' href='img/favicon.ico' type='image/x-icon' />
@@ -18,20 +18,20 @@
     <link type="text/css" rel="stylesheet" href="css/app.css" />
     <link type="text/css" rel="stylesheet" href="css/screener.css" />
     <link type="text/css" rel="stylesheet" href="css/orbicular.css" />
+    <link type="text/css" rel="stylesheet" href="css/materialdesign.css" />
+    <link type="text/css" rel="stylesheet" href="css/animation.css" />
+    <link type="text/css" rel="stylesheet" href="css/ng-animation.css" />
+
 </head>
 
-<body ng-app="app">
+<body ng-app="app" class="GMD_body">
     <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
   <![endif]-->
-    <div ng-include="'templates/main/topNav.html'"></div>
-    <!-- <div ui-view="navbar"></div> -->
-    <div class="main" ui-view="main"></div>
-    <!-- In production use:
-  <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
-  -->
+    <div ng-include="'templates/main/topNav.html'"></div>    
+    <div class="main GMD_container slide-down" ui-view="main"></div>    
     <script src="bower_components/angular/angular.js"></script>
-    <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>    
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="bower_components/bootstrap/dist/js/ui-bootstrap-tpls-2.2.0.min.js"></script>
@@ -41,6 +41,7 @@
     <script src="bower_components/angularAudioRecorder/dist/angular-audio-recorder.min.js"></script>
     <script src="bower_components/wavesurfer/dist/wavesurfer.min.js"></script>
     <script src="bower_components/orbicular/orbicular.js"></script>
+    <script src="js/core/library/angular-animate.min.js"></script>
     <script src="js/core/library/audiolib.min.js"></script>
     <script src="js/core/library/thatsright.js"></script>
     <script src="js/core/library/angular-ui-notification.min.js"></script>    
@@ -64,12 +65,13 @@
     <script src="js/main/controllers/ContactCtrl.js"></script>
     <script src="js/main/controllers/Assessments.js"></script>
     <script src="js/main/controllers/TimeDuration.js"></script>
+    <script src="js/main/controllers/Metronome.js"></script>
     <script src="js/main/controllers/SyncVoice.js"></script>
     <script src="js/main/controllers/PicturePrompt.js"></script>
-    <script src="js/main/controllers/Metronome.js"></script>
     <script src="js/main/controllers/MatrixCtrl.js"></script>
     <script src="js/main/controllers/AudioCtrl.js"></script>
     <script src="js/main/controllers/VoiceCtrl.js"></script>
+    <script src="js/main/controllers/PersonalCtrl.js"></script>
     <script src="js/main/controllers/VideoCtrl.js"></script>
 </body>
 

@@ -4,7 +4,7 @@ function AssessmentsCtrl($scope, $state, Constants, DataService, CommonFactory) 
     var vm = this;
     vm.tabs = [];
     vm.sShowPagerMessage = null;
-    vm.bShowPager = true;
+    vm.bShowPager = false;
     vm.currentTabIndex = 0;
     vm.currentTab = [];
     vm.tempAssessments = [];
@@ -57,6 +57,7 @@ function AssessmentsCtrl($scope, $state, Constants, DataService, CommonFactory) 
                 if (data.status) {
                     that.InitAssessments();
                     that.InitTab();
+                    that.ShowHidePager(true, null);
                 }
             });
         },
@@ -107,10 +108,21 @@ function AssessmentsCtrl($scope, $state, Constants, DataService, CommonFactory) 
                 }
             });
             delete vm.tempAssessments;
-            // Individual formatting
-            vm.assessments[0].arrQuestions[0].response = CommonFactory.TryConvertStringToDate(vm.assessments[0].arrQuestions[0].response);
+            
+            //vm.assessments[0].arrQuestions[0].response = CommonFactory.TryConvertStringToDate(vm.assessments[0].arrQuestions[0].response);
             //vm.assessments[7].arrQuestions[0].response = CommonFactory.GetRandomCharacter();
-            vm.assessments[7].arrQuestions[0].displayedResponse = "---";
+            //vm.assessments[8].arrQuestions[0].displayedResponse = "---";
+
+            // Individual formatting
+            var oText = CommonFactory.FindItemInArray(vm.assessments, 'nickName', 'text', 'item');;
+            if(oText){
+                oText.response = CommonFactory.TryConvertStringToDate(oText.response);
+            }
+
+            var oVideo = CommonFactory.FindItemInArray(vm.assessments, 'nickName', 'video', 'item');
+            if(oVideo){
+                oVideo.displayedResponse = "---";
+            }
         },
         InitTab: function() {
             vm.assessments.forEach(function(oAssessment) {
@@ -136,13 +148,19 @@ function AssessmentsCtrl($scope, $state, Constants, DataService, CommonFactory) 
         },
         GetUserMedia: function() {
             if (this.HasGetUserMedia()) {
+                // Check if phone is being used
+                var isMobileDevice = navigator.userAgent.match(/iPad|iPhone|iPod|android/i) != null || screen.width <= 480;
+                if (isMobileDevice) {
+                    CommonFactory.Notification.error({ message: Constants.Miscellaneous.IsMobileDevice, delay: null });
+                    return;
+                }
                 navigator.webkitGetUserMedia({ audio: true, video: true }, function() {
                     vm.Helper.Init();
                 }, function() {
-                    CommonFactory.Notification.error(Constants.Miscellaneous.FailedMediaAccess);                    
+                    CommonFactory.Notification.error({ message: Constants.Miscellaneous.FailedMediaAccess, delay: null });
                 });
             } else {
-                CommonFactory.Notification.error(Constants.Miscellaneous.NoBrowserSupport);
+                CommonFactory.Notification.error({ message: Constants.Miscellaneous.NoBrowserSupport, delay: null });
             }
         }
     }

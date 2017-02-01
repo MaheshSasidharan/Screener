@@ -3,7 +3,7 @@ app.controller('TimeDuration', ['$scope', '$timeout', '$interval', 'Factory_Cons
 function TimeDuration($scope, $timeout, $interval, Constants, CommonFactory, DataService) {
     var td = this;
     var bFirst = true;
-    var timeDuration = 0.5; //Constants.AudioAssessment.audioRecordLength;
+    var timeDuration = 0.2; //Constants.AudioAssessment.audioRecordLength;
     var nCurrentRound = 0;
     var nTotalRounds = 2;
     var arrResponse = [];
@@ -20,8 +20,21 @@ function TimeDuration($scope, $timeout, $interval, Constants, CommonFactory, Dat
         nRefreshRate: 500,
         sType: null,
         displayedResponse: null,
-        StartCircularProgressBarNew: function() {
-            this.bShowStartButton = false;
+        StartRecorderCountDown: function() {
+            var nTimer = 3;
+            td.displayedResponse = nTimer;
+            var oIntervalPromise = $interval(function() {
+                //if (nTimer == 0) {
+                if (nTimer == 3) {
+                    td.oAudio.StartCircularProgressBarNew();                    
+                    td.displayedResponse = null;                    
+                    $interval.cancel(oIntervalPromise);                    
+                } else {
+                    td.displayedResponse = --nTimer;
+                }
+            }, 1000, 4);
+        },
+        StartCircularProgressBarNew: function() {            
             this.bShowProgressBar = true;
             this.nSpentTime = 0;
             var that = this;
@@ -51,7 +64,8 @@ function TimeDuration($scope, $timeout, $interval, Constants, CommonFactory, Dat
         },
         PlayNext: function(sType) {
             if (sType == "next") {
-                td.oAudio.StartCircularProgressBarNew();
+                td.oAudio.bShowStartButton = false;
+                td.oAudio.StartRecorderCountDown();
                 if (bFirst) {
                     td.sTextOnPlayButton = "Start";
                     bFirst = false;
@@ -59,7 +73,6 @@ function TimeDuration($scope, $timeout, $interval, Constants, CommonFactory, Dat
                     $scope.$parent.vm.currentAssessment.arrQuestions[0].sMode = "Final";
                     td.sTextOnPlayButton = "Next";
                 }
-
             }
         },
         RecordTimeDuration: function(sType) {

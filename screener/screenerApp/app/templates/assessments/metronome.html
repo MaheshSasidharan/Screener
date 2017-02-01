@@ -1,4 +1,7 @@
 <div ng-include="'templates/assessments/questions.html'"></div>
+<script type="text/ng-template" id="7">
+    <div class="SC_Asmnt2_Letter">{{me.displayedResponse}}</div>
+</script>
 <div class="SC_assessmentInnerContainer SC_Metronome">
     <div class="text-center">
         <button class="btn btn-md btn-success" ng-click="me.Helper.PlayNext('next')" ng-show="me.oAudio.bShowStartButton">{{me.sTextOnPlayButton}}</button>
@@ -6,14 +9,13 @@
     <!-- <div class="text-center">
         <uib-progressbar class="progress-striped_1 active_1" max="me.oAudio.nMaxTime" value="me.oAudio.nSpentTime" type="{{me.oAudio.sType}}" ng-show="me.oAudio.bShowProgressBar"></uib-progressbar>
         <button class="btn btn-md btn-success" ng-click="me.Helper.PlayNext('next')" ng-show="me.oAudio.bShowPlayButton">{{au.sTextOnPlayButton}}</button>
-    </div>  -->   
+    </div>  -->
     <form class="text-center" name="timeDuration" ng-show="me.oAudio.bShowResponseBox" novalidate ng-submit="timeDuration.$valid && me.Helper.TimeDurationSubmit()">
         <div>
             <h3>Press and release the button for each cycle of the sound clip.</h3>
         </div>
-        <button ng-class="{'buttonPressed': buttonPressed}" class="glass SC_ButtonPress"
-            ng-mousedown="buttonPressed = true; me.Helper.RecordTimeDuration('start');" ng-mouseup="buttonPressed = false; me.Helper.RecordTimeDuration('stop');">
-                &nbsp;
+        <button ng-class="{'buttonPressed': buttonPressed}" class="glass SC_ButtonPress" ng-mousedown="buttonPressed = true; me.Helper.RecordTimeDuration('start');" ng-mouseup="buttonPressed = false; me.Helper.RecordTimeDuration('stop');">
+            &nbsp;
         </button>
     </form>
 </div>

@@ -6,8 +6,9 @@ function VoiceController($scope, $timeout, $interval, $sce, Constants, CommonFac
     vo.bShowStartButton = true;
     vo.sTextOnPlayButton = "Start Practice";
     var cRandomCharacter = null;
+    var arrCharacters = Constants.VoiceAssessment.arrCharacters;
     var nCurrentRound = 0;
-    var nTotalRounds = 2;
+    var nTotalRounds = arrCharacters.length;
 
     vo.SoundBuffer = null;
     var oIntervalPromise = null;
@@ -18,16 +19,47 @@ function VoiceController($scope, $timeout, $interval, $sce, Constants, CommonFac
 
     vo.TestAudio = null;
     vo.arrBuffers = null;
-    vo.audioIndex = -1;
+
+    var audioIndex = -1;
 
     vo.oService = {
         AudioUpload: function(sRandomCharacter) {
-            CommonFactory.BlobToBase64(vo.oAudio.recorded, function(base64) { // encode
+            CommonFactory.BlobToBase64(vo.oAudioRecorder.recorded, function(base64) { // encode
                 var oSaveItem = { 'blob': base64, 'character': sRandomCharacter };
                 DataService.AudioUpload(oSaveItem).then(function(data) {
 
                 });
             });
+        }
+    }
+
+    vo.oAudio = {
+        bShowStartButton: false,
+        bShowProgressBar: false,
+        nMaxTime: null,
+        nSpentTime: 0,
+        nRefreshRate: 500,
+        sType: null,
+        displayedResponse: null,
+        StartProgressBar: function() {
+            this.bShowProgressBar = true;
+            this.sType = null;
+            var that = this;
+            var oIntervalPromise = $interval(function() {
+                if (that.nSpentTime + that.nRefreshRate == that.nMaxTime) {
+                    $interval.cancel(oIntervalPromise);
+                    // Let progress reach 100% on UI. So increase by nSpentTime by one more step and reset to zero after one second
+                    that.nSpentTime += that.nRefreshRate;
+                    $timeout(function() {
+                        // Give a gap of 1 second
+                        that.nSpentTime = 0;
+                        that.bShowProgressBar = false;                        
+                    }, 1000);
+                } else {
+                    //that.sType = CommonFactory.GetProgressType(that.nSpentTime, that.nMaxTime);
+                    that.nSpentTime += that.nRefreshRate;
+                }
+            }, this.nRefreshRate, this.nMaxTime / this.nRefreshRate);
         }
     }
 
@@ -40,36 +72,39 @@ function VoiceController($scope, $timeout, $interval, $sce, Constants, CommonFac
         },
         PlayNext: function(sType) {
             if (sType == "next") {
-                vo.bShowStartButton = false;
-                // if (nCurrentRound === nTotalRounds) {
-                //     $scope.$parent.vm.Helper.ShowHidePager(true, Constants.Miscellaneous.AssessmentCompleteNext);
-                // } else {
+                vo.bShowStartButton = false;                
+                cRandomCharacter = arrCharacters[nCurrentRound].Char;
+                var nRecordLength = arrCharacters[nCurrentRound].RecordLength;
+                vo.oAudio.nMaxTime = nRecordLength * 1000;                
+                vo.oAudioRecorder.timeLimit = nRecordLength;
+
                 nCurrentRound++;
-                cRandomCharacter = CommonFactory.GetRandomCharacter();
-                vo.oAudio.StartRecorderCountDown();
-                //}
+
+                vo.oAudioRecorder.StartRecorderCountDown();
+
                 if (bFirst) {
                     vo.sTextOnPlayButton = "Start";
                     bFirst = false;
                 } else {
-                    //$scope.$parent.vm.currentAssessment.arrQuestions[0].sMode = "Final";
                     vo.sTextOnPlayButton = "Next";
                 }
             }
         }
     }
 
-    vo.oAudio = {
+    vo.oAudioRecorder = {
         recorded: null,
         timeLimit: 3, // make this 3
         autoStart: false,
         StartRecorderCountDown: function() {
             var nTimer = 3; // make this 3
             oAudioAssessment.displayedResponse = nTimer;
-            oIntervalPromise = $interval(function() {
+            var oIntervalPromise = $interval(function() {
                 if (nTimer == 0) {
+                    vo.oAudioRecorder.recorded = null;;
                     oAudioAssessment.displayedResponse = cRandomCharacter;
-                    vo.oAudio.autoStart = true;
+                    vo.oAudioRecorder.autoStart = true;
+                    vo.oAudio.StartProgressBar();
                     $interval.cancel(oIntervalPromise);
                 } else {
                     oAudioAssessment.displayedResponse = --nTimer;
@@ -87,11 +122,11 @@ function VoiceController($scope, $timeout, $interval, $sce, Constants, CommonFac
                     $scope.$parent.vm.Helper.ShowHidePager(true, Constants.Miscellaneous.AssessmentCompleteNext);
                 } else {
                     $scope.$parent.vm.currentAssessment.arrQuestions[0].sMode = "Final";
-                    vo.bShowStartButton = true;                    
+                    vo.bShowStartButton = true;
                 }
-                
-                vo.oAudio.autoStart = false;
-                oAudioAssessment.displayedResponse = "---";
+
+                oAudioAssessment.displayedResponse = null;
+                vo.oAudioRecorder.autoStart = false;
             }, 0);
         }
     }

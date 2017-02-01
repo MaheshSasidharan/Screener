@@ -140,7 +140,8 @@ function MatrixController($scope, $timeout, $interval, $sce, Constants, CommonFa
         AnswerSelected: function(oPic) {
             responseTime = new Date() - responseTime;
             ma.oCurrentPic = oPic;
-            ma.bShowStartButton = true;            
+            ma.Helper.PlayNext('next');
+            //ma.bShowStartButton = true;            
         }
     }
     ma.Helper.Init();

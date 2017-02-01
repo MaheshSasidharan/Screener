@@ -1,11 +1,21 @@
 /* app css stylesheet */
 
+@font-face {
+    font-family: "SC_RobotoFont";
+    src: url('font/Roboto-Light.ttf') format("truetype");
+}
+
 * {
     box-sizing: border-box;
 }
 
 *:focus{
     outline: none;
+}
+
+body{
+    font-family: 'SC_RobotoFont', cursive;    
+    font-size: 16px;
 }
 
 .audioRecorderTimeElapsed {

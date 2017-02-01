@@ -12,12 +12,11 @@ function AudioController($scope, $timeout, $interval, $sce, Constants, CommonFac
 
     au.audioIndex = -1;
     au.arrVoiceOPAndIP = [];
-    au.audioRecordLength = Constants.AudioAssessment.audioRecordLength;
 
     au.oAudio = {
         bShowStartButton: true,
         bShowProgressBar: false,
-        nMaxTime: au.audioRecordLength * 1000,
+        nMaxTime: null,
         nSpentTime: 0,
         nRefreshRate: 500,
         sType: null,
@@ -55,7 +54,7 @@ function AudioController($scope, $timeout, $interval, $sce, Constants, CommonFac
 
     au.oAudioRecorder = {
         recorded: null,
-        timeLimit: au.audioRecordLength,
+        timeLimit: null,
         autoStart: false,
         StartRecorderCountDown: function() {
             var nTimer = 3;
@@ -114,7 +113,7 @@ function AudioController($scope, $timeout, $interval, $sce, Constants, CommonFac
                         au.sTextOnPlayButton = "Start";
                         bFirst = false;
                     } else {
-                    // $scope.$parent.vm.currentAssessment.arrQuestions[0].sMode = "Final";
+                        // $scope.$parent.vm.currentAssessment.arrQuestions[0].sMode = "Final";
                         au.sTextOnPlayButton = "Next Audio";
                     }
                 }
@@ -123,6 +122,11 @@ function AudioController($scope, $timeout, $interval, $sce, Constants, CommonFac
                     --au.audioIndex;
                 }
             }
+
+            var nRecordLength = au.arrVoiceOPAndIP[au.audioIndex].nRecordLength;
+            au.oAudio.nMaxTime = nRecordLength * 1000;
+            au.oAudioRecorder.timeLimit = nRecordLength;
+
             au.Helper.PlaySound(au.arrVoiceOPAndIP[au.audioIndex].oVoice);
         },
         PlaySound: function(buffer) {
@@ -156,17 +160,20 @@ function AudioController($scope, $timeout, $interval, $sce, Constants, CommonFac
             $scope.$parent.vm.Helper.ShowHidePager(false);
             // Turn on practice mode
             $scope.$parent.vm.currentAssessment.arrQuestions[0].sMode = "Practice";
+            var arrVoices = [];
             Constants.AudioAssessment.arrVoices.forEach(function(sVoicePrefix) {
                 var oVoiceOPAndIP = {
-                    sVoicePrefix: sVoicePrefix,
+                    sVoicePrefix: sVoicePrefix.Prefix,
+                    nRecordLength: sVoicePrefix.RecordLength,
                     oVoice: null,
                     oResponseVoice: null,
                     sStatus: 'created'
                 }
+                arrVoices.push(sVoicePrefix.Prefix);
                 au.arrVoiceOPAndIP.push(oVoiceOPAndIP);
             });
             var bufferLoader = new BufferLoader(
-                context, Constants.AudioAssessment.arrVoices,
+                context, arrVoices,
                 this.FinishedLoadingAudio,
                 DataService.GetAudioAssessment
             );

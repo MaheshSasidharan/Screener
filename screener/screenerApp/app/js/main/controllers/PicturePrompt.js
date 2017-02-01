@@ -4,7 +4,7 @@ function PicturePrompt($scope, $timeout, $interval, Constants, CommonFactory, Da
     var pp = this;
     var bFirst = true;
 
-    pp.audioRecordLength = Constants.PicturePrompt.audioRecordLength;
+    pp.audioRecordLength = Constants.PicturePromptAssessment.audioRecordLength;
 
     pp.sTextOnPlayButton = "Start Practice";
     pp.src = null;
@@ -21,8 +21,43 @@ function PicturePrompt($scope, $timeout, $interval, Constants, CommonFactory, Da
 
 
     pp.oAudio = {
-        bShowStartButton: true
+        bShowStartButton: true,
+        bShowProgressBar: false,
+        nMaxTime: pp.audioRecordLength * 1000,
+        nSpentTime: 0,
+        nRefreshRate: 500,
+        sType: null,
+        displayedResponse: null,
+        StartProgressBar: function() {
+            this.bShowProgressBar = true;
+            this.sType = null;
+            var that = this;
+            var counter = 0;
+            oIntervalPromise = $interval(function() {
+                counter++;
+                console.log("Counter: " + counter);
+                console.log("SpentTime: " + that.nSpentTime);
+                if (that.nSpentTime + that.nRefreshRate == that.nMaxTime) {
+                    $interval.cancel(oIntervalPromise);
+                    // Let progress reach 100% on UI. So increase by nSpentTime by one more step and reset to zero after one second
+                    that.nSpentTime += that.nRefreshRate;                    
+                    console.log(new Date() - time);
+                    $timeout(function() {
+                        // Give a gap of 1 second
+                        that.nSpentTime = 0;
+                        that.bShowProgressBar = false;
+                        console.log(new Date() - time);
+                    }, 1000);
+                    // This timeout delay and progress bar animation speed should be the same
+                } else {
+                    //that.sType = CommonFactory.GetProgressType(that.nSpentTime, that.nMaxTime);
+                    that.nSpentTime += that.nRefreshRate;
+                }
+            }, this.nRefreshRate, (this.nMaxTime / this.nRefreshRate));
+        }
     }
+
+    var time = null;
 
     pp.oAudioRecorder = {
         recorded: null,
@@ -32,11 +67,14 @@ function PicturePrompt($scope, $timeout, $interval, Constants, CommonFactory, Da
             var nTimer = 3;
             pp.displayedResponse = nTimer;
             var oIntervalPromise = $interval(function() {
-                if (nTimer == 0) {
-                //if (nTimer == 3) {
+                //if (nTimer == 0) {
+                if (nTimer == 3) {
                     pp.oAudioRecorder.recorded = null;
                     pp.displayedResponse = null;
                     pp.oAudioRecorder.autoStart = true;
+                    pp.oAudio.StartProgressBar();
+                    time = new Date();
+                    console.log(time);
                     $interval.cancel(oIntervalPromise);
                     pp.bShowCurrentPic = true;
                 } else {

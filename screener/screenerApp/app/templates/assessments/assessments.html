@@ -1,15 +1,15 @@
 <!-- <h1>All assessments</h1> -->
 <div class="SC_assessmentContainer">
     <uib-tabset active="activeJustified" justified="true">
-        <uib-tab index="$index" class="active SC_tabHeaderContainer" ng-repeat="tab in vm.currentTab" heading="{{tab.title}}" disable="tab.disabled" ng-click="vm.Helper.TransitionState(tab.state)">
+        <uib-tab index="$index" class="active SC_tabHeaderContainer" ng-repeat="tab in vm.currentTab" heading="{{tab.title}} ( Part {{vm.currentTabIndex + 1}} of {{vm.assessments.length}} )" disable="tab.disabled" ng-click="vm.Helper.TransitionState(tab.state)">
         </uib-tab>
     </uib-tabset>
-    <div ui-view></div>
+    <div class="scale-fade" ui-view></div>
     <!-- Bottom section -->
-    <div ng-show="vm.bShowPager">
+    <div ng-show="vm.bShowPager || true">
         <hr>
         <ul class="pager">
-            <li class="previous" ng-show="false">
+            <li class="previous" ng-show="true">
                 <button class="btn btn-lg btn-success" ng-click="vm.Helper.PreviousAssessment()" ng-disabled="vm.currentTabIndex == 0">Previous</button>
             </li>
             <li class="next">
