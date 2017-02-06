@@ -9,12 +9,12 @@
     <div ng-show="vm.bShowPager || true">
         <hr>
         <ul class="pager">
-            <li class="previous" ng-show="true">
+            <li class="previous" ng-show="false">
                 <button class="btn btn-lg btn-success" ng-click="vm.Helper.PreviousAssessment()" ng-disabled="vm.currentTabIndex == 0">Previous</button>
             </li>
             <li class="next">
                 <h3>{{vm.sShowPagerMessage}}</h3>
-                <button class="btn btn-lg btn-success" ng-click="vm.Helper.NextAssessment()" ng-disabled="vm.currentTabIndex == vm.tabs.length - 1">Next</button>
+                <button class="btn btn-lg btn-success" ng-click="vm.Helper.NextAssessment(vm.currentTabIndex == vm.tabs.length - 1 ? false : true)">{{vm.currentTabIndex == vm.tabs.length - 1 ? 'Done' : 'Next'}}</button>
             </li>
         </ul>
     </div>

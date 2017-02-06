@@ -5,7 +5,7 @@ function Constants() {
         Miscellaneous: {
             AssessmentCompleteNext: "You have completed this assessment. Click NEXT to continue.",
             SomethingWentWrong: "Sorry something went wrong",
-            IsMobileDevice: "Sorry. For this assessment, we only support desktop/laptop. Please open the link on desktop/laptop, or you can provide your email address, to get a reminder for the same.",
+            IsMobileDevice: "Sorry, for this assessment, we only support desktop/laptop. Please open the link on your desktop/laptop, or you can provide your email address to get a reminder.",
             FailedMediaAccess: "Failed to get media access",
             NoBrowserSupport: "Your browser does not support features required to take this assessment. Please upgrade to the latest browser versions of your choice."
         },
@@ -86,8 +86,26 @@ function Constants() {
                 }, {
                     val: 'TeachMusic',
                     label: 'I teach music'
+                }],
+                PublicSchool: [{
+                    val: 'Elementary',
+                    label: 'Elementary school (all or partial)'
+                }, {
+                    val: 'Middle',
+                    label: 'Middle school/Jr. High (all or partial)'
+                }, {
+                    val: 'High',
+                    label: 'High school (all or partial)'
                 }]
             }
+        },
+        Home: {
+            AssessmentCompleted: "Thank you. You have completed the Assessment.",
+            EmailSaved: "Thank you. We will send you a reminder on the provided email address"
+        },
+        TimeDurationAssessment: {
+            timeDuration: 3,
+            nTotalRounds: 4
         },
         MetronomeAssessment: {
             totalClicks: 20
@@ -141,6 +159,9 @@ function Constants() {
                 Char: 'C',
                 RecordLength: 1
             }]
+        },
+        PersonalAssessment: {
+            EnterEmail: "Please enter your email address and click DONE"
         }
     }
     return oConstants;

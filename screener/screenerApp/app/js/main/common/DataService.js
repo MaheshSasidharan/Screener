@@ -42,12 +42,6 @@ function DataService($http, Constants, CommonFactory) {
                         Helper.Miscellaneous.ReturnDataDotData,
                         Helper.Miscellaneous.FailedInService)
             },
-            // GetAudioAssessment: function(nAssmntNum) {
-            //     return $http.get(Helper.app + Helper.Assessments.controller + 'GetAudioAssessment?nAssmntNum=' + nAssmntNum, { responseType: "blob" })
-            //         .then(
-            //             Helper.Miscellaneous.ReturnDataDotData,
-            //             Helper.Miscellaneous.FailedInService)
-            // },
             GetAudioAssessment: function(nAssmntNum) {
                 return $http.get(Helper.app + Helper.Assessments.controller + 'GetAudioAssessment?nAssmntNum=' + nAssmntNum, { responseType: "arraybuffer" })
                     .then(
@@ -96,7 +90,9 @@ function DataService($http, Constants, CommonFactory) {
                 console.log(err);
                 CommonFactory.Notification.error(Constants.Miscellaneous.SomethingWentWrong);
                 return { status: false };
-            }
+            },
+            bAssessmentsCompleted: false,
+            isMobileDevice: false
         }
     }
 
@@ -112,7 +108,9 @@ function DataService($http, Constants, CommonFactory) {
         AudioPicturePromptVoiceUpload: Helper.Assessments.AudioPicturePromptVoiceUpload,
         GetSourceAddress: Helper.Assessments.GetSourceAddress,
         GetPicNamesMatrixAssessment: Helper.Assessments.GetPicNamesMatrixAssessment,
-        GetPicNamesPicturePrompt: Helper.Assessments.GetPicNamesPicturePrompt
+        GetPicNamesPicturePrompt: Helper.Assessments.GetPicNamesPicturePrompt,
+        bAssessmentsCompleted: Helper.Miscellaneous.bAssessmentsCompleted,
+        isMobileDevice: Helper.Miscellaneous.isMobileDevice,
     }
     return oService;
 }

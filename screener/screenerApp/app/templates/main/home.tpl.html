@@ -1,10 +1,15 @@
 <div class="GMD_innercontainer">
-    <h1>Welcome.</h1>
-    <h2>
-    	This assessment will measure several aspects of language ability.  It will take about 15 minutes. 
-    	<br/><br/>
-    	You will hear audio, and audio will be recorded as you speak in some parts of the assessment, so it’s best if you are in a private or secluded area as you participate.    	
-    </h2>
-    <h2>Click below to get stared with the assessment</h2>
-    <button class="btn btn-primary btn-lg" ng-click="vm.Helper.StartAssessment()">START</button>
+    <div ng-if="vm.bAssessmentsCompleted">
+        <h1>{{vm.sAssessmentCompletedText}}</h1>
+    </div>
+    <div ng-if="!vm.bAssessmentsCompleted">
+        <h1>Welcome.</h1>
+        <h2>
+	    	This assessment will measure several aspects of language ability.  It will take about 15 minutes. 
+	    	<br/><br/>
+	    	You will hear audio, and audio will be recorded as you speak in some parts of the assessment, so it’s best if you are in a private or secluded area as you participate.    	
+    	</h2>
+        <h2>Click below to get stared with the assessment</h2>
+        <button class="btn btn-primary btn-lg" ng-click="vm.Helper.StartAssessment()">START</button>
+    </div>
 </div>

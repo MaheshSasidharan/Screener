@@ -10,8 +10,8 @@ app
             startRight: 10,
             verticalSpacing: 20,
             horizontalSpacing: 20,
-            positionX: 'left',
-            positionY: 'bottom'
+            positionX: 'right',
+            positionY: 'top'
         });
     })
 

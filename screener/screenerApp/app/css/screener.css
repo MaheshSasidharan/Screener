@@ -46,7 +46,7 @@
     text-align: center;
     width: 100%;
     font-size: 30px;
-    text-shadow: 0px 0px 2px red;
+    text-shadow: 0px 0px 2px #8dc0ec;
 }
 /* End of common */
 
@@ -77,8 +77,8 @@
 /*Glass effect button*/
 
 .glass {
-    background: red;
-    background: linear-gradient(red, black);
+    background: orange;
+    background: linear-gradient(orange, red);
     padding: 8px;
     position: relative;
     border-radius: 3px;
@@ -115,7 +115,7 @@
 }
 
 .SC_ButtonPress.buttonPressed {
-    background: linear-gradient(red, red);
+    background: linear-gradient(orange, orange);
 }
 
 .SC_ButtonPress.buttonPressed {
@@ -126,7 +126,7 @@
 
 .SC_ButtonPress.glass:after {
     height: 100%;
-    box-shadow: inset -20px -20px 96px rgba(128, 0, 0, 1);
+    box-shadow: inset -20px -20px 96px orange;
     top: 0;
     left: 0;
     border-radius: 50%;
@@ -134,7 +134,7 @@
 }
 
 .SC_ButtonPress.glass.buttonPressed:after {
-    box-shadow: inset -15px -5px 96px rgba(128, 0, 0, 1);
+    box-shadow: inset -15px -5px 96px orange;
 }
 
 .SC_ButtonPress.disabledButton,

@@ -124,6 +124,7 @@ function AudioController($scope, $timeout, $interval, $sce, Constants, CommonFac
             }
 
             var nRecordLength = au.arrVoiceOPAndIP[au.audioIndex].nRecordLength;
+            nRecordLength = nRecordLength + (nRecordLength * 0.5); // Give 1.5 times the audio length
             au.oAudio.nMaxTime = nRecordLength * 1000;
             au.oAudioRecorder.timeLimit = nRecordLength;
 

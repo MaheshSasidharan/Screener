@@ -51,19 +51,9 @@ function AssessmentsCtrl($scope, $state, Constants, DataService, CommonFactory) 
                 return Promise.resolve();
             }
         },
-        Init: function() {
-            var that = this;
-            vm.oService.GetAssessments().then(function(data) {
-                if (data.status) {
-                    that.InitAssessments();
-                    that.InitTab();
-                    that.ShowHidePager(true, null);
-                }
-            });
-        },
         TransitionState: function(state) {
             if (state) {
-                $state.transitionTo('screener.assessments.' + state);
+                $state.transitionTo('screener.' + state);
             }
         },
         PreviousAssessment: function() {
@@ -73,12 +63,65 @@ function AssessmentsCtrl($scope, $state, Constants, DataService, CommonFactory) 
                 that.InitCurrentTab();
             });
         },
-        NextAssessment: function() {
+        NextAssessment: function(bGoNext) {
             var that = this;
             vm.Helper.SaveAssessments().then(function() {
-                vm.currentTabIndex++;
-                that.InitCurrentTab();
+                if (bGoNext) {
+                    vm.currentTabIndex++;
+                    that.InitCurrentTab();
+                } else { // If assessment is completed
+                    DataService.bAssessmentsCompleted = true;
+                    that.TransitionState('home');
+                }
             });
+        },
+        InitCurrentTab: function() {
+            vm.currentTab = [vm.tabs[vm.currentTabIndex]];
+            vm.currentAssessment = vm.assessments[vm.currentTabIndex];
+            this.TransitionState('assessments.' + vm.currentTab[0].state);
+        },
+        GetTemplateURL: function(sPartialURL) {
+            return '' + sPartialURL + '';
+        },
+        HasGetUserMedia: function() {
+            return !!(navigator.getUserMedia || navigator.webkitGetUserMedia ||
+                navigator.mozGetUserMedia || navigator.msGetUserMedia);
+        },
+        GetUserMedia: function() {
+            if (this.HasGetUserMedia()) {
+                // Check if phone is being used
+                DataService.isMobileDevice = navigator.userAgent.match(/iPad|iPhone|iPod|android/i) != null || screen.width <= 480;
+
+                if (DataService.isMobileDevice) {
+                    vm.Helper.Init();
+                    return;
+                }
+                navigator.webkitGetUserMedia({ audio: true, video: true }, function() {
+                    vm.Helper.Init();
+                }, function() {
+                    CommonFactory.Notification.error({ message: Constants.Miscellaneous.FailedMediaAccess, delay: null });
+                });
+            } else {
+                CommonFactory.Notification.error({ message: Constants.Miscellaneous.NoBrowserSupport, delay: null });
+            }
+        },
+        Init: function() {
+            if (DataService.bAssessmentsCompleted) {
+                this.TransitionState('home');
+            } else {
+                var that = this;
+                vm.oService.GetAssessments().then(function(data) {
+                    if (data.status) {
+                        that.InitAssessments();
+                        that.InitTab();
+                        if (DataService.isMobileDevice) {
+                            that.InitPersonalTab();
+                        }
+                        that.InitCurrentTab();
+                        that.ShowHidePager(true, null);
+                    }
+                });
+            }
         },
         InitAssessments: function() {
             vm.tempAssessments.forEach(function(oItem) {
@@ -108,59 +151,38 @@ function AssessmentsCtrl($scope, $state, Constants, DataService, CommonFactory) 
                 }
             });
             delete vm.tempAssessments;
-            
+
             //vm.assessments[0].arrQuestions[0].response = CommonFactory.TryConvertStringToDate(vm.assessments[0].arrQuestions[0].response);
             //vm.assessments[7].arrQuestions[0].response = CommonFactory.GetRandomCharacter();
             //vm.assessments[8].arrQuestions[0].displayedResponse = "---";
 
             // Individual formatting
             var oText = CommonFactory.FindItemInArray(vm.assessments, 'nickName', 'text', 'item');;
-            if(oText){
+            if (oText) {
                 oText.response = CommonFactory.TryConvertStringToDate(oText.response);
-            }
-
-            var oVideo = CommonFactory.FindItemInArray(vm.assessments, 'nickName', 'video', 'item');
-            if(oVideo){
-                oVideo.displayedResponse = "---";
             }
         },
         InitTab: function() {
             vm.assessments.forEach(function(oAssessment) {
                 vm.tabs.push({ title: oAssessment.name, state: oAssessment.nickName, content: oAssessment.nickName + '.html', disabled: false });
             });
-            this.InitCurrentTab();
-        },
-        InitCurrentTab: function() {
-            vm.currentTab = [vm.tabs[vm.currentTabIndex]];
-            vm.currentAssessment = vm.assessments[vm.currentTabIndex];
-            this.TransitionState(vm.currentTab[0].state);
-        },
-        GetTemplateURL: function(sPartialURL) {
-            return '' + sPartialURL + '';
         },
         ShowHidePager: function(bShow, sMessage) {
             vm.bShowPager = bShow;
             vm.sShowPagerMessage = sMessage;
         },
-        HasGetUserMedia: function() {
-            return !!(navigator.getUserMedia || navigator.webkitGetUserMedia ||
-                navigator.mozGetUserMedia || navigator.msGetUserMedia);
-        },
-        GetUserMedia: function() {
-            if (this.HasGetUserMedia()) {
-                // Check if phone is being used
-                var isMobileDevice = navigator.userAgent.match(/iPad|iPhone|iPod|android/i) != null || screen.width <= 480;
-                if (isMobileDevice) {
-                    CommonFactory.Notification.error({ message: Constants.Miscellaneous.IsMobileDevice, delay: null });
-                    return;
+        InitPersonalTab: function() {
+            vm.currentTabIndex = vm.tabs.length - 1;
+            CommonFactory.Notification.error({ message: Constants.Miscellaneous.IsMobileDevice, delay: null });
+
+            var oPersonal = CommonFactory.FindItemInArray(vm.assessments, 'nickName', 'personal', 'item');
+            if (oPersonal) {
+                oPersonal.description = Constants.PersonalAssessment.EnterEmail;
+                var arrQuestions = CommonFactory.FindItemInArray(oPersonal.arrQuestions, 'questionId', '14', 'item');
+                oPersonal.arrQuestions = [];
+                if (arrQuestions) {
+                    oPersonal.arrQuestions.push(arrQuestions);
                 }
-                navigator.webkitGetUserMedia({ audio: true, video: true }, function() {
-                    vm.Helper.Init();
-                }, function() {
-                    CommonFactory.Notification.error({ message: Constants.Miscellaneous.FailedMediaAccess, delay: null });
-                });
-            } else {
-                CommonFactory.Notification.error({ message: Constants.Miscellaneous.NoBrowserSupport, delay: null });
             }
         }
     }

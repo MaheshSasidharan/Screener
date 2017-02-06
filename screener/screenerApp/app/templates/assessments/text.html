@@ -1,7 +1,5 @@
 <div class="container">
-    <h3>
-    Let’s get started!  Please tell us a little bit about yourself:
-</h3>
+    <h3>{{vm.currentAssessment.description}}</h3>
     <div ng-include="'templates/assessments/questions.html'"></div>
     <script type="text/ng-template" id="1">
         <p class="input-group">

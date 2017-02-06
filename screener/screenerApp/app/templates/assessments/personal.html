@@ -1,1 +1,20 @@
-<h2>Personal</h2>
+<div class="container">
+    <h3>{{vm.currentAssessment.description}}</h3>
+    <div ng-include="'templates/assessments/questions.html'"></div>
+    <script type="text/ng-template" id="13">
+        <input type="text" class="form-control" ng-model="assessment.response"/>
+    </script>
+    <script type="text/ng-template" id="14">
+        <input type="email" class="form-control" ng-model="assessment.response"/>
+    </script>
+    <script type="text/ng-template" id="15">
+        <input type="text" class="form-control" ng-model="assessment.response"/>
+    </script>
+    <script type="text/ng-template" id="16">
+        <select class="form-control" ng-model="assessment.response">
+            <option ng-repeat="o in vm.arrDropDowns.PublicSchool" value="{{o.val}}">
+                {{o.label}}
+            </option>
+        </select>
+    </script>
+</div>

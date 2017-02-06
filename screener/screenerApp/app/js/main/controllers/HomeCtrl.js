@@ -1,17 +1,20 @@
 app.controller('NavCtrl', ['$scope', '$location', function($scope, $location) {
     var vm = this;
     vm.Helper = {
-        UpdateTabActive: function(sTab){
+        UpdateTabActive: function(sTab) {
             return window.location.hash && window.location.hash.toLowerCase() == ("#/" + sTab).toLowerCase() ? 'active' : '';
         }
-    }    
+    }
 }]);
 
-app.controller('HomeCtrl', ['$scope','$state', function($scope, $state) {
+app.controller('HomeCtrl', ['$scope', '$state', 'Factory_Constants', 'Factory_DataService', function($scope, $state, Constants, DataService) {
     var vm = this;
+    vm.bAssessmentsCompleted = DataService.bAssessmentsCompleted;
+    vm.sAssessmentCompletedText = DataService.isMobileDevice ? Constants.Home.EmailSaved : Constants.Home.AssessmentCompleted;
+
     vm.Helper = {
-    	StartAssessment: function(){
-    		$state.transitionTo('screener.assessments');
-    	}
+        StartAssessment: function() {
+            $state.transitionTo('screener.assessments');
+        }
     }
 }]);

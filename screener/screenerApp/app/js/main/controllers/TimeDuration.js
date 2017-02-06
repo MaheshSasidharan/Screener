@@ -3,9 +3,9 @@ app.controller('TimeDuration', ['$scope', '$timeout', '$interval', 'Factory_Cons
 function TimeDuration($scope, $timeout, $interval, Constants, CommonFactory, DataService) {
     var td = this;
     var bFirst = true;
-    var timeDuration = 0.2; //Constants.AudioAssessment.audioRecordLength;
+    var timeDuration = Constants.TimeDurationAssessment.timeDuration;
     var nCurrentRound = 0;
-    var nTotalRounds = 2;
+    var nTotalRounds = Constants.TimeDurationAssessment.nTotalRounds
     var arrResponse = [];
 
     td.sTextOnPlayButton = "Start Practice";
@@ -24,8 +24,8 @@ function TimeDuration($scope, $timeout, $interval, Constants, CommonFactory, Dat
             var nTimer = 3;
             td.displayedResponse = nTimer;
             var oIntervalPromise = $interval(function() {
-                //if (nTimer == 0) {
-                if (nTimer == 3) {
+                if (nTimer == 0) {
+                //if (nTimer == 3) {
                     td.oAudio.StartCircularProgressBarNew();                    
                     td.displayedResponse = null;                    
                     $interval.cancel(oIntervalPromise);                    
