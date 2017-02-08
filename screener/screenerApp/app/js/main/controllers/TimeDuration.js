@@ -3,9 +3,11 @@ app.controller('TimeDuration', ['$scope', '$timeout', '$interval', 'Factory_Cons
 function TimeDuration($scope, $timeout, $interval, Constants, CommonFactory, DataService) {
     var td = this;
     var bFirst = true;
-    var timeDuration = Constants.TimeDurationAssessment.timeDuration;
+    //var timeDuration = Constants.TimeDurationAssessment.arrTimeDurations;
+    var arrTimeDurations = Constants.TimeDurationAssessment.arrTimeDurations;
     var nCurrentRound = 0;
-    var nTotalRounds = Constants.TimeDurationAssessment.nTotalRounds
+    var timeDuration = arrTimeDurations[nCurrentRound];
+    var nTotalRounds = Constants.TimeDurationAssessment.arrTimeDurations.length;
     var arrResponse = [];
 
     td.sTextOnPlayButton = "Start Practice";
@@ -16,7 +18,6 @@ function TimeDuration($scope, $timeout, $interval, Constants, CommonFactory, Dat
         bShowResponseBox: false,
         bShowProgressBar: false,
         nResponseBoxValue: null,
-        nMaxTime: timeDuration * 1000,
         nRefreshRate: 500,
         sType: null,
         displayedResponse: null,
@@ -24,26 +25,33 @@ function TimeDuration($scope, $timeout, $interval, Constants, CommonFactory, Dat
             var nTimer = 3;
             td.displayedResponse = nTimer;
             var oIntervalPromise = $interval(function() {
-                if (nTimer == 0) {
-                //if (nTimer == 3) {
-                    td.oAudio.StartCircularProgressBarNew();                    
-                    td.displayedResponse = null;                    
-                    $interval.cancel(oIntervalPromise);                    
+                //if (nTimer == 0) {
+                    if (nTimer == 3) {
+                    td.oAudio.StartCircularProgressBarNew();
+                    td.displayedResponse = null;
+                    $interval.cancel(oIntervalPromise);
                 } else {
                     td.displayedResponse = --nTimer;
                 }
             }, 1000, 4);
         },
-        StartCircularProgressBarNew: function() {            
+        StartCircularProgressBarNew: function() {
             this.bShowProgressBar = true;
             this.nSpentTime = 0;
             var that = this;
-            circle.animate(1);
+            //circle.animate(1);
+
+            circle.animate(1, {
+                duration: timeDuration * 1000,
+            }, function() {
+                console.log('Animation has finished');
+            });
+
             $timeout(function() {
                 that.nSpentTime = 0;
                 //that.bShowProgressBar = false;
                 that.bShowResponseBox = true;
-            }, that.nMaxTime);
+            }, timeDuration * 1000);
         }
     }
 
@@ -58,7 +66,7 @@ function TimeDuration($scope, $timeout, $interval, Constants, CommonFactory, Dat
             // Init the circle
             circle = new ProgressBar.Circle('#assess_circle', {
                 color: '#000',
-                duration: timeDuration * 1000,
+                //duration: timeDuration * 1000,
                 easing: 'linear'
             });
         },
@@ -90,11 +98,12 @@ function TimeDuration($scope, $timeout, $interval, Constants, CommonFactory, Dat
                         nCurrentRound: ++nCurrentRound
                     }
                     arrResponse.push(oSaveObject);
-                    if (nCurrentRound === nTotalRounds) {
+                    td.oAudio.bShowProgressBar = false;
+                    if (nCurrentRound === nTotalRounds) {                        
                         $scope.$parent.vm.currentAssessment.arrQuestions[0].response = JSON.stringify(arrResponse);
                         $scope.$parent.vm.Helper.ShowHidePager(true, Constants.Miscellaneous.AssessmentCompleteNext);
                     } else {
-                        td.oAudio.bShowProgressBar = false;
+                        timeDuration = arrTimeDurations[nCurrentRound];                        
                         circle.set(0);
                         $scope.$parent.vm.currentAssessment.arrQuestions[0].sMode = "Final";
                         td.oAudio.bShowStartButton = true;

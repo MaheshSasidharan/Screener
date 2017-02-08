@@ -6,8 +6,8 @@
     <div class="text-center">
         <button class="btn btn-md btn-success" ng-click="td.Helper.PlayNext('next')" ng-show="td.oAudio.bShowStartButton">{{td.sTextOnPlayButton}}</button>
     </div>
-    <div id="assess_circle">
-        <button ng-show="td.oAudio.bShowProgressBar" ng-disabled="!td.oAudio.bShowResponseBox" ng-class="{'buttonPressed': buttonPressed, 'disabledButton': !td.oAudio.bShowResponseBox}" class="glass SC_ButtonPress" ng-mousedown="buttonPressed = true; td.Helper.RecordTimeDuration('start');" ng-mouseup="buttonPressed = false; td.Helper.RecordTimeDuration('stop');">
+    <div id="assess_circle" ng-show="td.oAudio.bShowProgressBar">
+        <button ng-disabled="!td.oAudio.bShowResponseBox" ng-class="{'buttonPressed': buttonPressed, 'disabledButton': !td.oAudio.bShowResponseBox}" class="glass SC_ButtonPress" ng-mousedown="buttonPressed = true; td.Helper.RecordTimeDuration('start');" ng-mouseup="buttonPressed = false; td.Helper.RecordTimeDuration('stop');">
             &nbsp;
         </button>
     </div>

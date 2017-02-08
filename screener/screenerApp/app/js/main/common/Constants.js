@@ -104,8 +104,17 @@ function Constants() {
             EmailSaved: "Thank you. We will send you a reminder on the provided email address"
         },
         TimeDurationAssessment: {
-            timeDuration: 3,
-            nTotalRounds: 4
+            arrTimeDurations: [
+                5,
+                1.5,
+                0.5,
+                11,
+                5
+            ],
+            arrTimeDurations: [
+                5,
+                1.5
+            ]            
         },
         MetronomeAssessment: {
             totalClicks: 20
