@@ -103,8 +103,10 @@ function VoiceController($scope, $timeout, $interval, $sce, Constants, CommonFac
                 if (nTimer == 0) {
                     vo.oAudioRecorder.recorded = null;;
                     oAudioAssessment.displayedResponse = cRandomCharacter;
-                    vo.oAudioRecorder.autoStart = true;
-                    vo.oAudio.StartProgressBar();
+                    vo.oAudioRecorder.autoStart = true;                    
+                    $timeout(function() {
+                        vo.oAudio.StartProgressBar();
+                    }, Constants.Assessments.ProgressStartDelay);
                     $interval.cancel(oIntervalPromise);
                 } else {
                     oAudioAssessment.displayedResponse = --nTimer;

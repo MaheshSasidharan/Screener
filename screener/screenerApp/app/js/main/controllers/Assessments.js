@@ -75,11 +75,6 @@ function AssessmentsCtrl($scope, $state, Constants, DataService, CommonFactory) 
                 }
             });
         },
-        InitCurrentTab: function() {
-            vm.currentTab = [vm.tabs[vm.currentTabIndex]];
-            vm.currentAssessment = vm.assessments[vm.currentTabIndex];
-            this.TransitionState('assessments.' + vm.currentTab[0].state);
-        },
         GetTemplateURL: function(sPartialURL) {
             return '' + sPartialURL + '';
         },
@@ -106,25 +101,34 @@ function AssessmentsCtrl($scope, $state, Constants, DataService, CommonFactory) 
             }
         },
         Init: function() {
+            // This is just to check if client has completed assessment. This does not need a page refresh
             if (DataService.bAssessmentsCompleted) {
                 this.TransitionState('home');
             } else {
                 var that = this;
                 vm.oService.GetAssessments().then(function(data) {
                     if (data.status) {
-                        that.InitAssessments();
-                        that.InitTab();
-                        if (DataService.isMobileDevice) {
-                            that.InitPersonalTab();
+                        if (that.InitAssessments()) {
+                            that.InitTab();
+                            if (DataService.isMobileDevice) {
+                                that.InitPersonalTab();
+                            }
+                            that.InitCurrentTab();
+                            that.ShowHidePager(true, null);
                         }
-                        that.InitCurrentTab();
-                        that.ShowHidePager(true, null);
                     }
                 });
             }
         },
         InitAssessments: function() {
+            var bItemToBeAssessedFound = false;
             vm.tempAssessments.forEach(function(oItem) {
+                // This is to find, which assessment has already been completed
+                if (!bItemToBeAssessedFound && oItem.responseTextId === undefined) { // If responseTextId property is not present, then that one has not been assessed
+                    bItemToBeAssessedFound = true;
+                    vm.currentTabIndex = vm.assessments.length;
+                }
+
                 var assessmentIndex = CommonFactory.FindItemInArray(vm.assessments, 'assessmentId', oItem.assessmentId, 'index');
                 // If it exists, add questions to it, else create one
                 if (assessmentIndex) {
@@ -152,26 +156,35 @@ function AssessmentsCtrl($scope, $state, Constants, DataService, CommonFactory) 
             });
             delete vm.tempAssessments;
 
+            if (false && !bItemToBeAssessedFound) {
+                //if (!bItemToBeAssessedFound) {
+                // Could not find any assessment which was not completed before. So all assessments have been completed.
+                DataService.bAssessmentsCompleted = true;
+                this.TransitionState('home');
+                return false;
+            }
+            return true;
+
             //vm.assessments[0].arrQuestions[0].response = CommonFactory.TryConvertStringToDate(vm.assessments[0].arrQuestions[0].response);
             //vm.assessments[7].arrQuestions[0].response = CommonFactory.GetRandomCharacter();
             //vm.assessments[8].arrQuestions[0].displayedResponse = "---";
-
-            // Individual formatting
-            var oText = CommonFactory.FindItemInArray(vm.assessments, 'nickName', 'text', 'item');;
-            if (oText) {
-                oText.response = CommonFactory.TryConvertStringToDate(oText.response);
-            }
         },
         InitTab: function() {
             vm.assessments.forEach(function(oAssessment) {
                 vm.tabs.push({ title: oAssessment.name, state: oAssessment.nickName, content: oAssessment.nickName + '.html', disabled: false });
             });
         },
+        InitCurrentTab: function() {
+            vm.currentTab = [vm.tabs[vm.currentTabIndex]];
+            vm.currentAssessment = vm.assessments[vm.currentTabIndex];
+            this.TransitionState('assessments.' + vm.currentTab[0].state);
+        },
         ShowHidePager: function(bShow, sMessage) {
             vm.bShowPager = bShow;
             vm.sShowPagerMessage = sMessage;
         },
         InitPersonalTab: function() {
+            // Go to last Tab
             vm.currentTabIndex = vm.tabs.length - 1;
             CommonFactory.Notification.error({ message: Constants.Miscellaneous.IsMobileDevice, delay: null });
 
@@ -186,5 +199,8 @@ function AssessmentsCtrl($scope, $state, Constants, DataService, CommonFactory) 
             }
         }
     }
+
+    $scope.$on('$locationChangeStart', CommonFactory.PreventGoingToDifferentPage);
+
     vm.Helper.GetUserMedia();
 }

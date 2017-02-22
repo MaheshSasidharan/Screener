@@ -33,8 +33,8 @@ function Metronome($scope, $timeout, $interval, Constants, CommonFactory, DataSe
             var nTimer = 3;
             me.displayedResponse = nTimer;
             var oIntervalPromise = $interval(function() {
-                //if (nTimer == 0) {
-                if (nTimer == 3) {
+                if (nTimer == 0) {
+                //if (nTimer == 3) {
                     //me.Helper.PlayPause();
                     me.displayedResponse = null;
                     $interval.cancel(oIntervalPromise);

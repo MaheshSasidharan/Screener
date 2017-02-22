@@ -1,4 +1,5 @@
 /* Common */
+
 .SC_assessmentContainer {
     border: 1px solid gray;
     border-radius: 4px;
@@ -35,7 +36,7 @@
 
 .SC_audioContainer {
     padding: 1px 20px;
-    text-align: center;    
+    text-align: center;
 }
 
 .SC_assessmentInnerContainer {
@@ -48,6 +49,8 @@
     font-size: 30px;
     text-shadow: 0px 0px 2px #8dc0ec;
 }
+
+
 /* End of common */
 
 
@@ -161,6 +164,7 @@
 .SC_PicturePrompt_ImgContainer {
     width: 400px;
     height: 400px;
+    margin: auto;
 }
 
 .SC_PicturePromptImage {
@@ -170,3 +174,15 @@
 
 
 /* End of prompt*/
+
+
+/* Personal */
+
+.SC_PersonalPublicSchool {
+    background: white;
+    color: black;
+}
+
+.SC_PersonalPublicSchool input {
+    height: 18px;
+}

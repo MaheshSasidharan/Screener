@@ -63,8 +63,10 @@ function AudioController($scope, $timeout, $interval, $sce, Constants, CommonFac
             var oIntervalPromise = $interval(function() {
                 if (nTimer == 0) {
                     au.oAudioRecorder.recorded = null;
-                    au.oAudio.displayedResponse = null;
-                    au.oAudio.StartProgressBar();
+                    au.oAudio.displayedResponse = null;                    
+                    $timeout(function() {
+                        au.oAudio.StartProgressBar();
+                    }, Constants.Assessments.ProgressStartDelay);
                     au.oAudioRecorder.autoStart = true;
                     $interval.cancel(oIntervalPromise);
                 } else {

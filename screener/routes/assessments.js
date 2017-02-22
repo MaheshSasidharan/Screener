@@ -4,6 +4,9 @@ var router = express.Router();
 var path = require('path');
 var fs = require("fs");
 var glob = require("glob");
+var google_speech = require('google-speech');
+var speech = require('google-speech-api');
+const Speech = require('@google-cloud/speech');
 
 //var multiparty = require('../node_modules/multiparty/index');
 var multiparty = require('multiparty');
@@ -14,7 +17,30 @@ var Constants = require('../CommonFactory/constants');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-    res.send('respond with a resource');
+    // Your Google Cloud Platform project ID
+    const projectId = 'elliptical-tree-158319';
+
+    // Instantiates a client
+    const speechClient = Speech({
+        projectId: projectId
+    });
+    var fileName = '/home/sasidharan/Documents/Projects/Screener/Server/screener/bin/test/test.flac';
+
+    // The audio file's encoding and sample rate
+    const options = {
+        encoding: 'FLAC', // 'LINEAR16',
+        sampleRate: 44100 // 16000
+    };
+
+    // Detects speech in the audio file
+    speechClient.recognize(fileName, options)
+        .then((results) => {
+            const transcription = results[0];
+            console.log(`Transcription: ${transcription}`);
+        }, function(err) {
+            console.log(err);
+        });
+    return;
 });
 
 router.get('/GetAssessments', function(req, res, next) {
@@ -85,7 +111,7 @@ router.post('/SaveAssessments', function(req, res) {
                 query: Constants.Queries.Assessments.InsertResponse.query,
                 whereVals: whereVals,
                 callback: function(rowsInner) {
-                    console.log(rowsInner);
+                    SaveResponseFile(arrInserts, req);
                     res.json({ status: true, insertedId: rowsInner, message: "Inserted" });
                 }
             };
@@ -108,6 +134,7 @@ router.post('/SaveAssessments', function(req, res) {
                     whereVals: whereVals,
                     callback: function(rowsInner) {
                         if (!(--pendingUpdates)) {
+                            SaveResponseFile(arrUpdates, req);
                             res.json({ status: true, message: "Updated" });
                         }
                     }
@@ -117,6 +144,66 @@ router.post('/SaveAssessments', function(req, res) {
         }
     }
 });
+
+function SaveResponseFile(oSaveItem, req) {
+    var oResponse = [];
+    oSaveItem.forEach(function(oItem) {
+        oResponse.push({
+            questionId: oItem.questionId,
+            response: oItem.response
+        });
+    });
+
+    var oTempSaveItem = {
+        dCreateDateTime: new Date(),
+        dModifiedDateTime: new Date(),
+        oResponse: oResponse
+    };
+
+    // Create folder for user if it does not exist
+    var userDir = req.session.id;
+    Helper.CreateUserDirectories(userDir, false);
+
+    var pattern = 'AllUsersAssessments/' + userDir.toString() + "/text/" + "ResponseData.json";
+    var mg = new glob.Glob(pattern, { 'nocase': true }, cb);
+
+    function cb(er, files) {
+        if (files.length) { // Found matches
+            if (files.length > 1) { // Found multiple matches
+                res.json({ code: 405, status: false, msg: "Multiple matches found" });
+            }
+            var filePath = files[0];
+            fs.readFile(filePath, function read(err, data) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    obj = JSON.parse(data); //now it an object
+
+                    oResponse.forEach(function(oItem) {
+
+                        if (oItem.questionId === 7 || oItem.questionId === 8 || oItem.questionId === 11 || oItem.questionId === 18) {
+                            oItem.response = JSON.parse(oItem.response);
+                        }
+
+                        var nIndiResponseIndex = Helper.FindItemInArray(obj.oResponse, 'questionId', oItem.questionId, 'index');
+                        if (nIndiResponseIndex !== null) {
+                            obj.oResponse[nIndiResponseIndex] = oItem;
+                        } else {
+                            obj.oResponse.push(oItem);
+                        }
+                    });
+                    obj.dModifiedDateTime = new Date();
+
+                    json = JSON.stringify(obj); //convert it back to json
+                    fs.writeFile(filePath, json, 'utf8');
+                }
+            });
+        } else {
+            var json = JSON.stringify(oTempSaveItem);
+            fs.writeFile(pattern, json, 'utf8');
+        }
+    }
+}
 
 router.post('/AudioUpload', function(req, res, next) {
     if (req.body.oSaveItem) {
@@ -229,17 +316,17 @@ router.post('/AudioSyncVoiceUpload', function(req, res, next) {
 });
 
 router.post('/AudioPicturePromptVoiceUpload', function(req, res, next) {
-    if (req.body.oSaveItem) {        
+    if (req.body.oSaveItem) {
         // Create folder for user if it does not exist
         var userDir = req.session.id;
         Helper.CreateUserDirectories(userDir, false);
 
         // Next create only folders related to Picture Prompt
         var sSetName = req.body.oSaveItem.sSetName;
-        
+
         var picturePromptDir = userDir + "/audio" + "/picturePromptAssessment" + "/" + sSetName;
         Helper.CreateUserDirectories(picturePromptDir, true);
-        
+
         var sPicName = req.body.oSaveItem.sPicName + ".wav";
         var buf = new Buffer(req.body.oSaveItem.blob, 'base64'); // decode
         Helper.SaveFileToDisk(["AllUsersAssessments", userDir, "audio", "picturePromptAssessment", sSetName, sPicName], buf, res);

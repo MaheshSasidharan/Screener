@@ -244,7 +244,7 @@ function CommonRoutines(Notification) {
                 array.forEach(function(oItem) {
                     oCommonRoutine.RandomizeArray(oItem.solutionSets.arroPics);
                 });
-            }else if(sType === "PicturePrompt"){
+            } else if (sType === "PicturePrompt") {
                 array.forEach(function(oItem) {
                     oCommonRoutine.RandomizeArray(oItem.arroPics);
                 });
@@ -258,6 +258,19 @@ function CommonRoutines(Notification) {
                 temp = array[i];
                 array[i] = array[nNewIndex];
                 array[nNewIndex] = temp;
+            }
+        },
+        PreventGoingToDifferentPage: function(event, next, current) {
+            // Here you can take the control and call your own functions:
+
+            var sTempCurrentState = current.split("#/")[1];
+            var sTempsNext = next.split("#/")[1];
+
+            var sCurrentState = sTempCurrentState ? sTempCurrentState.toLowerCase() : null;
+            var sNext = sTempsNext ? sTempsNext.toLowerCase() : null;
+            if (sCurrentState == "assessments" && sNext !== "assessments") {
+                alert('Sorry ! Please complete the assessment before going to another page.');
+                event.preventDefault();
             }
         }
     }

@@ -32,6 +32,13 @@
     </script>
     <script type="text/ng-template" id="5">
         <select class="form-control" ng-model="assessment.response">
+            <option ng-repeat="o in vm.arrDropDowns.YesNo" value="{{o.val}}">
+                {{o.label}}
+            </option>
+        </select>
+    </script>
+    <script type="text/ng-template" id="6">
+        <select class="form-control" ng-model="assessment.response">
             <option ng-repeat="o in vm.arrDropDowns.MusicalAbility" value="{{o.val}}">
                 {{o.label}}
             </option>

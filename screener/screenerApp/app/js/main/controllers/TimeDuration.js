@@ -25,8 +25,8 @@ function TimeDuration($scope, $timeout, $interval, Constants, CommonFactory, Dat
             var nTimer = 3;
             td.displayedResponse = nTimer;
             var oIntervalPromise = $interval(function() {
-                //if (nTimer == 0) {
-                    if (nTimer == 3) {
+                if (nTimer == 0) {
+                    //if (nTimer == 3) {
                     td.oAudio.StartCircularProgressBarNew();
                     td.displayedResponse = null;
                     $interval.cancel(oIntervalPromise);

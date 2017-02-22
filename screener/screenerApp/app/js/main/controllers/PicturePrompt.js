@@ -67,12 +67,14 @@ function PicturePrompt($scope, $timeout, $interval, Constants, CommonFactory, Da
             var nTimer = 3;
             pp.displayedResponse = nTimer;
             var oIntervalPromise = $interval(function() {
-                //if (nTimer == 0) {
-                if (nTimer == 3) {
+                if (nTimer == 0) {
+                //if (nTimer == 3) {
                     pp.oAudioRecorder.recorded = null;
                     pp.displayedResponse = null;
-                    pp.oAudioRecorder.autoStart = true;
-                    pp.oAudio.StartProgressBar();
+                    pp.oAudioRecorder.autoStart = true;                    
+                    $timeout(function() {
+                        pp.oAudio.StartProgressBar();
+                    }, Constants.Assessments.ProgressStartDelay);
                     time = new Date();
                     console.log(time);
                     $interval.cancel(oIntervalPromise);

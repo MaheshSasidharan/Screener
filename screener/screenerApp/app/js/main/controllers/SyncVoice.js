@@ -62,10 +62,12 @@ function SyncVoice($scope, $timeout, $interval, Constants, CommonFactory, DataSe
             $scope.$apply();
             var oIntervalPromise = $interval(function() {
                 if (nTimer == 0) {
-                //if (nTimer == 3) {
+                    //if (nTimer == 3) {
                     sv.oAudioRecorder.recorded = null;
                     sv.oAudio.displayedResponse = null;
-                    sv.oAudio.StartProgressBar();
+                    $timeout(function() {
+                        sv.oAudio.StartProgressBar();
+                    }, Constants.Assessments.ProgressStartDelay);
                     sv.oAudioRecorder.autoStart = true;
                     $interval.cancel(oIntervalPromise);
                 } else {
@@ -115,7 +117,7 @@ function SyncVoice($scope, $timeout, $interval, Constants, CommonFactory, DataSe
                     sv.sTextOnPlayButton = "Start";
                     bFirst = false;
                 } else {
-                // $scope.$parent.vm.currentAssessment.arrQuestions[0].sMode = "Final";
+                    // $scope.$parent.vm.currentAssessment.arrQuestions[0].sMode = "Final";
                     sv.sTextOnPlayButton = "Next";
                 }
             } else { // prev

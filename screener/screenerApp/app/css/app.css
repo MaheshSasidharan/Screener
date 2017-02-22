@@ -9,13 +9,18 @@
     box-sizing: border-box;
 }
 
-*:focus{
+*:focus {
     outline: none;
 }
 
-body{
-    font-family: 'SC_RobotoFont', cursive;    
+body {
+    font-family: 'SC_RobotoFont', cursive;
     font-size: 16px;
+}
+
+.row.NoMargin {
+    margin-left: 0;
+    margin-right: 0;
 }
 
 .audioRecorderTimeElapsed {

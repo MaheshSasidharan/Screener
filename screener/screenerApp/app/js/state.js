@@ -23,7 +23,8 @@ app.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
       controller: 'AssessmentsCtrl as vm'
     })
             .state('screener.assessments.text', {
-              templateUrl: 'templates/assessments/text.html'
+              templateUrl: 'templates/assessments/text.html',
+              controller: 'TextInformation as ti'
             })
             .state('screener.assessments.timeDuration', {
               templateUrl: 'templates/assessments/timeDuration.html',

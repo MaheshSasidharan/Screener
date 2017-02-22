@@ -1,20 +1,32 @@
 <div class="container">
     <h3>{{vm.currentAssessment.description}}</h3>
     <div ng-include="'templates/assessments/questions.html'"></div>
-    <script type="text/ng-template" id="13">
-        <input type="text" class="form-control" ng-model="assessment.response"/>
-    </script>
     <script type="text/ng-template" id="14">
-        <input type="email" class="form-control" ng-model="assessment.response"/>
+        <input type="text" class="form-control" ng-model="assessment.response" />
     </script>
     <script type="text/ng-template" id="15">
-        <input type="text" class="form-control" ng-model="assessment.response"/>
+        <input type="email" class="form-control" ng-model="assessment.response" />
     </script>
     <script type="text/ng-template" id="16">
+        <input type="text" class="form-control" ng-model="assessment.response" />
+    </script>
+    <script type="text/ng-template" id="17">
         <select class="form-control" ng-model="assessment.response">
-            <option ng-repeat="o in vm.arrDropDowns.PublicSchool" value="{{o.val}}">
+            <option ng-repeat="o in vm.arrDropDowns.States" value="{{o.val}}">
                 {{o.label}}
             </option>
         </select>
+    </script>
+    <script type="text/ng-template" id="18">
+        <div class="SC_PersonalPublicSchool">
+            <div class="row NoMargin" ng-repeat="school in pe.arrPublicSchool">
+                <div class="col-md-1">
+                    <input type="checkbox" ng-checked="pe.arrCheckedSchools.indexOf(school) != -1" ng-click="pe.Helper.UpdateCheckbox(school)">
+                </div>
+                <div class="col-md-11">
+                    {{school.label}}
+                </div>
+            </div>
+        </div>
     </script>
 </div>

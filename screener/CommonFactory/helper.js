@@ -41,6 +41,7 @@ var Helper = {
                 fs.mkdirSync(root + "/audio" + "/picturePromptAssessment");
                 fs.mkdirSync(root + "/video");
                 fs.mkdirSync(root + "/image");
+                fs.mkdirSync(root + "/text");
             }
         }
     },
