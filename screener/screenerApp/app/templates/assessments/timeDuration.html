@@ -1,10 +1,10 @@
 <div ng-include="'templates/assessments/questions.html'"></div>
-<script type="text/ng-template" id="7">
+<script type="text/ng-template" id="8">
     <div class="SC_Asmnt2_Letter">{{td.displayedResponse}}</div>
 </script>
 <div class="SC_assessmentInnerContainer SC_TimeDuration">
     <div class="text-center">
-        <button class="btn btn-md btn-success" ng-click="td.Helper.PlayNext('next')" ng-show="td.oAudio.bShowStartButton">{{td.sTextOnPlayButton}}</button>
+        <md-button class="md-raised md-primary" ng-click="td.Helper.PlayNext('next')" ng-show="td.oAudio.bShowStartButton">{{td.sTextOnPlayButton}}</md-button>        
     </div>
     <div id="assess_circle" ng-show="td.oAudio.bShowProgressBar">
         <button ng-disabled="!td.oAudio.bShowResponseBox" ng-class="{'buttonPressed': buttonPressed, 'disabledButton': !td.oAudio.bShowResponseBox}" class="glass SC_ButtonPress" ng-mousedown="buttonPressed = true; td.Helper.RecordTimeDuration('start');" ng-mouseup="buttonPressed = false; td.Helper.RecordTimeDuration('stop');">

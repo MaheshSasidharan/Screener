@@ -1,10 +1,10 @@
 <div ng-include="'templates/assessments/questions.html'"></div>
-<script type="text/ng-template" id="8">
+<script type="text/ng-template" id="7">
     <div class="SC_Asmnt2_Letter">{{me.displayedResponse}}</div>
 </script>
 <div class="SC_assessmentInnerContainer SC_Metronome">
     <div class="text-center">
-        <button class="btn btn-md btn-success" ng-click="me.Helper.PlayNext('next')" ng-show="me.oAudio.bShowStartButton">{{me.sTextOnPlayButton}}</button>
+        <md-button class="md-raised md-primary" ng-click="me.Helper.PlayNext('next')" ng-show="me.oAudio.bShowStartButton">{{me.sTextOnPlayButton}}</md-button>        
     </div>
     <!-- <div class="text-center">
         <uib-progressbar class="progress-striped_1 active_1" max="me.oAudio.nMaxTime" value="me.oAudio.nSpentTime" type="{{me.oAudio.sType}}" ng-show="me.oAudio.bShowProgressBar"></uib-progressbar>

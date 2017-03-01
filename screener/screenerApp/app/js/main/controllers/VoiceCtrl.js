@@ -72,8 +72,9 @@ function VoiceController($scope, $timeout, $interval, $sce, Constants, CommonFac
         },
         PlayNext: function(sType) {
             if (sType == "next") {
-                vo.bShowStartButton = false;                
-                cRandomCharacter = arrCharacters[nCurrentRound].Char;
+                vo.bShowStartButton = false;
+                var arrChars = arrCharacters[nCurrentRound].arrChars;
+                cRandomCharacter = arrChars[Math.floor(Math.random() * arrChars.length)];
                 var nRecordLength = arrCharacters[nCurrentRound].RecordLength;
                 vo.oAudio.nMaxTime = nRecordLength * 1000;                
                 vo.oAudioRecorder.timeLimit = nRecordLength;

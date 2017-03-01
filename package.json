@@ -30,6 +30,8 @@
     "cors": "^2.8.1",
     "debug": "~2.2.0",
     "express": "^4.13.4",
+    "forever": "^0.15.3",
+    "forever-monitor": "^1.7.1",
     "glob": "^7.1.1",
     "google-speech": "0.0.5",
     "google-speech-api": "^1.2.0",

@@ -211,7 +211,7 @@ router.post('/AudioUpload', function(req, res, next) {
         var userDir = req.session.id;
         Helper.CreateUserDirectories(userDir, false);
         var buf = new Buffer(req.body.oSaveItem.blob, 'base64'); // decode
-        Helper.SaveFileToDisk(["AllUsersAssessments", userDir, "audio", "voiceAssessment", req.body.oSaveItem.character + ".mp3"], buf, res);
+        Helper.SaveFileToDisk(["AllUsersAssessments", userDir, "audio", "voiceAssessment", req.body.oSaveItem.character + ".wav"], buf, res);
     } else {
         return res.json({ status: false });
     }
@@ -234,8 +234,9 @@ router.post('/AudioUploadWord', function(req, res, next) {
                     res.json({ code: 405, status: false, msg: "Multiple matches found" });
                 }
                 var fileName = files[0].split(sourceFolderName + '/')[1];
+                fileName = fileName.split(".mp3")[0];
                 var buf = new Buffer(req.body.oSaveItem.blob, 'base64'); // decode
-                Helper.SaveFileToDisk(["AllUsersAssessments", userDir, "audio", "audioAssessment", fileName], buf, res);
+                Helper.SaveFileToDisk(["AllUsersAssessments", userDir, "audio", "audioAssessment", fileName + ".wav"], buf, res);
             } else {
                 res.json({ code: 404, status: false, msg: "File not found" });
             }

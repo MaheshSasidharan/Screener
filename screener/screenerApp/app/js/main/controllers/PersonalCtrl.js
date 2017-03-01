@@ -38,6 +38,9 @@ function PersonalController($scope, Constants, CommonFactory, DataService) {
             if (oText) {
                 oText.response = JSON.stringify(sResponse);
             }
+        },
+        Checked: function(oItem, arrItems){
+            return arrItems.indexOf(oItem) > -1;
         }
     }
 }

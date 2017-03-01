@@ -4,6 +4,7 @@ var router = express.Router();
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
+  var x = 5 + y;
   res.send('respond with a resource');
 });
 

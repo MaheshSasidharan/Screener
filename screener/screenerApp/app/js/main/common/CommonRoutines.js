@@ -260,7 +260,7 @@ function CommonRoutines(Notification) {
                 array[nNewIndex] = temp;
             }
         },
-        PreventGoingToDifferentPage: function(event, next, current) {
+        PreventGoingToDifferentPage: function(event, next, current, DataService) {
             // Here you can take the control and call your own functions:
 
             var sTempCurrentState = current.split("#/")[1];
@@ -268,7 +268,7 @@ function CommonRoutines(Notification) {
 
             var sCurrentState = sTempCurrentState ? sTempCurrentState.toLowerCase() : null;
             var sNext = sTempsNext ? sTempsNext.toLowerCase() : null;
-            if (sCurrentState == "assessments" && sNext !== "assessments") {
+            if (sCurrentState == "assessments" && sNext !== "assessments" && !DataService.bAssessmentsCompleted) {
                 alert('Sorry ! Please complete the assessment before going to another page.');
                 event.preventDefault();
             }

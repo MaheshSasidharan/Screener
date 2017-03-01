@@ -4,9 +4,9 @@
         <div class="SC_Asmnt2_Letter" ng-show="!vo.bShowStartButton">{{assessment.displayedResponse}}</div>
         <div class="text-center">
             <uib-progressbar max="vo.oAudio.nMaxTime" value="vo.oAudio.nSpentTime" type="{{vo.oAudio.sType}}" ng-show="vo.oAudio.bShowProgressBar"></uib-progressbar>
-            <button class="btn btn-md btn-success" ng-click="vo.Helper.PlayNext('next')" ng-show="vo.bShowStartButton">{{vo.sTextOnPlayButton}}</button>
+            <md-button class="md-raised md-primary" ng-click="vo.Helper.PlayNext('next')" ng-show="vo.bShowStartButton">{{vo.sTextOnPlayButton}}</md-button>            
         </div>        
-        <div ng-audio-recorder id="mainAudio" audio-model="vo.oAudioRecorder.recorded" time-limit="vo.oAudioRecorder.timeLimit" show-player="false" convert-mp3="true" on-record-start="vo.oAudioRecorder.OnRecordStart()" on-conversion-complete="vo.oAudioRecorder.OnRecordAndConversionComplete()" auto-start="vo.oAudioRecorder.autoStart" ng-if="vo.oAudioRecorder.autoStart">
+        <div ng-audio-recorder id="mainAudio" audio-model="vo.oAudioRecorder.recorded" time-limit="vo.oAudioRecorder.timeLimit" show-player="false" convert-mp3="false" on-record-start="vo.oAudioRecorder.OnRecordStart()" on-record-complete="vo.oAudioRecorder.OnRecordAndConversionComplete()" auto-start="vo.oAudioRecorder.autoStart" ng-if="vo.oAudioRecorder.autoStart">
             <div ng-if="recorder.isAvailable">
                 <div class="panel panel-primary">
                     <div class="panel-heading" ng-hide="true">

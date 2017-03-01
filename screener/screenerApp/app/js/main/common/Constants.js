@@ -232,13 +232,19 @@ function Constants() {
         VoiceAssessment: {
             arrCharacters: [{
                 Char: 'A',
-                RecordLength: 30
+                RecordLength: 30,
+                arrChars: ['R', 'D', 'A', 'M', 'B', 'P', 'C', 'S'],
+                sType: "Most Frequent"
             }, {
                 Char: 'B',
-                RecordLength: 30
+                RecordLength: 30,
+                arrChars: ['L', 'G', 'I', 'H', 'E', 'F', 'T'],
+                sType: "Medium Frequency"
             }, {
                 Char: 'C',
-                RecordLength: 30
+                RecordLength: 30,
+                arrChars: ['K', 'J', 'V', 'U', 'N', 'O', 'W'],
+                sType: "Least Frequent"
             }]
         },
         PersonalAssessment: {

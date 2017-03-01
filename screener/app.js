@@ -65,7 +65,7 @@ app.use(function(req, res, next) {
                     //req.user = user;
                     //req.session.id = id;  //refresh the session value
                     //res.locals.user = user;
-                    req.session.id = 1; // For development, use userID 1
+                    //req.session.id = 1; // For development, use userID 1
                     //res.locals.id = 1;
                     res.setHeader('X-Seen-You', 'true');
                     //finishing processing the middleware and run the route
@@ -82,8 +82,8 @@ app.use(function(req, res, next) {
             }
             DB.AddUser({ sessionId: Helper.GUID(), ip: sIP }, res, function(err, id) {
                 if (id) {
-                    //req.session.id = id;
-                    req.session.id = 1; // For development, use userID 1                    
+                    req.session.id = id;
+                    //req.session.id = 1; // For development, use userID 1                    
                     res.setHeader('X-Seen-You', 'false'); // Seeing you for the first time
                 }
                 next();

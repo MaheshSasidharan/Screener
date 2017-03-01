@@ -124,10 +124,12 @@ function AssessmentsCtrl($scope, $state, Constants, DataService, CommonFactory) 
             var bItemToBeAssessedFound = false;
             vm.tempAssessments.forEach(function(oItem) {
                 // This is to find, which assessment has already been completed
+                /*
                 if (!bItemToBeAssessedFound && oItem.responseTextId === undefined) { // If responseTextId property is not present, then that one has not been assessed
                     bItemToBeAssessedFound = true;
                     vm.currentTabIndex = vm.assessments.length;
                 }
+                */
 
                 var assessmentIndex = CommonFactory.FindItemInArray(vm.assessments, 'assessmentId', oItem.assessmentId, 'index');
                 // If it exists, add questions to it, else create one
@@ -191,7 +193,7 @@ function AssessmentsCtrl($scope, $state, Constants, DataService, CommonFactory) 
             var oPersonal = CommonFactory.FindItemInArray(vm.assessments, 'nickName', 'personal', 'item');
             if (oPersonal) {
                 oPersonal.description = Constants.PersonalAssessment.EnterEmail;
-                var arrQuestions = CommonFactory.FindItemInArray(oPersonal.arrQuestions, 'questionId', '14', 'item');
+                var arrQuestions = CommonFactory.FindItemInArray(oPersonal.arrQuestions, 'questionId', '15', 'item');
                 oPersonal.arrQuestions = [];
                 if (arrQuestions) {
                     oPersonal.arrQuestions.push(arrQuestions);
@@ -200,7 +202,10 @@ function AssessmentsCtrl($scope, $state, Constants, DataService, CommonFactory) 
         }
     }
 
-    $scope.$on('$locationChangeStart', CommonFactory.PreventGoingToDifferentPage);
+    $scope.$on('$locationChangeStart', function(event, next, current) {
+        // Here you can take the control and call your own functions:
+        CommonFactory.PreventGoingToDifferentPage(event, next, current, DataService);
+    });
 
     vm.Helper.GetUserMedia();
 }

@@ -18,6 +18,11 @@ app.controller('HomeCtrl', ['$scope', '$state', 'Factory_Constants', 'Factory_Da
         }
     }
 
-    $scope.$on('$locationChangeStart', CommonFactory.PreventGoingToDifferentPage);
+    //$scope.$on('$locationChangeStart', CommonFactory.PreventGoingToDifferentPage);
+
+    $scope.$on('$locationChangeStart', function(event, next, current) {
+        // Here you can take the control and call your own functions:
+        CommonFactory.PreventGoingToDifferentPage(event, next, current, DataService);
+    });
 
 }]);

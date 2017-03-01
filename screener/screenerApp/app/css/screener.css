@@ -186,3 +186,7 @@
 .SC_PersonalPublicSchool input {
     height: 18px;
 }
+
+.SC_VisibilityNone{
+    visibility: hidden;
+}

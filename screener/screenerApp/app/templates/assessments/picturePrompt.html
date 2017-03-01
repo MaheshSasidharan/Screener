@@ -5,7 +5,7 @@
         <div class="SC_audioContainer">
             <div class="text-center">
                 <uib-progressbar max="pp.oAudio.nMaxTime" value="pp.oAudio.nSpentTime" type="{{pp.oAudio.sType}}" ng-show="pp.oAudio.bShowProgressBar"></uib-progressbar>
-                <button class="btn btn-md btn-success" ng-click="pp.Helper.PlayNext('next')" ng-show="pp.oAudio.bShowStartButton">{{pp.sTextOnPlayButton}}</button>
+                <md-button class="md-raised md-primary" ng-click="pp.Helper.PlayNext('next')" ng-show="pp.oAudio.bShowStartButton">{{pp.sTextOnPlayButton}}</md-button>
             </div>
             <!-- <div class="text-center">
                 <button class="btn btn-md btn-success" ng-click="pp.Helper.PlayNext('next')" ng-show="pp.oAudio.bShowStartButton">{{pp.sTextOnPlayButton}}</button>
@@ -17,7 +17,7 @@
                     </div>
                 </div>
             </div>
-            <div ng-audio-recorder id="mainAudio" audio-model="pp.oAudioRecorder.recorded" time-limit="pp.oAudioRecorder.timeLimit" show-player="false" convert-mp3="true" on-record-start="pp.oAudioRecorder.OnRecordStart()" on-conversion-complete="pp.oAudioRecorder.OnRecordAndConversionComplete()" auto-start="pp.oAudioRecorder.autoStart" ng-if="pp.oAudioRecorder.autoStart">
+            <div ng-audio-recorder id="mainAudio" audio-model="pp.oAudioRecorder.recorded" time-limit="pp.oAudioRecorder.timeLimit" show-player="false" convert-mp3="false" on-record-start="pp.oAudioRecorder.OnRecordStart()" on-record-complete="pp.oAudioRecorder.OnRecordAndConversionComplete()" auto-start="pp.oAudioRecorder.autoStart" ng-if="pp.oAudioRecorder.autoStart">
                 <div ng-if="recorder.isAvailable">
                     <div class="panel panel-primary">
                         <div class="panel-heading" ng-hide="true">
