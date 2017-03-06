@@ -11,6 +11,7 @@ function Constants() {
         },
         Assessments: {
             ProgressStartDelay: 200,
+            nBufferRecordLength: 1,
             arrDropDowns: {
                 Gender: [{
                     val: 'NoResponse',
@@ -102,7 +103,7 @@ function Constants() {
                     selected: false
                 }],
                 States: [
-                    { val: 'Alabama', label: 'Alabama' }, { val: 'Alaska', label: 'Alaska' }, { val: 'Arizona', label: 'Arizona' }, { val: 'Arkansas', label: 'Arkansas' }, { val: 'California', label: 'California' }, { val: 'Colorado', label: 'Colorado' }, { val: 'Connecticut', label: 'Connecticut' }, { val: 'Delaware', label: 'Delaware' }, { val: 'Florida', label: 'Florida' }, { val: 'Georgia', label: 'Georgia' }, { val: 'Hawaii', label: 'Hawaii' }, { val: 'Idaho', label: 'Idaho' }, { val: 'Illinois', label: 'Illinois' }, { val: 'Indiana', label: 'Indiana' }, { val: 'Iowa', label: 'Iowa' }, { val: 'Kansas', label: 'Kansas' }, { val: 'Kentucky', label: 'Kentucky' }, { val: 'Louisiana', label: 'Louisiana' }, { val: 'Maine', label: 'Maine' }, { val: 'Maryland', label: 'Maryland' }, { val: 'Massachusetts', label: 'Massachusetts' }, { val: 'Michigan', label: 'Michigan' }, { val: 'Minnesota', label: 'Minnesota' }, { val: 'Mississippi', label: 'Mississippi' }, { val: 'Missouri', label: 'Missouri' }, { val: 'Montana', label: 'Montana' }, { val: 'Nebraska', label: 'Nebraska' }, { val: 'Nevada', label: 'Nevada' }, { val: 'New', label: 'New' }, { val: 'Hampshire', label: 'Hampshire' }, { val: 'New', label: 'New' }, { val: 'Jersey', label: 'Jersey' }, { val: 'New', label: 'New' }, { val: 'Mexico', label: 'Mexico' }, { val: 'New', label: 'New' }, { val: 'York', label: 'York' }, { val: 'North', label: 'North' }, { val: 'Carolina', label: 'Carolina' }, { val: 'North', label: 'North' }, { val: 'Dakota', label: 'Dakota' }, { val: 'Ohio', label: 'Ohio' }, { val: 'Oklahoma', label: 'Oklahoma' }, { val: 'Oregon', label: 'Oregon' }, { val: 'Pennsylvania', label: 'Pennsylvania' }, { val: 'Rhode_Island', label: 'Rhode_Island' }, { val: 'South', label: 'South' }, { val: 'Carolina', label: 'Carolina' }, { val: 'South', label: 'South' }, { val: 'Dakota', label: 'Dakota' }, { val: 'Tennessee', label: 'Tennessee' }, { val: 'Texas', label: 'Texas' }, { val: 'Utah', label: 'Utah' }, { val: 'Vermont', label: 'Vermont' }, { val: 'Virginia', label: 'Virginia' }, { val: 'Washington', label: 'Washington' }, { val: 'West', label: 'West' }, { val: 'Virginia', label: 'Virginia' }, { val: 'Wisconsin', label: 'Wisconsin' }, { val: 'Wyoming', label: 'Wyoming' }
+                    { val: 'Alabama', label: 'Alabama' }, { val: 'Alaska', label: 'Alaska' }, { val: 'Arizona', label: 'Arizona' }, { val: 'Arkansas', label: 'Arkansas' }, { val: 'California', label: 'California' }, { val: 'Colorado', label: 'Colorado' }, { val: 'Connecticut', label: 'Connecticut' }, { val: 'Delaware', label: 'Delaware' }, { val: 'Florida', label: 'Florida' }, { val: 'Georgia', label: 'Georgia' }, { val: 'Hawaii', label: 'Hawaii' }, { val: 'Idaho', label: 'Idaho' }, { val: 'Illinois', label: 'Illinois' }, { val: 'Indiana', label: 'Indiana' }, { val: 'Iowa', label: 'Iowa' }, { val: 'Kansas', label: 'Kansas' }, { val: 'Kentucky', label: 'Kentucky' }, { val: 'Louisiana', label: 'Louisiana' }, { val: 'Maine', label: 'Maine' }, { val: 'Maryland', label: 'Maryland' }, { val: 'Massachusetts', label: 'Massachusetts' }, { val: 'Michigan', label: 'Michigan' }, { val: 'Minnesota', label: 'Minnesota' }, { val: 'Mississippi', label: 'Mississippi' }, { val: 'Missouri', label: 'Missouri' }, { val: 'Montana', label: 'Montana' }, { val: 'Nebraska', label: 'Nebraska' }, { val: 'Nevada', label: 'Nevada' }, { val: 'NewHampshire', label: 'New Hampshire' }, { val: 'NewJersey', label: 'New Jersey' }, { val: 'NewMexico', label: 'New Mexico' }, { val: 'NewYork', label: 'New York' }, { val: 'NorthCarolina', label: 'North Carolina' }, { val: 'NorthDakota', label: 'North Dakota' }, { val: 'Ohio', label: 'Ohio' }, { val: 'Oklahoma', label: 'Oklahoma' }, { val: 'Oregon', label: 'Oregon' }, { val: 'Pennsylvania', label: 'Pennsylvania' }, { val: 'RhodeIsland', label: 'Rhode Island' }, { val: 'SouthCarolina', label: 'South Carolina' }, { val: 'SouthDakota', label: 'South Dakota' }, { val: 'Tennessee', label: 'Tennessee' }, { val: 'Texas', label: 'Texas' }, { val: 'Utah', label: 'Utah' }, { val: 'Vermont', label: 'Vermont' }, { val: 'Virginia', label: 'Virginia' }, { val: 'Washington', label: 'Washington' }, { val: 'WestVirginia', label: 'West Virginia' }, { val: 'Wisconsin', label: 'Wisconsin' }, { val: 'Wyoming', label: 'Wyoming' }
                 ],
                 YesNo: [{
                     val: 'Yes',
@@ -249,6 +250,26 @@ function Constants() {
         },
         PersonalAssessment: {
             EnterEmail: "Please enter your email address and click DONE"
+        },
+        ReadingAssessment: {
+            arrParagraphs: [{
+                sParagraph: 'Again Hal’s whip fell upon the dogs. They threw themselves against the breast-bands, dug their feet into the packed snow, got down low to it, and put forth all their strength. The sled held as though it were an anchor. After two efforts, they stood still, panting. The whip was whistling savagely, when once more Mercedes interfered. She dropped on her knees before Buck, with tears in her eyes, and put her arms around his neck. \n \n “You poor, poor dears,” she cried sympathetically, “why don’t you pull hard?—then you wouldn’t be whipped.” Buck did not like her, but he was feeling too miserable to resist her, taking it as part of the day’s miserable work.',
+                RecordLength: 120,
+                sParagraphType: 'Normal',
+                sInstruction: 'Click on Start and read the text'
+            },
+            {
+                sParagraph: 'Again Hal’s whip fell upon the dogs. They threw themselves against the breast-bands, dug their feet into the packed snow, got down low to it, and put forth all their strength. The sled held as though it were an anchor. After two efforts, they stood still, panting. The whip was whistling savagely, when once more Mercedes interfered. She dropped on her knees before Buck, with tears in her eyes, and put her arms around his neck. \n \n “You poor, poor dears,” she cried sympathetically, “why don’t you pull hard?—then you wouldn’t be whipped.” Buck did not like her, but he was feeling too miserable to resist her, taking it as part of the day’s miserable work.',
+                RecordLength: 120,
+                sParagraphType: 'NoEmotion',
+                sInstruction: 'Now, read the same text again, but this time, read it without any feeling: flat and without emotion'
+            },
+            {
+                sParagraph: 'Again Hal’s whip fell upon the dogs. They threw themselves against the breast-bands, dug their feet into the packed snow, got down low to it, and put forth all their strength. The sled held as though it were an anchor. After two efforts, they stood still, panting. The whip was whistling savagely, when once more Mercedes interfered. She dropped on her knees before Buck, with tears in her eyes, and put her arms around his neck. \n \n “You poor, poor dears,” she cried sympathetically, “why don’t you pull hard?—then you wouldn’t be whipped.” Buck did not like her, but he was feeling too miserable to resist her, taking it as part of the day’s miserable work.',
+                RecordLength: 120,
+                sParagraphType: 'WithEmotion',
+                sInstruction: 'Finally, read the same text again, but read the narration and dialog with the appropriate level of feeling and emotion. Read for an audience, as if you’re telling a story'
+            }]
         }
     }
     return oConstants;

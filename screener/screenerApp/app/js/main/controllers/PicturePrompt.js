@@ -34,9 +34,7 @@ function PicturePrompt($scope, $timeout, $interval, Constants, CommonFactory, Da
             var that = this;
             var counter = 0;
             oIntervalPromise = $interval(function() {
-                counter++;
-                console.log("Counter: " + counter);
-                console.log("SpentTime: " + that.nSpentTime);
+                counter++;                
                 if (that.nSpentTime + that.nRefreshRate == that.nMaxTime) {
                     $interval.cancel(oIntervalPromise);
                     // Let progress reach 100% on UI. So increase by nSpentTime by one more step and reset to zero after one second
@@ -85,7 +83,7 @@ function PicturePrompt($scope, $timeout, $interval, Constants, CommonFactory, Da
             }, 1000, 4);
         },
         OnRecordStart: function() {
-            console.log("RECORDING STARTED");
+            //console.log("RECORDING STARTED");
         },
         OnRecordAndConversionComplete: function() {
             console.log("RECORDING Ended");

@@ -1,25 +1,25 @@
 <div class="container">
     <h3>{{vm.currentAssessment.description}}</h3>
     <div ng-include="'templates/assessments/questions.html'"></div>
-    <script type="text/ng-template" id="14">
+    <script type="text/ng-template" id="15">
         <!-- <input type="text" class="form-control" ng-model="assessment.response" /> -->
         <md-input-container>
             <input ng-model="assessment.response">
         </md-input-container>
     </script>
-    <script type="text/ng-template" id="15">
+    <script type="text/ng-template" id="16">
         <!-- <input type="email" class="form-control" ng-model="assessment.response" /> -->
         <md-input-container>
             <input ng-model="assessment.response" type="email">
         </md-input-container>
     </script>
-    <script type="text/ng-template" id="16">
+    <script type="text/ng-template" id="17">
         <!-- <input type="text" class="form-control" ng-model="assessment.response" /> -->
         <md-input-container>
             <input ng-model="assessment.response">
         </md-input-container>
     </script>
-    <script type="text/ng-template" id="17">
+    <script type="text/ng-template" id="18">
         <!-- select class="form-control" ng-model="assessment.response">
             <option ng-repeat="o in vm.arrDropDowns.States" value="{{o.val}}">
                 {{o.label}}
@@ -27,13 +27,13 @@
             </select> -->
         <md-input-container class="md-block" flex-gt-sm="">
             <md-select ng-model="assessment.response">
-                <md-option ng-repeat="o in vm.arrDropDowns.States" ng-value="{{o.val}}">
+                <md-option ng-repeat="o in vm.arrDropDowns.States" value="{{o.val}}">
                     {{o.label}}
                 </md-option>
             </md-select>
         </md-input-container>
     </script>
-    <script type="text/ng-template" id="18">
+    <script type="text/ng-template" id="19">
         <div class="SC_PersonalPublicSchool">
             <div class="row NoMargin" ng-repeat="school in pe.arrPublicSchool">
                 <div class="col-md-1">

@@ -181,7 +181,7 @@ function SaveResponseFile(oSaveItem, req) {
 
                     oResponse.forEach(function(oItem) {
 
-                        if (oItem.questionId === 7 || oItem.questionId === 8 || oItem.questionId === 11 || oItem.questionId === 18) {
+                        if (oItem.questionId === 7 || oItem.questionId === 8 || oItem.questionId === 11 || oItem.questionId === 19) {
                             oItem.response = JSON.parse(oItem.response);
                         }
 
@@ -211,7 +211,19 @@ router.post('/AudioUpload', function(req, res, next) {
         var userDir = req.session.id;
         Helper.CreateUserDirectories(userDir, false);
         var buf = new Buffer(req.body.oSaveItem.blob, 'base64'); // decode
-        Helper.SaveFileToDisk(["AllUsersAssessments", userDir, "audio", "voiceAssessment", req.body.oSaveItem.character + ".wav"], buf, res);
+        Helper.SaveFileToDisk(["AllUsersAssessments", userDir, "audio", "WordFinding", req.body.oSaveItem.character + ".wav"], buf, res);
+    } else {
+        return res.json({ status: false });
+    }
+});
+
+router.post('/ReadingUpload', function(req, res, next) {
+    if (req.body.oSaveItem) {
+        // Create folder for user if it does not exist
+        var userDir = req.session.id;
+        Helper.CreateUserDirectories(userDir, false);
+        var buf = new Buffer(req.body.oSaveItem.blob, 'base64'); // decode
+        Helper.SaveFileToDisk(["AllUsersAssessments", userDir, "audio", "Reading", req.body.oSaveItem.character + ".wav"], buf, res);
     } else {
         return res.json({ status: false });
     }
@@ -236,7 +248,7 @@ router.post('/AudioUploadWord', function(req, res, next) {
                 var fileName = files[0].split(sourceFolderName + '/')[1];
                 fileName = fileName.split(".mp3")[0];
                 var buf = new Buffer(req.body.oSaveItem.blob, 'base64'); // decode
-                Helper.SaveFileToDisk(["AllUsersAssessments", userDir, "audio", "audioAssessment", fileName + ".wav"], buf, res);
+                Helper.SaveFileToDisk(["AllUsersAssessments", userDir, "audio", "SentenceRepetition", fileName + ".wav"], buf, res);
             } else {
                 res.json({ code: 404, status: false, msg: "File not found" });
             }
@@ -306,7 +318,7 @@ router.post('/AudioSyncVoiceUpload', function(req, res, next) {
                 }
                 var fileName = files[0].split(sourceFolderName + '/')[1];
                 var buf = new Buffer(req.body.oSaveItem.blob, 'base64'); // decode
-                Helper.SaveFileToDisk(["AllUsersAssessments", userDir, "audio", "syncVoiceAssessment", fileName], buf, res);
+                Helper.SaveFileToDisk(["AllUsersAssessments", userDir, "audio", "SyncVoice", fileName], buf, res);
             } else {
                 res.json({ code: 404, status: false, msg: "File not found" });
             }
@@ -325,12 +337,12 @@ router.post('/AudioPicturePromptVoiceUpload', function(req, res, next) {
         // Next create only folders related to Picture Prompt
         var sSetName = req.body.oSaveItem.sSetName;
 
-        var picturePromptDir = userDir + "/audio" + "/picturePromptAssessment" + "/" + sSetName;
+        var picturePromptDir = userDir + "/audio" + "/PicturePrompt" + "/" + sSetName;
         Helper.CreateUserDirectories(picturePromptDir, true);
 
         var sPicName = req.body.oSaveItem.sPicName + ".wav";
         var buf = new Buffer(req.body.oSaveItem.blob, 'base64'); // decode
-        Helper.SaveFileToDisk(["AllUsersAssessments", userDir, "audio", "picturePromptAssessment", sSetName, sPicName], buf, res);
+        Helper.SaveFileToDisk(["AllUsersAssessments", userDir, "audio", "PicturePrompt", sSetName, sPicName], buf, res);
     } else {
         return res.json({ status: false });
     }
@@ -429,40 +441,42 @@ var pool = mysql.createPool(config.poolConfig);
 
 function handle_database(req, res, params) {
     pool.getConnection(function(err, connection) {
-        if (err) {
-            res.json(params.errors.errors_101);
-            return;
-        }
-        switch (params.sType) {
-            case "BulkInsert":
-                connection.query(params.query, [params.whereVals], function(err, rows) {
-                    connection.release();
-                    if (!err) {
-                        params.callback(rows);
-                    } else {
-                        res.json({ status: false, msg: params.errors.queryFailed });
-                    }
-                });
-                break;
-            case "IndividualUpdate":
-                connection.query(params.query, params.whereVals, function(err, rows) {
-                    connection.release();
-                    if (!err) {
-                        params.callback(rows);
-                    } else {
-                        res.json({ status: false, msg: params.errors.queryFailed });
-                    }
-                });
-                break;
-            default:
-                connection.query(params.query, params.whereVals, function(err, rows) {
-                    connection.release();
-                    if (!err) {
-                        params.callback(rows);
-                    } else {
-                        res.json({ status: false, msg: params.errors.queryFailed });
-                    }
-                });
+        // if (err) {
+        //     res.json(params.errors.errors_101);
+        //     return;
+        // }
+        if (!err) {
+            switch (params.sType) {
+                case "BulkInsert":
+                    connection.query(params.query, [params.whereVals], function(err, rows) {
+                        connection.release();
+                        if (!err) {
+                            params.callback(rows);
+                        } else {
+                            res.json({ status: false, msg: params.errors.queryFailed });
+                        }
+                    });
+                    break;
+                case "IndividualUpdate":
+                    connection.query(params.query, params.whereVals, function(err, rows) {
+                        connection.release();
+                        if (!err) {
+                            params.callback(rows);
+                        } else {
+                            res.json({ status: false, msg: params.errors.queryFailed });
+                        }
+                    });
+                    break;
+                default:
+                    connection.query(params.query, params.whereVals, function(err, rows) {
+                        connection.release();
+                        if (!err) {
+                            params.callback(rows);
+                        } else {
+                            res.json({ status: false, msg: params.errors.queryFailed });
+                        }
+                    });
+            }
         }
 
         connection.on('error', function(err) {

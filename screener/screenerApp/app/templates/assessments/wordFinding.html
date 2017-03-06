@@ -1,12 +1,12 @@
 <div ng-include="'templates/assessments/questions.html'"></div>
 <script type="text/ng-template" id="13">
-    <div class="SC_voiceContainer">
-        <div class="SC_Asmnt2_Letter" ng-show="!vo.bShowStartButton">{{assessment.displayedResponse}}</div>
+    <div class="SC_audioContainer">
+        <div class="SC_Asmnt2_Letter" ng-show="!wo.bShowStartButton">{{wo.oAudio.displayedResponse}}</div>
         <div class="text-center">
-            <uib-progressbar max="vo.oAudio.nMaxTime" value="vo.oAudio.nSpentTime" type="{{vo.oAudio.sType}}" ng-show="vo.oAudio.bShowProgressBar"></uib-progressbar>
-            <md-button class="md-raised md-primary" ng-click="vo.Helper.PlayNext('next')" ng-show="vo.bShowStartButton">{{vo.sTextOnPlayButton}}</md-button>            
-        </div>        
-        <div ng-audio-recorder id="mainAudio" audio-model="vo.oAudioRecorder.recorded" time-limit="vo.oAudioRecorder.timeLimit" show-player="false" convert-mp3="false" on-record-start="vo.oAudioRecorder.OnRecordStart()" on-record-complete="vo.oAudioRecorder.OnRecordAndConversionComplete()" auto-start="vo.oAudioRecorder.autoStart" ng-if="vo.oAudioRecorder.autoStart">
+            <uib-progressbar max="wo.oAudio.nMaxTime" value="wo.oAudio.nSpentTime" type="{{wo.oAudio.sType}}" ng-show="wo.oAudio.bShowProgressBar"></uib-progressbar>
+            <md-button class="md-raised md-primary" ng-click="wo.Helper.PlayNext('next')" ng-show="wo.bShowStartButton">{{wo.sTextOnPlayButton}}</md-button>
+        </div>
+        <div ng-audio-recorder id="mainAudio" audio-model="wo.oAudioRecorder.recorded" time-limit="wo.oAudioRecorder.timeLimit" show-player="false" convert-mp3="false" on-record-start="wo.oAudioRecorder.OnRecordStart()" on-record-complete="wo.oAudioRecorder.OnRecordAndConversionComplete()" auto-start="wo.oAudioRecorder.autoStart" ng-if="wo.oAudioRecorder.autoStart">
             <div ng-if="recorder.isAvailable">
                 <div class="panel panel-primary">
                     <div class="panel-heading" ng-hide="true">
@@ -58,7 +58,11 @@
                         </div>
                         <div class="panels" canvas-sizer>
                             <div ng-show="recorder.status.isRecording">
-                                <ng-audio-recorder-analyzer></ng-audio-recorder-analyzer>
+                                <!-- <ng-audio-recorder-analyzer></ng-audio-recorder-analyzer> -->
+                                <md-button class="md-raised md-warn" disabled>
+                                    <md-icon md-svg-src="css/icons/settings_voice.svg"></md-icon>
+                                    RECORDING
+                                </md-button>
                             </div>
                             <div ng-show="!recorder.status.isRecording && recorder.audioModel">
                                 <ng-audio-recorder-wave-view wave-color="silver" bar-color="red"></ng-audio-recorder-wave-view>

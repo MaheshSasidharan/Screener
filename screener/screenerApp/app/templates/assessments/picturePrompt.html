@@ -68,7 +68,11 @@
                             </div>
                             <div class="panels" canvas-sizer>
                                 <div ng-show="recorder.status.isRecording">
-                                    <ng-audio-recorder-analyzer></ng-audio-recorder-analyzer>
+                                    <!-- <ng-audio-recorder-analyzer></ng-audio-recorder-analyzer> -->
+                                    <md-button class="md-raised md-warn" disabled>
+                                        <md-icon md-svg-src="css/icons/settings_voice.svg"></md-icon>
+                                        RECORDING
+                                    </md-button>
                                 </div>
                                 <div ng-show="!recorder.status.isRecording && recorder.audioModel">
                                     <ng-audio-recorder-wave-view wave-color="silver" bar-color="red"></ng-audio-recorder-wave-view>

@@ -5,15 +5,16 @@ function SyncVoice($scope, $timeout, $interval, Constants, CommonFactory, DataSe
     var sv = this;
     var bFirst = true;
 
-    window.AudioContext = window.AudioContext || window.webkitAudioContext;
-    var context = new AudioContext();
+    // window.AudioContext = window.AudioContext || window.webkitAudioContext;
+    // var context = new AudioContext();
+    var context = DataService.oAudioContext;
     var source = context.createBufferSource(); // creates a sound source
 
     sv.sTextOnPlayButton = "Start Practice";
     sv.audioIndex = -1;
     sv.arrVoiceOPAndIP = [];
     sv.audioRecordLength = Constants.SyncVoiceAssessment.audioRecordLength;
-    var bufferRecordLength = 1;
+    var nBufferRecordLength = Constants.Assessments.nBufferRecordLength;
 
     sv.oAudio = {
         bShowStartButton: false,
@@ -56,7 +57,7 @@ function SyncVoice($scope, $timeout, $interval, Constants, CommonFactory, DataSe
 
     sv.oAudioRecorder = {
         recorded: null,
-        timeLimit: sv.audioRecordLength + bufferRecordLength,
+        timeLimit: sv.audioRecordLength + nBufferRecordLength,
         autoStart: false,
         bShowAudioRecorder: false,
         StartRecorderCountDown: function() {
@@ -72,7 +73,7 @@ function SyncVoice($scope, $timeout, $interval, Constants, CommonFactory, DataSe
                     }, Constants.Assessments.ProgressStartDelay);                    
                     sv.oAudioRecorder.bShowAudioRecorder = true;
                     $interval.cancel(oIntervalPromise);
-                } else if (nTimer == bufferRecordLength) {
+                } else if (nTimer == nBufferRecordLength) {
                     sv.oAudioRecorder.recorded = null;
                     sv.oAudioRecorder.autoStart = true;
                     sv.oAudio.displayedResponse = --nTimer;
@@ -82,7 +83,7 @@ function SyncVoice($scope, $timeout, $interval, Constants, CommonFactory, DataSe
             }, 1000, 4);
         },
         OnRecordStart: function() {
-            console.log("RECORDING STARTED");            
+            //console.log("RECORDING STARTED");            
         },
         OnRecordAndConversionComplete: function() {
             console.log("RECORDING Ended");

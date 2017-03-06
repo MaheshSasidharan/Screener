@@ -1,11 +1,12 @@
-app.controller('AudioController', ['$scope', '$timeout', '$interval', '$sce', 'Factory_Constants', 'Factory_CommonRoutines', 'Factory_DataService', AudioController]);
+app.controller('SentenceRepetitionController', ['$scope', '$timeout', '$interval', '$sce', 'Factory_Constants', 'Factory_CommonRoutines', 'Factory_DataService', SentenceRepetitionController]);
 
-function AudioController($scope, $timeout, $interval, $sce, Constants, CommonFactory, DataService, Upload) {
+function SentenceRepetitionController($scope, $timeout, $interval, $sce, Constants, CommonFactory, DataService, Upload) {
     var au = this;
     var bFirst = true;
 
-    window.AudioContext = window.AudioContext || window.webkitAudioContext;
-    var context = new AudioContext();
+    // window.AudioContext = window.AudioContext || window.webkitAudioContext;
+    // var context = new AudioContext();
+    var context = DataService.oAudioContext;
     var source = context.createBufferSource(); // creates a sound source
 
     au.sTextOnPlayButton = "Start Practice";
@@ -75,7 +76,7 @@ function AudioController($scope, $timeout, $interval, $sce, Constants, CommonFac
             }, 1000, 4);
         },
         OnRecordStart: function() {
-            console.log("RECORDING STARTED");
+            //console.log("RECORDING STARTED");
         },
         OnRecordAndConversionComplete: function() {
             console.log("RECORDING Ended");

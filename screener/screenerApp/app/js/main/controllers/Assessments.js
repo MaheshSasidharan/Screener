@@ -109,6 +109,7 @@ function AssessmentsCtrl($scope, $state, Constants, DataService, CommonFactory) 
                 vm.oService.GetAssessments().then(function(data) {
                     if (data.status) {
                         if (that.InitAssessments()) {
+                            that.InitAudioContext();
                             that.InitTab();
                             if (DataService.isMobileDevice) {
                                 that.InitPersonalTab();
@@ -170,6 +171,10 @@ function AssessmentsCtrl($scope, $state, Constants, DataService, CommonFactory) 
             //vm.assessments[0].arrQuestions[0].response = CommonFactory.TryConvertStringToDate(vm.assessments[0].arrQuestions[0].response);
             //vm.assessments[7].arrQuestions[0].response = CommonFactory.GetRandomCharacter();
             //vm.assessments[8].arrQuestions[0].displayedResponse = "---";
+        },
+        InitAudioContext: function() {
+            window.AudioContext = window.AudioContext || window.webkitAudioContext;
+            DataService.oAudioContext = new AudioContext();
         },
         InitTab: function() {
             vm.assessments.forEach(function(oAssessment) {

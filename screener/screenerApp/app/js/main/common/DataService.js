@@ -42,6 +42,12 @@ function DataService($http, Constants, CommonFactory) {
                         Helper.Miscellaneous.ReturnDataDotData,
                         Helper.Miscellaneous.FailedInService)
             },
+            ReadingUpload: function(oSaveItem) {
+                return $http.post(Helper.app + Helper.Assessments.controller + 'ReadingUpload', { oSaveItem: oSaveItem })
+                    .then(
+                        Helper.Miscellaneous.ReturnDataDotData,
+                        Helper.Miscellaneous.FailedInService)
+            },
             GetAudioAssessment: function(nAssmntNum) {
                 return $http.get(Helper.app + Helper.Assessments.controller + 'GetAudioAssessment?nAssmntNum=' + nAssmntNum, { responseType: "arraybuffer" })
                     .then(
@@ -92,7 +98,8 @@ function DataService($http, Constants, CommonFactory) {
                 return { status: false };
             },
             bAssessmentsCompleted: false,
-            isMobileDevice: false
+            isMobileDevice: false,
+            oAudioContext: null
         }
     }
 
@@ -109,8 +116,10 @@ function DataService($http, Constants, CommonFactory) {
         GetSourceAddress: Helper.Assessments.GetSourceAddress,
         GetPicNamesMatrixAssessment: Helper.Assessments.GetPicNamesMatrixAssessment,
         GetPicNamesPicturePrompt: Helper.Assessments.GetPicNamesPicturePrompt,
+        ReadingUpload: Helper.Assessments.ReadingUpload,
         bAssessmentsCompleted: Helper.Miscellaneous.bAssessmentsCompleted,
         isMobileDevice: Helper.Miscellaneous.isMobileDevice,
+        oAudioContext: Helper.Miscellaneous.oAudioContext        
     }
     return oService;
 }

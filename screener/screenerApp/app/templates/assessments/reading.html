@@ -1,0 +1,86 @@
+<div ng-include="'templates/assessments/questions.html'"></div>
+<script type="text/ng-template" id="14">
+    <div class="SC_audioContainer">
+        <div class="text-center">
+            <!-- <uib-progressbar class="progress-striped_1 active_1" max="re.oAudio.nMaxTime" value="re.oAudio.nSpentTime" type="{{re.oAudio.sType}}" ng-show="re.oAudio.bShowProgressBar"></uib-progressbar> -->
+            <md-button class="md-raised md-primary" ng-click="re.Helper.PlayNext('next')" ng-show="re.bShowStartButton">{{re.sTextOnPlayButton}}</md-button>
+        </div>
+        <div class="SC_Asmnt2_Letter">{{re.oAudio.displayedResponse}}</div>
+        
+        <div class="SC_Asmnt4_Letter">{{re.oAudio.sInstruction}}</div>
+        <div class="SC_Asmnt3_Letter"><div class="SC_ReadingContainer" ng-show="re.oAudio.sParagraph">{{re.oAudio.sParagraph}}</div>
+
+        <div ng-audio-recorder id="mainAudio" audio-model="re.oAudioRecorder.recorded" time-limit="re.oAudioRecorder.timeLimit" show-player="false" convert-mp3="false" on-record-start="re.oAudioRecorder.OnRecordStart()" on-record-complete="re.oAudioRecorder.OnRecordAndConversionComplete()" auto-start="re.oAudioRecorder.autoStart" ng-if="re.oAudioRecorder.autoStart">
+            <div ng-if="recorder.isAvailable">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <md-button class="md-raised md-primary" ng-click="recorder.stopRecord()"><i class="material-icons">stop</i></md-button>
+                    </div>
+                    <div class="panel-heading" ng-hide="true">
+                        <h3 class="panel-title">
+                        <span ng-if="recorder.isHtml5()">
+                            Click on <strong>Start Recording</strong>
+                            <a ng-show="false" href="?forceFlash" class="btn btn-default btn-sm float-rt">Use FLASH</a>
+                        </span>
+
+                        <span ng-if="!recorder.isHtml5()">
+                            Using FLASH <a href="?" class="btn btn-default btn-sm float-rt">Use Default</a>
+                        </span>
+                    </h3>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="panel-body">
+                        <div>
+                            <div>
+                                <h3 class="audioRecorderTimeElapsed" ng-if="recorder.status.isRecording && false">
+                                {{recorder.elapsedTime >= 10 ? recorder.elapsedTime : ('0'+recorder.elapsedTime)}}
+                            </h3>
+                                <div class="alert alert-danger" ng-if="recorder.status.isDenied === true">
+                                    Permission to use your microphone was declined, please refresh this page to grant permission.
+                                </div>
+                                <div class="controls text-center" class="audioRecorderRecordingControl" ng-hide="true || recorder.status.isDenied === true">
+                                    <button ng-click="recorder.status.isRecording ? recorder.stopRecord() : recorder.startRecord()" type="button" class="btn" ng-class="{'btn-primary': !recorder.status.isRecording, 'btn-danger': recorder.status.isRecording}">
+                                        <i class="glyphicon glyphicon-record"></i> {{recorder.status.isRecording ? 'Stop' : 'Start'}} Recording
+                                    </button>
+                                    <button class="btn" ng-class="{'btn-primary': (recorder.status.isPaused || recorder.status.isStopped), 'btn-warning': recorder.status.isPlaying}" ng-click="recorder.status.isPlaying ? recorder.playbackPause() : recorder.playbackResume()" type="button" ng-disabled="recorder.status.isRecording || !recorder.audioModel">
+                                        <span ng-if="recorder.status.isPaused || recorder.status.isStopped">
+                                        <i class="glyphicon glyphicon-play"></i> Play
+                                    </span>
+                                        <span ng-if="recorder.status.isPlaying">
+                                        <i class="glyphicon glyphicon-pause"></i> Pause
+                                    </span>
+                                    </button>
+                                    <button ng-show="false" class="btn btn-success" ng-click="recorder.save()" ng-disabled="recorder.status.isRecording || !recorder.audioModel">
+                                        <i class="glyphicon glyphicon-download"></i> Download
+                                    </button>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                        <br/>
+                        <div ng-if="recorder.status.isConverting">
+                            <p class="text-center">
+                                Please wait while we process your recording
+                            </p>
+                        </div>
+                        <div class="panels" canvas-sizer>
+                            <div ng-show="recorder.status.isRecording">
+                                <!-- <ng-audio-recorder-analyzer></ng-audio-recorder-analyzer> -->
+                                <md-button class="md-raised md-warn" disabled>
+                                    <md-icon md-svg-src="css/icons/settings_voice.svg"></md-icon>
+                                    RECORDING
+                                </md-button>
+                            </div>
+                            <div ng-show="!recorder.status.isRecording && recorder.audioModel">
+                                <ng-audio-recorder-wave-view wave-color="silver" bar-color="red"></ng-audio-recorder-wave-view>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div ng-if="!recorder.isAvailable" class="alert alert-warning">
+                Your browser does not support this feature natively, please use latest version of <a href="https://www.google.com/chrome/browser" target="_blank">Google Chrome</a> or <a href="https://www.mozilla.org/en-US/firefox/new/" target="_blank">Mozilla Firefox</a>. If you're on Safari or Internet Explorer, you can install <a href="https://get.adobe.com/flashplayer/">Adobe Flash</a> to use this feature.
+            </div>
+        </div>
+    </div>
+</script>

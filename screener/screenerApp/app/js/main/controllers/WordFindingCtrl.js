@@ -1,30 +1,31 @@
-app.controller('VoiceController', ['$scope', '$timeout', '$interval', '$sce', 'Factory_Constants', 'Factory_CommonRoutines', 'Factory_DataService', VoiceController]);
+app.controller('WordFindingController', ['$scope', '$timeout', '$interval', '$sce', 'Factory_Constants', 'Factory_CommonRoutines', 'Factory_DataService', WordFindingController]);
 
-function VoiceController($scope, $timeout, $interval, $sce, Constants, CommonFactory, DataService, Upload) {
-    var vo = this;
+function WordFindingController($scope, $timeout, $interval, $sce, Constants, CommonFactory, DataService, Upload) {
+    var wo = this;
     var bFirst = true;
-    vo.bShowStartButton = true;
-    vo.sTextOnPlayButton = "Start Practice";
+    wo.bShowStartButton = true;
+    wo.sTextOnPlayButton = "Start Practice";
     var cRandomCharacter = null;
     var arrCharacters = Constants.VoiceAssessment.arrCharacters;
     var nCurrentRound = 0;
     var nTotalRounds = arrCharacters.length;
 
-    vo.SoundBuffer = null;
+    wo.SoundBuffer = null;
     var oIntervalPromise = null;
-    window.AudioContext = window.AudioContext || window.webkitAudioContext;
-    var context = new AudioContext();
+    // window.AudioContext = window.AudioContext || window.webkitAudioContext;
+    // var context = new AudioContext();
+    var context = DataService.oAudioContext;
     var source = context.createBufferSource(); // creates a sound source
-    var oAudioAssessment = $scope.$parent.vm.assessments[7].arrQuestions[0];
+    //var oAudioAssessment = $scope.$parent.vm.assessments[7].arrQuestions[0];    
 
-    vo.TestAudio = null;
-    vo.arrBuffers = null;
+    wo.TestAudio = null;
+    wo.arrBuffers = null;
 
     var audioIndex = -1;
 
-    vo.oService = {
+    wo.oService = {
         AudioUpload: function(sRandomCharacter) {
-            CommonFactory.BlobToBase64(vo.oAudioRecorder.recorded, function(base64) { // encode
+            CommonFactory.BlobToBase64(wo.oAudioRecorder.recorded, function(base64) { // encode
                 var oSaveItem = { 'blob': base64, 'character': sRandomCharacter };
                 DataService.AudioUpload(oSaveItem).then(function(data) {
 
@@ -33,7 +34,7 @@ function VoiceController($scope, $timeout, $interval, $sce, Constants, CommonFac
         }
     }
 
-    vo.oAudio = {
+    wo.oAudio = {
         bShowStartButton: false,
         bShowProgressBar: false,
         nMaxTime: null,
@@ -63,7 +64,7 @@ function VoiceController($scope, $timeout, $interval, $sce, Constants, CommonFac
         }
     }
 
-    vo.Helper = {
+    wo.Helper = {
         Init: function() {
             // Hide NextAssessment button
             $scope.$parent.vm.Helper.ShowHidePager(false);
@@ -72,67 +73,67 @@ function VoiceController($scope, $timeout, $interval, $sce, Constants, CommonFac
         },
         PlayNext: function(sType) {
             if (sType == "next") {
-                vo.bShowStartButton = false;
+                wo.bShowStartButton = false;
                 var arrChars = arrCharacters[nCurrentRound].arrChars;
                 cRandomCharacter = arrChars[Math.floor(Math.random() * arrChars.length)];
                 var nRecordLength = arrCharacters[nCurrentRound].RecordLength;
-                vo.oAudio.nMaxTime = nRecordLength * 1000;                
-                vo.oAudioRecorder.timeLimit = nRecordLength;
+                wo.oAudio.nMaxTime = nRecordLength * 1000;                
+                wo.oAudioRecorder.timeLimit = nRecordLength;
 
                 nCurrentRound++;
 
-                vo.oAudioRecorder.StartRecorderCountDown();
+                wo.oAudioRecorder.StartRecorderCountDown();
 
                 if (bFirst) {
-                    vo.sTextOnPlayButton = "Start";
+                    wo.sTextOnPlayButton = "Start";
                     bFirst = false;
                 } else {
-                    vo.sTextOnPlayButton = "Next";
+                    wo.sTextOnPlayButton = "Next";
                 }
             }
         }
     }
 
-    vo.oAudioRecorder = {
+    wo.oAudioRecorder = {
         recorded: null,
         timeLimit: 3, // make this 3
         autoStart: false,
         StartRecorderCountDown: function() {
             var nTimer = 3; // make this 3
-            oAudioAssessment.displayedResponse = nTimer;
+            wo.oAudio.displayedResponse = nTimer;
             var oIntervalPromise = $interval(function() {
                 if (nTimer == 0) {
-                    vo.oAudioRecorder.recorded = null;;
-                    oAudioAssessment.displayedResponse = cRandomCharacter;
-                    vo.oAudioRecorder.autoStart = true;                    
+                    wo.oAudioRecorder.recorded = null;;
+                    wo.oAudio.displayedResponse = cRandomCharacter;
+                    wo.oAudioRecorder.autoStart = true;                    
                     $timeout(function() {
-                        vo.oAudio.StartProgressBar();
+                        wo.oAudio.StartProgressBar();
                     }, Constants.Assessments.ProgressStartDelay);
                     $interval.cancel(oIntervalPromise);
                 } else {
-                    oAudioAssessment.displayedResponse = --nTimer;
+                    wo.oAudio.displayedResponse = --nTimer;
                 }
             }, 1000, 4);
         },
         OnRecordStart: function() {
-            console.log("RECORDING STARTED");
+            //console.log("RECORDING STARTED");
         },
         OnRecordAndConversionComplete: function() {
             $timeout(function() {
-                vo.oService.AudioUpload(cRandomCharacter);
+                wo.oService.AudioUpload(cRandomCharacter);
 
                 if (nCurrentRound === nTotalRounds) {
                     $scope.$parent.vm.Helper.ShowHidePager(true, Constants.Miscellaneous.AssessmentCompleteNext);
                 } else {
                     $scope.$parent.vm.currentAssessment.arrQuestions[0].sMode = "Final";
-                    vo.bShowStartButton = true;
+                    wo.bShowStartButton = true;
                 }
 
-                oAudioAssessment.displayedResponse = null;
-                vo.oAudioRecorder.autoStart = false;
+                wo.oAudio.displayedResponse = null;
+                wo.oAudioRecorder.autoStart = false;
             }, 0);
         }
     }
 
-    vo.Helper.Init();
+    wo.Helper.Init();
 }

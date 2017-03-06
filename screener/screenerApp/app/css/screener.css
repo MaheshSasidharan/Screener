@@ -34,6 +34,17 @@
     font-weight: bold;
 }
 
+.SC_Asmnt3_Letter pre {
+    font-size: 30px;
+    text-align: left;
+}
+
+.SC_Asmnt4_Letter {
+    text-align: left;
+    font-size: 50px;
+    font-weight: bold;
+}
+
 .SC_audioContainer {
     padding: 1px 20px;
     text-align: center;
@@ -187,6 +198,20 @@
     height: 18px;
 }
 
-.SC_VisibilityNone{
+.SC_VisibilityNone {
     visibility: hidden;
+}
+
+.SC_ReadingContainer {
+    white-space: pre-wrap;
+    font-size: 30px;
+    text-align: justify;
+    color: black;
+    background-color: white;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.SC_RecordingIconContainer {
+    text-align: center;
 }
