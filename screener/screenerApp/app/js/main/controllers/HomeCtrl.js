@@ -14,7 +14,8 @@ app.controller('HomeCtrl', ['$scope', '$state', 'Factory_Constants', 'Factory_Da
 
     vm.Helper = {
         StartAssessment: function() {
-            $state.transitionTo('screener.assessments');
+            $state.transitionTo('screener.setup');
+            //$state.transitionTo('screener.assessments');
         }
     }
 

@@ -87,7 +87,7 @@ function AssessmentsCtrl($scope, $state, Constants, DataService, CommonFactory) 
                 // Check if phone is being used
                 DataService.isMobileDevice = navigator.userAgent.match(/iPad|iPhone|iPod|android/i) != null || screen.width <= 480;
 
-                if (DataService.isMobileDevice) {
+                if (DataService.isMobileDevice || DataService.oSetUpIssues.bHasSetupIssue()) {
                     vm.Helper.Init();
                     return;
                 }
@@ -111,7 +111,7 @@ function AssessmentsCtrl($scope, $state, Constants, DataService, CommonFactory) 
                         if (that.InitAssessments()) {
                             that.InitAudioContext();
                             that.InitTab();
-                            if (DataService.isMobileDevice) {
+                            if (DataService.isMobileDevice || DataService.oSetUpIssues.bHasSetupIssue()) {
                                 that.InitPersonalTab();
                             }
                             that.InitCurrentTab();
@@ -193,12 +193,20 @@ function AssessmentsCtrl($scope, $state, Constants, DataService, CommonFactory) 
         InitPersonalTab: function() {
             // Go to last Tab
             vm.currentTabIndex = vm.tabs.length - 1;
-            CommonFactory.Notification.error({ message: Constants.Miscellaneous.IsMobileDevice, delay: null });
+            var sMessage = "";
+            if (DataService.isMobileDevice) {
+                sMessage = Constants.Miscellaneous.IsMobileDevice;
+            } else if (DataService.oSetUpIssues.bHasMicrophoneIssue) {
+                sMessage = Constants.Miscellaneous.bHasMicrophoneIssue;
+            } else if (DataService.oSetUpIssues.bHasSpeakerIssue) {
+                sMessage = Constants.Miscellaneous.bHasSpeakerIssue;
+            }
+            CommonFactory.Notification.error({ message: sMessage, delay: null });
 
             var oPersonal = CommonFactory.FindItemInArray(vm.assessments, 'nickName', 'personal', 'item');
             if (oPersonal) {
                 oPersonal.description = Constants.PersonalAssessment.EnterEmail;
-                var arrQuestions = CommonFactory.FindItemInArray(oPersonal.arrQuestions, 'questionId', '15', 'item');
+                var arrQuestions = CommonFactory.FindItemInArray(oPersonal.arrQuestions, 'questionId', '16', 'item');
                 oPersonal.arrQuestions = [];
                 if (arrQuestions) {
                     oPersonal.arrQuestions.push(arrQuestions);

@@ -6,6 +6,8 @@ function Constants() {
             AssessmentCompleteNext: "You have completed this assessment. Click NEXT to continue.",
             SomethingWentWrong: "Sorry something went wrong",
             IsMobileDevice: "Sorry, for this assessment, we only support desktop/laptop. Please open the link on your desktop/laptop, or you can provide your email address to get a reminder.",
+            bHasMicrophoneIssue: "Sorry, for this assessment, we need to ensure you have a proper microphone. Please test this from another desktop/laptop, or you can provide your email address to get a reminder.",
+            bHasSpeakerIssue: "Sorry, for this assessment, we need to ensure you have a proper speaker. Please test this from another desktop/laptop, or you can provide your email address to get a reminder.",
             FailedMediaAccess: "Failed to get media access",
             NoBrowserSupport: "Your browser does not support features required to take this assessment. Please upgrade to the latest browser versions of your choice."
         },

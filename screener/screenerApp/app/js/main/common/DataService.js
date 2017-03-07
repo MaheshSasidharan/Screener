@@ -99,6 +99,13 @@ function DataService($http, Constants, CommonFactory) {
             },
             bAssessmentsCompleted: false,
             isMobileDevice: false,
+            oSetUpIssues: {
+                bHasMicrophoneIssue: false,
+                bHasSpeakerIssue: false,
+                bHasSetupIssue: function(){
+                    return (this.bHasMicrophoneIssue || this.bHasSpeakerIssue);
+                }
+            },
             oAudioContext: null
         }
     }
@@ -119,6 +126,7 @@ function DataService($http, Constants, CommonFactory) {
         ReadingUpload: Helper.Assessments.ReadingUpload,
         bAssessmentsCompleted: Helper.Miscellaneous.bAssessmentsCompleted,
         isMobileDevice: Helper.Miscellaneous.isMobileDevice,
+        oSetUpIssues: Helper.Miscellaneous.oSetUpIssues,
         oAudioContext: Helper.Miscellaneous.oAudioContext        
     }
     return oService;

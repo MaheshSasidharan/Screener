@@ -18,8 +18,6 @@ function PersonalController($scope, Constants, CommonFactory, DataService) {
         });
     }
 
-
-
     pe.Helper = {
         UpdateCheckbox: function(school) {
             if (pe.arrCheckedSchools.indexOf(school) === -1) {
@@ -27,7 +25,6 @@ function PersonalController($scope, Constants, CommonFactory, DataService) {
             } else {
                 pe.arrCheckedSchools.splice(pe.arrCheckedSchools.indexOf(school), 1);
             }
-
 
             var sResponse = [];
             pe.arrCheckedSchools.forEach(function(oSchool) {

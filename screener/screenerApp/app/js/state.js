@@ -17,6 +17,11 @@ app.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
       templateUrl: 'templates/main/contact.tpl.html',
       controller: 'ContactCtrl as vm'
     })
+    .state('screener.setup', {
+      url: '/setup',
+      templateUrl: 'templates/main/setup.tpl.html',
+      controller: 'SetupCtrl as se'
+    })
     .state('screener.assessments', {
       url: '/assessments',
       templateUrl: 'templates/assessments/assessments.html',
