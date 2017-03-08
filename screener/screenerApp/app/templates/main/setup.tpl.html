@@ -11,10 +11,10 @@
             </md-button>
             <br>
             <section layout="row" layout-align="center center" ng-show="se.bOKNotOKShow">
-                <md-button class="md-fab" aria-label="Cancel" ng-click="se.Helper.OKNOTOK('notok')">
+                <md-button class="md-fab md-warn" aria-label="Cancel" ng-click="se.Helper.OKNOTOK('notok')">
                     <md-icon md-svg-src="css/icons/cancel.svg"></md-icon>
                 </md-button>
-                <md-button class="md-fab" aria-label="Check" ng-click="se.Helper.OKNOTOK('ok')">
+                <md-button class="md-fab md-primary md-hue-2" aria-label="Check" ng-click="se.Helper.OKNOTOK('ok')">
                     <md-icon md-svg-src="css/icons/check.svg"></md-icon>
                 </md-button>
             </section>
@@ -47,7 +47,7 @@
                                 <div class="alert alert-danger" ng-if="recorder.status.isDenied === true">
                                     Permission to use your microphone was declined, please refresh this page to grant permission.
                                 </div>
-                                <div class="controls text-center" class="audioRecorderRecordingControl" ng-hide="true || recorder.status.isDenied === true">
+                                <div class="controls text-center" class="audioRecorderRecordingControl" ng-hide="recorder.status.isDenied === true">
                                     <button ng-click="recorder.status.isRecording ? recorder.stopRecord() : recorder.startRecord()" type="button" class="btn" ng-class="{'btn-primary': !recorder.status.isRecording, 'btn-danger': recorder.status.isRecording}">
                                         <i class="glyphicon glyphicon-record"></i> {{recorder.status.isRecording ? 'Stop' : 'Start'}} Recording
                                     </button>
@@ -97,8 +97,11 @@
         <h2>Can you hear the audio?</h2>
         <br>
         <h3>You can adjust your speaker volume now.</h3>
+        <md-button class="md-fab" aria-label="Cached" ng-click="se.Helper.PlayAudio()">
+                    <md-icon md-svg-src="css/icons/cached.svg"></md-icon>
+        </md-button>
     </div>
-    <div class="btn-danger" ng-show="se.bFacingIssuesShow">
-        <button class="btn btn-lg btn-danger" ng-click="se.Helper.Transition()">CONTINUE</button>
+    <div class="btn-danger" ng-show="se.bFacingIssuesShow" ng-click="se.Helper.Transition()">
+        <label class="btn btn-lg btn-danger" >STOP !!!</label>
     </div>
 </div>

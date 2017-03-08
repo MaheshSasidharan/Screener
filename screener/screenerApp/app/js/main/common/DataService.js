@@ -86,7 +86,13 @@ function DataService($http, Constants, CommonFactory) {
                     .then(
                         Helper.Miscellaneous.ReturnDataDotData,
                         Helper.Miscellaneous.FailedInService)
-            }
+            },
+            GetSetupAudio: function(nAssmntNum) {
+                return $http.get(Helper.app + Helper.Assessments.controller + 'GetSetupAudio?nAssmntNum=' + nAssmntNum, { responseType: "arraybuffer" })
+                    .then(
+                        Helper.Miscellaneous.ReturnDataDotData,
+                        Helper.Miscellaneous.FailedInService)
+            },
         },
         Miscellaneous: {
             ReturnDataDotData: function(data) {
@@ -124,6 +130,7 @@ function DataService($http, Constants, CommonFactory) {
         GetPicNamesMatrixAssessment: Helper.Assessments.GetPicNamesMatrixAssessment,
         GetPicNamesPicturePrompt: Helper.Assessments.GetPicNamesPicturePrompt,
         ReadingUpload: Helper.Assessments.ReadingUpload,
+        GetSetupAudio: Helper.Assessments.GetSetupAudio,
         bAssessmentsCompleted: Helper.Miscellaneous.bAssessmentsCompleted,
         isMobileDevice: Helper.Miscellaneous.isMobileDevice,
         oSetUpIssues: Helper.Miscellaneous.oSetUpIssues,

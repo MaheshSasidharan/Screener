@@ -229,6 +229,23 @@ function Constants() {
                 // '3_3',
             ]
         },
+        Setup: {
+            audioRecordLength: 8,
+            arrVoices: [
+                'setup_audio'
+            ],
+            ButtonStatus: {
+                GetStarted: "Let's get started",
+                CheckMicrophone: "Click to check your microphone",
+                CheckSpeakerFirst: "Great. Now let's check your speakers",
+                CheckSpeaker: "Click to check your speakers",
+                NotWorkingMicrophone: "Microphone not working. Try again by clicking here",
+                NotWorkingMicrophoneNotification: "Your microphone is not working. :(",                
+                NotWorkingSpeaker: "Speaker not working. Try again by clicking here",
+                NotWorkingSpeakerNotification: "Your speaker is not working. :(",
+                StartAssessment: "Great. You are ready to start the assessment",
+            }
+        },
         PicturePromptAssessment: {
             audioRecordLength: 30,
         },
@@ -259,14 +276,12 @@ function Constants() {
                 RecordLength: 120,
                 sParagraphType: 'Normal',
                 sInstruction: 'Click on Start and read the text'
-            },
-            {
+            }, {
                 sParagraph: 'Again Hal’s whip fell upon the dogs. They threw themselves against the breast-bands, dug their feet into the packed snow, got down low to it, and put forth all their strength. The sled held as though it were an anchor. After two efforts, they stood still, panting. The whip was whistling savagely, when once more Mercedes interfered. She dropped on her knees before Buck, with tears in her eyes, and put her arms around his neck. \n \n “You poor, poor dears,” she cried sympathetically, “why don’t you pull hard?—then you wouldn’t be whipped.” Buck did not like her, but he was feeling too miserable to resist her, taking it as part of the day’s miserable work.',
                 RecordLength: 120,
                 sParagraphType: 'NoEmotion',
                 sInstruction: 'Now, read the same text again, but this time, read it without any feeling: flat and without emotion'
-            },
-            {
+            }, {
                 sParagraph: 'Again Hal’s whip fell upon the dogs. They threw themselves against the breast-bands, dug their feet into the packed snow, got down low to it, and put forth all their strength. The sled held as though it were an anchor. After two efforts, they stood still, panting. The whip was whistling savagely, when once more Mercedes interfered. She dropped on her knees before Buck, with tears in her eyes, and put her arms around his neck. \n \n “You poor, poor dears,” she cried sympathetically, “why don’t you pull hard?—then you wouldn’t be whipped.” Buck did not like her, but he was feeling too miserable to resist her, taking it as part of the day’s miserable work.',
                 RecordLength: 120,
                 sParagraphType: 'WithEmotion',
