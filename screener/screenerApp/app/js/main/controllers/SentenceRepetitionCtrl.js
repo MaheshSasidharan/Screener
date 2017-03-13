@@ -79,7 +79,7 @@ function SentenceRepetitionController($scope, $timeout, $interval, $sce, Constan
             //console.log("RECORDING STARTED");
         },
         OnRecordAndConversionComplete: function() {
-            console.log("RECORDING Ended");
+            //console.log("RECORDING Ended");
             $timeout(function() {
                 //console.log(au.oAudioRecorder.recorded);
                 //au.arrAudioToBeUploaded.push(au.oAudioRecorder.recorded);

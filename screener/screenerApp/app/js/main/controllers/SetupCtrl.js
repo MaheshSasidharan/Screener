@@ -31,7 +31,7 @@ function SetupCtrl($scope, $state, Constants, CommonFactory, DataService) {
             //console.log("RECORDING STARTED");            
         },
         OnRecordAndConversionComplete: function() {
-            console.log("RECORDING Ended");
+            //console.log("RECORDING Ended");
         }
     }
 

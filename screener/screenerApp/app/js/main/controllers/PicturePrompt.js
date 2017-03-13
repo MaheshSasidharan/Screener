@@ -86,7 +86,7 @@ function PicturePrompt($scope, $timeout, $interval, Constants, CommonFactory, Da
             //console.log("RECORDING STARTED");
         },
         OnRecordAndConversionComplete: function() {
-            console.log("RECORDING Ended");
+            //console.log("RECORDING Ended");
             $timeout(function() {
                 pp.bShowCurrentPic = false;
                 pp.oAudioRecorder.autoStart = false;

@@ -86,7 +86,7 @@ function SyncVoice($scope, $timeout, $interval, Constants, CommonFactory, DataSe
             //console.log("RECORDING STARTED");            
         },
         OnRecordAndConversionComplete: function() {
-            console.log("RECORDING Ended");
+            //console.log("RECORDING Ended");
             $timeout(function() {
                 //console.log(sv.oAudioRecorder.recorded);
                 //sv.arrAudioToBeUploaded.push(sv.oAudioRecorder.recorded);
