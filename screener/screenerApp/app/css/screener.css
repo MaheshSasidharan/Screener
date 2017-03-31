@@ -215,3 +215,9 @@
 .SC_RecordingIconContainer {
     text-align: center;
 }
+
+
+/* Overriding Material Design */
+ul li {
+    margin-top: 0px;
+}

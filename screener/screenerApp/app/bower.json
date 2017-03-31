@@ -1,0 +1,22 @@
+{
+  "name": "screenerclient",
+  "description": "Screener Application",
+  "main": "index.js",
+  "authors": [
+    "Mahesh Sasidharan"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/maheshsasidharan/screenerapp",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angularAudioRecorder": "^1.4.1",
+    "orbicular": "~3.0.0"
+  }
+}

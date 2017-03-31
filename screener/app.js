@@ -17,6 +17,7 @@ var DB = require('./CommonFactory/databaseManager');
 
 var app = express();
 //app.enable('trust proxy');
+/* #PublicFolder */
 app.use(express.static(path.join(__dirname, 'screenerApp', 'app')));
 
 app.use(function(req, res, next) {
@@ -49,6 +50,7 @@ cors({credentials: true, origin: true});
 app.use(cors());
 */
 
+/* #Session */
 app.use(sessions({
     cookieName: 'session', // cookie name dictates the key name added to the request object
     secret: Helper.GUID(), // should be a large unguessable string
@@ -56,6 +58,7 @@ app.use(sessions({
     activeDuration: 30 * 24 * 60 * 60 * 1000 //(1 month) if expiresIn < activeDuration, the session will be extended by activeDuration milliseconds
 }));
 
+/* #UserSession */
 app.use(function(req, res, next) {    
     if (req.method !== "OPTIONS") {
         if (req.session && req.session.id) {
