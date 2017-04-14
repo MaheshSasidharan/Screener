@@ -1,8 +1,9 @@
 <div class="GMD_innercontainer">
     <div ng-if="vm.bAssessmentsCompleted">
-        <h1>{{vm.sAssessmentCompletedText}}</h1>
+        <h1>{{vm.sAssessmentCompletedText}}</h1>        
     </div>
     <div ng-if="!vm.bAssessmentsCompleted">
+        {{vm.source}}
         <h1>Welcome.</h1>
         <h2>
 	    	This assessment will measure several aspects of language ability.  It will take about 15 minutes. 

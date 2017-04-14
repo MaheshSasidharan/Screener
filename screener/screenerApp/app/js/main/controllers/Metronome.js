@@ -3,7 +3,7 @@ app.controller('Metronome', ['$scope', '$timeout', '$interval', 'Factory_Constan
 function Metronome($scope, $timeout, $interval, Constants, CommonFactory, DataService) {
     var me = this;
     var bFirst = true;
-    var firstTime = true; // audio context
+    var firstTime = true;
     var nCurrentRound = 0;
     var nTotalRounds = 2;
     var arrResponse = [];

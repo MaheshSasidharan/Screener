@@ -14,7 +14,7 @@ function WordFindingController($scope, $timeout, $interval, $sce, Constants, Com
     var oIntervalPromise = null;
     // window.AudioContext = window.AudioContext || window.webkitAudioContext;
     // var context = new AudioContext();
-    var context = DataService.oAudioContext;
+    var context = DataService.CreateOrGetContext();
     var source = context.createBufferSource(); // creates a sound source
     //var oAudioAssessment = $scope.$parent.vm.assessments[7].arrQuestions[0];    
 

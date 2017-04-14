@@ -41,8 +41,9 @@ function SetupCtrl($scope, $state, Constants, CommonFactory, DataService) {
 
     se.Helper = {
         Init: function() {
-            this.InitAudioContext();
-            context = DataService.oAudioContext;
+            //this.InitAudioContext();
+            //context = DataService.oAudioContext;
+            context = DataService.CreateOrGetContext();
             source = context.createBufferSource(); // creates a sound source
             se.bFirstButtonShow = true;
             se.sFirstButtonText = Constants.Setup.ButtonStatus.GetStarted;

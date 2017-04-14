@@ -6,7 +6,7 @@ function SentenceRepetitionController($scope, $timeout, $interval, $sce, Constan
 
     // window.AudioContext = window.AudioContext || window.webkitAudioContext;
     // var context = new AudioContext();
-    var context = DataService.oAudioContext;
+    var context = DataService.CreateOrGetContext();
     var source = context.createBufferSource(); // creates a sound source
 
     au.sTextOnPlayButton = "Start Practice";

@@ -7,10 +7,22 @@ app.controller('NavCtrl', ['$scope', '$location', function($scope, $location) {
     }
 }]);
 
-app.controller('HomeCtrl', ['$scope', '$state', 'Factory_Constants', 'Factory_DataService', 'Factory_CommonRoutines', function($scope, $state, Constants, DataService, CommonFactory) {
+app.controller('HomeCtrl', ['$scope', '$state', '$location', 'Factory_Constants', 'Factory_DataService', 'Factory_CommonRoutines', function($scope, $state, $location, Constants, DataService, CommonFactory) {
     var vm = this;
     vm.bAssessmentsCompleted = DataService.bAssessmentsCompleted;
     vm.sAssessmentCompletedText = DataService.isMobileDevice ? Constants.Home.EmailSaved : Constants.Home.AssessmentCompleted;
+
+    vm.oService = {
+        SaveUserSource: function(source) {
+            return DataService.SaveUserSource(source).then(function(data) {
+                if (data.status) {
+                    return data;
+                } else {
+                    console.log("Failed to save source");
+                }
+            });
+        }
+    }
 
     vm.Helper = {
         StartAssessment: function() {
@@ -18,6 +30,16 @@ app.controller('HomeCtrl', ['$scope', '$state', 'Factory_Constants', 'Factory_Da
             //$state.transitionTo('screener.assessments');
         }
     }
+
+    vm.location = $location;
+    $scope.$watch('vm.location.search()', function() {
+        vm.source = ($location.search()).source;
+        if (vm.source && vm.source.trim() !== "") {
+            vm.oService.SaveUserSource(vm.source).then(function() {
+                $location.search("source", null);
+            });
+        }
+    }, true);
 
     //$scope.$on('$locationChangeStart', CommonFactory.PreventGoingToDifferentPage);
 

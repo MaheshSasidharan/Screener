@@ -20,6 +20,9 @@ var Constants = {
 			{
 				//Update Response texts
 				query: "UPDATE ResponseTexts SET ? WHERE responseTextId = ?"
+			},
+			UpdateUsersSource:{
+				query: "UPDATE Users SET ? WHERE userId = ?"
 			}
 		}
 	},

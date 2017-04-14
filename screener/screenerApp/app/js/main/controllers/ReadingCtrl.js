@@ -14,7 +14,7 @@ function ReadingController($scope, $timeout, $interval, $sce, Constants, CommonF
 
     re.SoundBuffer = null;
     var oIntervalPromise = null;
-    var context = DataService.oAudioContext;
+    var context = DataService.CreateOrGetContext();
     var source = context.createBufferSource(); // creates a sound source    
 
     re.TestAudio = null;

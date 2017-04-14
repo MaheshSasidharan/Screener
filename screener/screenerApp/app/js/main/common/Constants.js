@@ -4,10 +4,10 @@ function Constants() {
     var oConstants = {
         Miscellaneous: {
             AssessmentCompleteNext: "You have completed this assessment. Click NEXT to continue.",
-            SomethingWentWrong: "Sorry something went wrong",
-            IsMobileDevice: "Sorry, for this assessment, we only support desktop/laptop. Please open the link on your desktop/laptop, or you can provide your email address to get a reminder.",
-            bHasMicrophoneIssue: "Sorry, for this assessment, we need to ensure you have a proper microphone. Please test this from another desktop/laptop, or you can provide your email address to get a reminder.",
-            bHasSpeakerIssue: "Sorry, for this assessment, we need to ensure you have a proper speaker. Please test this from another desktop/laptop, or you can provide your email address to get a reminder.",
+            SomethingWentWrong: "Sorry, something went wrong",
+            IsMobileDevice: "Sorry, for this assessment, we only support desktop/laptop. Please open the link on your desktop/laptop, or you can provide your email address to get a reminder for when you have access to a desktop or laptop.",
+            bHasMicrophoneIssue: "Sorry, for this assessment, we need to ensure you have a functioning microphone. Please test this from another desktop/laptop, or you can provide your email address to get a reminder.",
+            bHasSpeakerIssue: "Sorry, for this assessment, we need to ensure you have a functioning speaker or headphones. Please test this from another desktop/laptop, or you can provide your email address to get a reminder.",
             FailedMediaAccess: "Failed to get media access",
             NoBrowserSupport: "Your browser does not support features required to take this assessment. Please upgrade to the latest browser versions of your choice."
         },
@@ -83,13 +83,7 @@ function Constants() {
                     label: 'I can play an instrument, or have formal training in singing'
                 }, {
                     val: 'SingProfessionally',
-                    label: 'I play or sing professionally'
-                }, {
-                    val: 'MusicMajor',
-                    label: 'I study music as a major'
-                }, {
-                    val: 'TeachMusic',
-                    label: 'I teach music'
+                    label: 'I play or sing professionally / I study music as a major / I teach music'
                 }],
                 PublicSchool: [{
                     val: 'Elementary',
@@ -117,8 +111,8 @@ function Constants() {
             }
         },
         Home: {
-            AssessmentCompleted: "Thank you. You have completed the Assessment.",
-            EmailSaved: "Thank you. We will send you a reminder on the provided email address"
+            AssessmentCompleted: "Thank you. You have completed the assessment.",
+            EmailSaved: "Thank you. We will send you a reminder at the provided email address."
         },
         TimeDurationAssessment: {
             arrTimeDurations: [
@@ -126,7 +120,10 @@ function Constants() {
                 1.5,
                 0.5,
                 11,
-                5
+                5,
+		1,
+		7,
+		0.75
             ],
             // arrTimeDurations: [
             //     5,
@@ -221,6 +218,8 @@ function Constants() {
                 '1_1',
                 '1_2',
                 '1_3',
+		'1_2',
+		'1_1',
                 // '2_1',
                 // '2_2',
                 // '2_3',
@@ -285,7 +284,7 @@ function Constants() {
                 sParagraph: 'Again Hal’s whip fell upon the dogs. They threw themselves against the breast-bands, dug their feet into the packed snow, got down low to it, and put forth all their strength. The sled held as though it were an anchor. After two efforts, they stood still, panting. The whip was whistling savagely, when once more Mercedes interfered. She dropped on her knees before Buck, with tears in her eyes, and put her arms around his neck. \n \n “You poor, poor dears,” she cried sympathetically, “why don’t you pull hard?—then you wouldn’t be whipped.” Buck did not like her, but he was feeling too miserable to resist her, taking it as part of the day’s miserable work.',
                 RecordLength: 120,
                 sParagraphType: 'WithEmotion',
-                sInstruction: 'Finally, read the same text again, but read the narration and dialog with the appropriate level of feeling and emotion. Read for an audience, as if you’re telling a story'
+                sInstruction: 'Finally, read the same text again, but read the narration and dialog with the appropriate level of feeling and emotion. Read for an audience, as if you’re telling a story.'
             }]
         }
     }

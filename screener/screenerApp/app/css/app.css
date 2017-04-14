@@ -73,7 +73,9 @@ body {
 
 
 /* Material Design Override*/
-.main md-input-container, .main md-datepicker {
+
+.main md-input-container,
+.main md-datepicker {
     margin: 0;
     background-color: white;
     color: black;
@@ -81,7 +83,7 @@ body {
     width: 100%;
 }
 
-.main .md-datepicker-input-container{
+.main .md-datepicker-input-container {
     width: 93.5%;
 }
 
@@ -92,4 +94,23 @@ body {
 .main md-checkbox {
     margin-left: 12px !important;
     margin-top: 5px;
+}
+
+
+/*Drop down*/
+
+md-option {
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+    border-top: 1px solid black;
+    height: 28px;
+}
+
+md-option:last-child {
+    border-bottom: 1px solid black;
+}
+
+md-select-menu:not(.md-overflow) md-content {
+    padding-top: 0px;
+    padding-bottom: 0px;
 }

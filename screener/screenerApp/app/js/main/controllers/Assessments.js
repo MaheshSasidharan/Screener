@@ -108,7 +108,7 @@ function AssessmentsCtrl($scope, $state, Constants, DataService, CommonFactory) 
                 var that = this;
                 vm.oService.GetAssessments().then(function(data) {
                     if (data.status) {
-                        if (that.InitAssessments()) {                            
+                        if (that.InitAssessments()) {
                             that.InitTab();
                             if (DataService.isMobileDevice || DataService.oSetUpIssues.bHasSetupIssue()) {
                                 that.InitPersonalTab();
@@ -124,12 +124,14 @@ function AssessmentsCtrl($scope, $state, Constants, DataService, CommonFactory) 
             var bItemToBeAssessedFound = false;
             vm.tempAssessments.forEach(function(oItem) {
                 // This is to find, which assessment has already been completed
-                
-                if (!bItemToBeAssessedFound && oItem.responseTextId === undefined) { // If responseTextId property is not present, then that one has not been assessed
+                // If responseTextId property is not present, then that one has not been assessed
+
+                if (!bItemToBeAssessedFound && oItem.responseTextId === undefined && false) {
+                    //if (!bItemToBeAssessedFound && oItem.responseTextId === undefined) {     
                     bItemToBeAssessedFound = true;
                     vm.currentTabIndex = vm.assessments.length;
                 }
-                
+
 
                 var assessmentIndex = CommonFactory.FindItemInArray(vm.assessments, 'assessmentId', oItem.assessmentId, 'index');
                 // If it exists, add questions to it, else create one
@@ -158,8 +160,8 @@ function AssessmentsCtrl($scope, $state, Constants, DataService, CommonFactory) 
             });
             delete vm.tempAssessments;
 
-            //if (false && !bItemToBeAssessedFound) {
-                if (!bItemToBeAssessedFound) {
+            if (!bItemToBeAssessedFound && false) {
+                //if (!bItemToBeAssessedFound) {
                 // Could not find any assessment which was not completed before. So all assessments have been completed.
                 DataService.bAssessmentsCompleted = true;
                 this.TransitionState('home');

@@ -19,6 +19,12 @@ function DataService($http, Constants, CommonFactory) {
         },
         Assessments: {
             controller: "assessments/",
+            SaveUserSource:  function(sUserSource) {
+                return $http.post(Helper.app + Helper.Assessments.controller + 'SaveUserSource', { sUserSource: sUserSource })
+                    .then(
+                        Helper.Miscellaneous.ReturnDataDotData,
+                        Helper.Miscellaneous.FailedInService)
+            },
             GetAssessments: function() {
                 return $http.get(Helper.app + Helper.Assessments.controller + 'GetAssessments')
                     .then(
@@ -109,15 +115,24 @@ function DataService($http, Constants, CommonFactory) {
             oSetUpIssues: {
                 bHasMicrophoneIssue: false,
                 bHasSpeakerIssue: false,
-                bHasSetupIssue: function(){
+                bHasSetupIssue: function() {
                     return (this.bHasMicrophoneIssue || this.bHasSpeakerIssue);
                 }
             },
-            oAudioContext: null
+            oAudioContext: null,
+            CreateOrGetContext: function() {
+                if (this.oAudioContext) {
+                    return this.oAudioContext;
+                }
+                window.AudioContext = window.AudioContext || window.webkitAudioContext;
+                this.oAudioContext = new AudioContext();
+                return this.oAudioContext
+            }
         }
     }
 
     var oService = {
+        SaveUserSource: Helper.Assessments.SaveUserSource,
         GetCurrentUsers: Helper.Users.GetCurrentUsers,
         GetAssessments: Helper.Assessments.GetAssessments,
         SaveAssessments: Helper.Assessments.SaveAssessments,
@@ -131,11 +146,12 @@ function DataService($http, Constants, CommonFactory) {
         GetPicNamesMatrixAssessment: Helper.Assessments.GetPicNamesMatrixAssessment,
         GetPicNamesPicturePrompt: Helper.Assessments.GetPicNamesPicturePrompt,
         ReadingUpload: Helper.Assessments.ReadingUpload,
-        GetSetupAudio: Helper.Assessments.GetSetupAudio,
+        GetSetupAudio: Helper.Assessments.GetSetupAudio,        
         bAssessmentsCompleted: Helper.Miscellaneous.bAssessmentsCompleted,
         isMobileDevice: Helper.Miscellaneous.isMobileDevice,
         oSetUpIssues: Helper.Miscellaneous.oSetUpIssues,
-        oAudioContext: Helper.Miscellaneous.oAudioContext        
+        oAudioContext: Helper.Miscellaneous.oAudioContext,
+        CreateOrGetContext: Helper.Miscellaneous.CreateOrGetContext
     }
     return oService;
 }

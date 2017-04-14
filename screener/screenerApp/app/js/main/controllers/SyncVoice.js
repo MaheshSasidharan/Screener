@@ -4,10 +4,8 @@ function SyncVoice($scope, $timeout, $interval, Constants, CommonFactory, DataSe
     //recorderServiceProvider.withResampling(16000);
     var sv = this;
     var bFirst = true;
-
-    // window.AudioContext = window.AudioContext || window.webkitAudioContext;
-    // var context = new AudioContext();
-    var context = DataService.oAudioContext;
+        
+    var context = DataService.CreateOrGetContext();
     var source = context.createBufferSource(); // creates a sound source
 
     sv.sTextOnPlayButton = "Start Practice";

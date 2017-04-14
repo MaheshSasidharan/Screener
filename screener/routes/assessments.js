@@ -84,6 +84,26 @@ router.get('/GetAssessments', function(req, res, next) {
     handle_database(req, res, params);
 });
 
+router.post('/SaveUserSource', function(req, res) {
+    var sUserSource = req.body.sUserSource;
+    if (sUserSource && sUserSource.trim() != "") {
+        var whereVals = [{ sSource: sUserSource }, req.session.id];
+        var params = {
+            sType: "IndividualUpdate",
+            errors: {
+                errors_101: Constants.Errors._101,
+                queryFailed: Constants.Errors.Assessments.SaveAssessmentFailed
+            },
+            query: Constants.Queries.Assessments.UpdateUsersSource.query,
+            whereVals: whereVals,
+            callback: function(rowsInner) {
+                res.json({ status: true, message: "Updated" });
+            }
+        };
+        handle_database(req, res, params);
+    }
+});
+
 router.post('/SaveAssessments', function(req, res) {
     var oSaveItem = req.body.oSaveItem;
     if (oSaveItem && oSaveItem.length) {
