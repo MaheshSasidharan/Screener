@@ -31,6 +31,12 @@ function DataService($http, Constants, CommonFactory) {
                         Helper.Miscellaneous.ReturnDataDotData,
                         Helper.Miscellaneous.FailedInService)
             },
+            GetAssessmentAudioInstruction: function(nAssmntNum) {
+                return $http.get(Helper.app + Helper.Assessments.controller + 'GetAssessmentAudioInstruction?nAssmntNum=' + nAssmntNum, { responseType: "arraybuffer" })
+                    .then(
+                        Helper.Miscellaneous.ReturnDataDotData,
+                        Helper.Miscellaneous.FailedInService)
+            },
             SaveAssessments: function(oSaveItem) {
                 return $http.post(Helper.app + Helper.Assessments.controller + 'SaveAssessments', { oSaveItem: oSaveItem })
                     .then(
@@ -135,6 +141,7 @@ function DataService($http, Constants, CommonFactory) {
         SaveUserSource: Helper.Assessments.SaveUserSource,
         GetCurrentUsers: Helper.Users.GetCurrentUsers,
         GetAssessments: Helper.Assessments.GetAssessments,
+        GetAssessmentAudioInstruction: Helper.Assessments.GetAssessmentAudioInstruction,
         SaveAssessments: Helper.Assessments.SaveAssessments,
         AudioUploadWord: Helper.Assessments.AudioUploadWord,
         AudioUpload: Helper.Assessments.AudioUpload,

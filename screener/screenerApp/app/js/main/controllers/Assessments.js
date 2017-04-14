@@ -10,6 +10,10 @@ function AssessmentsCtrl($scope, $state, Constants, DataService, CommonFactory) 
     vm.tempAssessments = [];
     vm.assessments = [];
     vm.arrDropDowns = Constants.Assessments.arrDropDowns;
+
+    var context = DataService.CreateOrGetContext();
+    var source = context.createBufferSource(); // creates a sound source
+
     vm.oService = {
         GetAssessments: function() {
             return DataService.GetAssessments().then(function(data) {
@@ -113,8 +117,6 @@ function AssessmentsCtrl($scope, $state, Constants, DataService, CommonFactory) 
                             if (DataService.isMobileDevice || DataService.oSetUpIssues.bHasSetupIssue()) {
                                 that.InitPersonalTab();
                             }
-                            that.InitCurrentTab();
-                            that.ShowHidePager(true, null);
                         }
                     }
                 });
@@ -126,12 +128,11 @@ function AssessmentsCtrl($scope, $state, Constants, DataService, CommonFactory) 
                 // This is to find, which assessment has already been completed
                 // If responseTextId property is not present, then that one has not been assessed
 
-                if (!bItemToBeAssessedFound && oItem.responseTextId === undefined && false) {
-                    //if (!bItemToBeAssessedFound && oItem.responseTextId === undefined) {     
+                //if (!bItemToBeAssessedFound && oItem.responseTextId === undefined && false) {
+                    if (!bItemToBeAssessedFound && oItem.responseTextId === undefined) {     
                     bItemToBeAssessedFound = true;
                     vm.currentTabIndex = vm.assessments.length;
                 }
-
 
                 var assessmentIndex = CommonFactory.FindItemInArray(vm.assessments, 'assessmentId', oItem.assessmentId, 'index');
                 // If it exists, add questions to it, else create one
@@ -158,20 +159,18 @@ function AssessmentsCtrl($scope, $state, Constants, DataService, CommonFactory) 
                     });
                 }
             });
+            // Get audio instruction of loaded assessments
+            this.GetAssessmentAudioInstruction();
             delete vm.tempAssessments;
 
-            if (!bItemToBeAssessedFound && false) {
-                //if (!bItemToBeAssessedFound) {
+            //if (!bItemToBeAssessedFound && false) {
+                if (!bItemToBeAssessedFound) {
                 // Could not find any assessment which was not completed before. So all assessments have been completed.
                 DataService.bAssessmentsCompleted = true;
                 this.TransitionState('home');
                 return false;
             }
             return true;
-
-            //vm.assessments[0].arrQuestions[0].response = CommonFactory.TryConvertStringToDate(vm.assessments[0].arrQuestions[0].response);
-            //vm.assessments[7].arrQuestions[0].response = CommonFactory.GetRandomCharacter();
-            //vm.assessments[8].arrQuestions[0].displayedResponse = "---";
         },
         InitTab: function() {
             vm.assessments.forEach(function(oAssessment) {
@@ -181,6 +180,7 @@ function AssessmentsCtrl($scope, $state, Constants, DataService, CommonFactory) 
         InitCurrentTab: function() {
             vm.currentTab = [vm.tabs[vm.currentTabIndex]];
             vm.currentAssessment = vm.assessments[vm.currentTabIndex];
+            vm.Helper.PlaySound(vm.currentAssessment.oAudioInstruction.oAudio);
             this.TransitionState('assessments.' + vm.currentTab[0].state);
         },
         ShowHidePager: function(bShow, sMessage) {
@@ -209,6 +209,46 @@ function AssessmentsCtrl($scope, $state, Constants, DataService, CommonFactory) 
                     oPersonal.arrQuestions.push(arrQuestions);
                 }
             }
+        },
+        PlaySound: function(buffer) {
+            if (source.buffer) {
+                source.disconnect();
+                source = context.createBufferSource();
+            }
+            source.onended = this.EndOfAudioPlay;
+            source.buffer = buffer; // tell the source which sound to play
+            source.connect(context.destination); // connect the source to the context's destination (the speakers)
+            source.start(0); // play the sourc            
+        },
+        EndOfAudioPlay: function() {
+            console.log("Done playing instruction");
+        },
+        FinishedLoadingAudio(arrBuffers) {
+            arrBuffers.forEach(function(oAudio, i) {
+                vm.assessments[i].oAudioInstruction.oAudio = oAudio;
+                vm.assessments[i].oAudioInstruction.sStatus = 'voiceAdded';
+            });
+            console.log(vm.assessments);
+            vm.Helper.InitCurrentTab();
+            vm.Helper.ShowHidePager(true, null);
+            $scope.$apply();
+        },
+        GetAssessmentAudioInstruction: function() {
+            var arrInstructions = [];
+            for (var i = 0; i < vm.assessments.length; i++) {
+                var oAudioInstruction = {
+                    oAudio: null,
+                    sStatus: 'created'
+                }
+                arrInstructions.push(vm.assessments[i].nickName);
+                vm.assessments[i].oAudioInstruction = oAudioInstruction;
+            }
+            var bufferLoader = new BufferLoader(
+                context, arrInstructions,
+                this.FinishedLoadingAudio,
+                DataService.GetAssessmentAudioInstruction
+            );
+            bufferLoader.load();
         }
     }
 

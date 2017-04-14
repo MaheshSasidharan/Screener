@@ -278,6 +278,27 @@ router.post('/AudioUploadWord', function(req, res, next) {
     }
 });
 
+router.get('/GetAssessmentAudioInstruction', function(req, res, next) {
+    var nAssmntNum = req.query.nAssmntNum;
+    var pattern = "AssessmentAssets/assessmentAudioInstruction/" + nAssmntNum + ".mp3";
+    var mg = new glob.Glob(pattern, { 'nocase': true }, cb);
+
+    function cb(er, files) {
+        if (files.length) { // Found matches
+            if (files.length > 1) { // Found multiple matches
+                res.json({ code: 405, status: false, msg: "Multiple matches found" });
+            }
+            res.set({ 'Content-Type': 'audio/mp3' });
+            var root = __dirname.split('/routes')[0];
+            var filepath = path.resolve(root + "/bin/" + files[0]);
+            var readStream = fs.createReadStream(filepath);
+            readStream.pipe(res);
+        } else {
+            res.json({ code: 404, status: false, msg: "File not found" });
+        }
+    }
+});
+
 router.get('/GetAudioAssessment', function(req, res, next) {
     var nAssmntNum = req.query.nAssmntNum;
     var pattern = "AssessmentAssets/soundClips/" + nAssmntNum + "_[a-z0-9]*.mp3";
