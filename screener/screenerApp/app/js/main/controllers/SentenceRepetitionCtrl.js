@@ -15,7 +15,7 @@ function SentenceRepetitionController($scope, $timeout, $interval, $sce, Constan
     au.arrVoiceOPAndIP = [];
 
     au.oAudio = {
-        bShowStartButton: true,
+        bShowStartButton: false,
         bShowProgressBar: false,
         nMaxTime: null,
         nSpentTime: 0,
@@ -64,7 +64,7 @@ function SentenceRepetitionController($scope, $timeout, $interval, $sce, Constan
             var oIntervalPromise = $interval(function() {
                 if (nTimer == 0) {
                     au.oAudioRecorder.recorded = null;
-                    au.oAudio.displayedResponse = null;                    
+                    au.oAudio.displayedResponse = null;
                     $timeout(function() {
                         au.oAudio.StartProgressBar();
                     }, Constants.Assessments.ProgressStartDelay);
@@ -152,7 +152,7 @@ function SentenceRepetitionController($scope, $timeout, $interval, $sce, Constan
                 au.arrVoiceOPAndIP[i].oVoice = oVoice;
                 au.arrVoiceOPAndIP[i].sStatus = 'voiceAdded';
             });
-            au.oAudio.bShowStartButton = true;
+            //au.oAudio.bShowStartButton = false;
             $scope.$apply();
         },
         AudioUploadWord: function() {
@@ -182,6 +182,10 @@ function SentenceRepetitionController($scope, $timeout, $interval, $sce, Constan
                 DataService.GetAudioAssessment
             );
             bufferLoader.load();
+            $scope.$parent.vm.EndOfAudioPlayCallback = this.AfterInstructionPlayed;
+        },
+        AfterInstructionPlayed: function() {
+            au.oAudio.bShowStartButton = true;
         },
     }
     au.Helper.Init();

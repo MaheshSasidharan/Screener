@@ -67,6 +67,12 @@ function DataService($http, Constants, CommonFactory) {
                         Helper.Miscellaneous.ReturnDataDotData,
                         Helper.Miscellaneous.FailedInService)
             },
+            GetMetronomeClickAssessment: function(nAssmntNum) {
+                return $http.get(Helper.app + Helper.Assessments.controller + 'GetMetronomeClickAssessment?nAssmntNum=' + nAssmntNum, { responseType: "arraybuffer" })
+                    .then(
+                        Helper.Miscellaneous.ReturnDataDotData,
+                        Helper.Miscellaneous.FailedInService)
+            },
             GetSyncVoiceAssessment: function(nAssmntNum) {
                 return $http.get(Helper.app + Helper.Assessments.controller + 'GetSyncVoiceAssessment?nAssmntNum=' + nAssmntNum, { responseType: "arraybuffer" })
                     .then(
@@ -146,6 +152,7 @@ function DataService($http, Constants, CommonFactory) {
         AudioUploadWord: Helper.Assessments.AudioUploadWord,
         AudioUpload: Helper.Assessments.AudioUpload,
         GetAudioAssessment: Helper.Assessments.GetAudioAssessment,
+        GetMetronomeClickAssessment: Helper.Assessments.GetMetronomeClickAssessment,
         GetSyncVoiceAssessment: Helper.Assessments.GetSyncVoiceAssessment,
         AudioSyncVoiceUpload: Helper.Assessments.AudioSyncVoiceUpload,
         AudioPicturePromptVoiceUpload: Helper.Assessments.AudioPicturePromptVoiceUpload,

@@ -9,7 +9,7 @@ function MatrixController($scope, $timeout, $interval, $sce, Constants, CommonFa
     var responseTime = null;
     ma.nCurrentPicSetIndex = 0;
     ma.oCurrentPic = null;
-    ma.bShowStartButton = true;
+    ma.bShowStartButton = false;
     ma.sTextOnPlayButton = "Start Practice";
 
 
@@ -83,12 +83,16 @@ function MatrixController($scope, $timeout, $interval, $sce, Constants, CommonFa
                     arrImages = CommonFactory.RandomizeSolutionSet(arrImages, 'matrix');
                 }
             });
+            $scope.$parent.vm.EndOfAudioPlayCallback = this.AfterInstructionPlayed;
+        },
+        AfterInstructionPlayed: function() {
+            ma.bShowStartButton = true;
         },
         PlayNext: function(sType) {
             if (sType == "next") {
                 ma.Helper.GetMartixImages();
                 if (bFirst) {
-                    ma.sTextOnPlayButton = "Start";                    
+                    ma.sTextOnPlayButton = "Start";
                     bFirst = false;
                 } else {
                     $scope.$parent.vm.currentAssessment.arrQuestions[0].sMode = "Final";
@@ -140,8 +144,7 @@ function MatrixController($scope, $timeout, $interval, $sce, Constants, CommonFa
         AnswerSelected: function(oPic) {
             responseTime = new Date() - responseTime;
             ma.oCurrentPic = oPic;
-            ma.Helper.PlayNext('next');
-            //ma.bShowStartButton = true;            
+            ma.Helper.PlayNext('next');         
         }
     }
     ma.Helper.Init();

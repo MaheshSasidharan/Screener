@@ -14,7 +14,7 @@ function TimeDuration($scope, $timeout, $interval, Constants, CommonFactory, Dat
     var circle = null;
 
     td.oAudio = {
-        bShowStartButton: true,
+        bShowStartButton: false,
         bShowResponseBox: false,
         bShowProgressBar: false,
         nResponseBoxValue: null,
@@ -69,6 +69,10 @@ function TimeDuration($scope, $timeout, $interval, Constants, CommonFactory, Dat
                 //duration: timeDuration * 1000,
                 easing: 'linear'
             });
+            $scope.$parent.vm.EndOfAudioPlayCallback = this.AfterInstructionPlayed;
+        },
+        AfterInstructionPlayed: function() {
+            td.oAudio.bShowStartButton = true;
         },
         PlayNext: function(sType) {
             if (sType == "next") {
@@ -99,11 +103,11 @@ function TimeDuration($scope, $timeout, $interval, Constants, CommonFactory, Dat
                     }
                     arrResponse.push(oSaveObject);
                     td.oAudio.bShowProgressBar = false;
-                    if (nCurrentRound === nTotalRounds) {                        
+                    if (nCurrentRound === nTotalRounds) {
                         $scope.$parent.vm.currentAssessment.arrQuestions[0].response = JSON.stringify(arrResponse);
                         $scope.$parent.vm.Helper.ShowHidePager(true, Constants.Miscellaneous.AssessmentCompleteNext);
                     } else {
-                        timeDuration = arrTimeDurations[nCurrentRound];                        
+                        timeDuration = arrTimeDurations[nCurrentRound];
                         circle.set(0);
                         $scope.$parent.vm.currentAssessment.arrQuestions[0].sMode = "Final";
                         td.oAudio.bShowStartButton = true;

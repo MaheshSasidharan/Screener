@@ -1,0 +1,14 @@
+/*#webgazerVideoFeed {
+    display:none !important;
+}
+
+canvas#overlay {
+    display: none;
+}*/
+
+.TestBox {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: all 1s ease-out;
+}

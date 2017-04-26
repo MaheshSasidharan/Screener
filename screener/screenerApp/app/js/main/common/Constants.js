@@ -121,9 +121,9 @@ function Constants() {
                 0.5,
                 11,
                 5,
-		1,
-		7,
-		0.75
+                1,
+                7,
+                0.75
             ],
             // arrTimeDurations: [
             //     5,
@@ -131,39 +131,41 @@ function Constants() {
             // ]            
         },
         MetronomeAssessment: {
-            totalClicks: 20
+            totalClicks: 20,
+            arrVoices: [
+                '1_0',
+                '1_1',
+                '1_2'
+            ]
         },
         AudioAssessment: {
             arrVoices: [{
-                Prefix: '1_0',
-                RecordLength: 4
-            }, {
                 Prefix: '1_1',
-                RecordLength: 3
+                RecordLength: 2
             }, {
                 Prefix: '1_2',
                 RecordLength: 2
             }, {
                 Prefix: '1_3',
-                RecordLength: 3
+                RecordLength: 2
             }, {
                 Prefix: '1_4',
-                RecordLength: 3
+                RecordLength: 2
             }, {
                 Prefix: '1_5',
                 RecordLength: 3
             }, {
                 Prefix: '1_6',
-                RecordLength: 4
+                RecordLength: 3
             }, {
                 Prefix: '1_7',
-                RecordLength: 4
+                RecordLength: 3
             }, {
                 Prefix: '1_8',
                 RecordLength: 4
             }, {
                 Prefix: '1_9',
-                RecordLength: 4
+                RecordLength: 3
             }, {
                 Prefix: '1_10',
                 RecordLength: 4
@@ -172,7 +174,7 @@ function Constants() {
                 RecordLength: 3
             }, {
                 Prefix: '1_12',
-                RecordLength: 4
+                RecordLength: 3
             }, {
                 Prefix: '1_13',
                 RecordLength: 4
@@ -181,7 +183,7 @@ function Constants() {
                 RecordLength: 4
             }, {
                 Prefix: '1_15',
-                RecordLength: 4
+                RecordLength: 3
             }, {
                 Prefix: '1_16',
                 RecordLength: 4
@@ -190,13 +192,13 @@ function Constants() {
                 RecordLength: 4
             }, {
                 Prefix: '1_18',
-                RecordLength: 5
+                RecordLength: 4
             }, {
                 Prefix: '1_19',
-                RecordLength: 5
+                RecordLength: 4
             }, {
                 Prefix: '1_20',
-                RecordLength: 5
+                RecordLength: 4
             }, {
                 Prefix: '1_21',
                 RecordLength: 5
@@ -209,6 +211,18 @@ function Constants() {
             }, {
                 Prefix: '1_24',
                 RecordLength: 5
+            }, {
+                Prefix: '1_25',
+                RecordLength: 8
+            }, {
+                Prefix: '1_26',
+                RecordLength: 8
+            }, {
+                Prefix: '1_27',
+                RecordLength: 7
+            }, {
+                Prefix: '1_28',
+                RecordLength: 8
             }]
         },
         SyncVoiceAssessment: {
@@ -218,8 +232,8 @@ function Constants() {
                 '1_1',
                 '1_2',
                 '1_3',
-		'1_2',
-		'1_1',
+                '1_2',
+                '1_1',
                 // '2_1',
                 // '2_2',
                 // '2_3',
@@ -239,7 +253,7 @@ function Constants() {
                 CheckSpeakerFirst: "Great. Now let's check your speakers",
                 CheckSpeaker: "Click to check your speakers",
                 NotWorkingMicrophone: "Microphone not working. Try again by clicking here",
-                NotWorkingMicrophoneNotification: "Your microphone is not working. :(",                
+                NotWorkingMicrophoneNotification: "Your microphone is not working. :(",
                 NotWorkingSpeaker: "Speaker not working. Try again by clicking here",
                 NotWorkingSpeakerNotification: "Your speaker is not working. :(",
                 StartAssessment: "Great. You are ready to start the assessment",

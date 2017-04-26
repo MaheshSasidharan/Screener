@@ -7,7 +7,7 @@
         </div>
         <div class="SC_Asmnt2_Letter">{{re.oAudio.displayedResponse}}</div>
         
-        <div class="SC_Asmnt4_Letter">{{re.oAudio.sInstruction}}</div>
+        <div class="SC_Asmnt4_Letter" ng-show="re.oAudio.bShowInstructionText">{{re.oAudio.sInstruction}}</div>
         <div class="SC_Asmnt3_Letter"><div class="SC_ReadingContainer" ng-show="re.oAudio.sParagraph">{{re.oAudio.sParagraph}}</div>
 
         <div ng-audio-recorder id="mainAudio" audio-model="re.oAudioRecorder.recorded" time-limit="re.oAudioRecorder.timeLimit" show-player="false" convert-mp3="false" on-record-start="re.oAudioRecorder.OnRecordStart()" on-record-complete="re.oAudioRecorder.OnRecordAndConversionComplete()" auto-start="re.oAudioRecorder.autoStart" ng-if="re.oAudioRecorder.autoStart">

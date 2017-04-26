@@ -21,7 +21,7 @@ function PicturePrompt($scope, $timeout, $interval, Constants, CommonFactory, Da
 
 
     pp.oAudio = {
-        bShowStartButton: true,
+        bShowStartButton: false,
         bShowProgressBar: false,
         nMaxTime: pp.audioRecordLength * 1000,
         nSpentTime: 0,
@@ -180,6 +180,10 @@ function PicturePrompt($scope, $timeout, $interval, Constants, CommonFactory, Da
                     arrImages = CommonFactory.RandomizeSolutionSet(arrImages, 'PicturePrompt');
                 }
             });
+            $scope.$parent.vm.EndOfAudioPlayCallback = this.AfterInstructionPlayed;
+        },
+        AfterInstructionPlayed: function() {
+            pp.oAudio.bShowStartButton = true;
         },
         PlayNext: function(sType) {
             if (sType == "next") {

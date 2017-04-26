@@ -3,13 +3,12 @@ app.controller('ReadingController', ['$scope', '$timeout', '$interval', '$sce', 
 function ReadingController($scope, $timeout, $interval, $sce, Constants, CommonFactory, DataService, Upload) {
     var re = this;
     var bFirst = true;
-    re.bShowStartButton = true;
+    re.bShowStartButton = false;
     re.sTextOnPlayButton = "Start";
     var sParagraph = null;
     var sInstruction = null;
     var sParagraphType = null;
     var arrParagraphs = Constants.ReadingAssessment.arrParagraphs;
-    var nCurrentRound = 0;
     var nTotalRounds = arrParagraphs.length;
 
     re.SoundBuffer = null;
@@ -20,6 +19,8 @@ function ReadingController($scope, $timeout, $interval, $sce, Constants, CommonF
     re.TestAudio = null;
     re.arrBuffers = null;
 
+    var nCurrentRound = -1;
+    var nInstructionManagerCounter = -1;
     var audioIndex = -1;
 
     re.oService = {
@@ -37,7 +38,8 @@ function ReadingController($scope, $timeout, $interval, $sce, Constants, CommonF
         bShowStartButton: false,
         bShowProgressBar: false,
         sParagraph: null,
-        sInstruction: arrParagraphs[nCurrentRound].sInstruction,
+        bShowInstructionText: false,
+        sInstruction: null,
         nMaxTime: null,
         nSpentTime: 0,
         nRefreshRate: 500,
@@ -71,21 +73,37 @@ function ReadingController($scope, $timeout, $interval, $sce, Constants, CommonF
             $scope.$parent.vm.Helper.ShowHidePager(false);
             // Turn on practice mode
             $scope.$parent.vm.currentAssessment.arrQuestions[0].sMode = "Final"; // "Practice"; No practice for this assessment
+            $scope.$parent.vm.EndOfAudioPlayCallback = this.AfterInstructionPlayed;
+        },
+        AfterInstructionPlayed: function() {
+            nInstructionManagerCounter++;
+            if (nCurrentRound === -1 && nInstructionManagerCounter === 0) {
+                nCurrentRound++;
+                $scope.$parent.vm.Helper.GetNextAudioInstructionFromList();
+                re.oAudio.sInstruction = arrParagraphs[nCurrentRound].sInstruction;
+                re.oAudio.bShowInstructionText = true;
+            }
+            if (nCurrentRound === 0 && nInstructionManagerCounter === 1) {
+                re.bShowStartButton = true;
+            }
+            if (nCurrentRound === 1 && nInstructionManagerCounter === 2) {
+                re.bShowStartButton = true;
+            }
+            if (nCurrentRound === 2 && nInstructionManagerCounter === 3) {
+                re.bShowStartButton = true;
+            }
         },
         PlayNext: function(sType) {
-            if (sType == "next") {
+            if (sType == "next") {                
                 re.bShowStartButton = false;
+                re.oAudio.bShowInstructionText = false;
                 sParagraph = arrParagraphs[nCurrentRound].sParagraph;
-                //re.oAudio.sInstruction = arrParagraphs[nCurrentRound].sInstruction;                
                 sParagraphType = arrParagraphs[nCurrentRound].sParagraphType;
                 var nRecordLength = arrParagraphs[nCurrentRound].RecordLength;
+                nCurrentRound++;
                 re.oAudio.nMaxTime = nRecordLength * 1000;
                 re.oAudioRecorder.timeLimit = nRecordLength;
-
-                nCurrentRound++;
-
                 re.oAudioRecorder.StartRecorderCountDown();
-
                 if (bFirst) {
                     re.sTextOnPlayButton = "Next";
                     bFirst = false;
@@ -108,7 +126,8 @@ function ReadingController($scope, $timeout, $interval, $sce, Constants, CommonF
                     re.oAudioRecorder.recorded = null;;
                     re.oAudio.displayedResponse = null;
                     re.oAudio.sParagraph = sParagraph;
-                    re.oAudio.sInstruction = null;                                        ;
+                    // re.oAudio.sInstruction = null;;
+                    re.oAudio.bShowInstructionText = false;
                     re.oAudioRecorder.autoStart = true;
                     $timeout(function() {
                         re.oAudio.StartProgressBar();
@@ -125,17 +144,18 @@ function ReadingController($scope, $timeout, $interval, $sce, Constants, CommonF
         OnRecordAndConversionComplete: function() {
             $timeout(function() {
                 re.oService.ReadingUpload(sParagraphType);
-
                 if (nCurrentRound === nTotalRounds) {
                     $scope.$parent.vm.Helper.ShowHidePager(true, Constants.Miscellaneous.AssessmentCompleteNext);
-                    re.oAudio.sInstruction = null;
+                    //re.oAudio.sInstruction = null;
+                    re.oAudio.bShowInstructionText = false;
                 } else {
                     $scope.$parent.vm.currentAssessment.arrQuestions[0].sMode = "Final";
-                    re.bShowStartButton = true;
-                    re.oAudio.sInstruction = arrParagraphs[nCurrentRound].sInstruction; 
+                    re.oAudio.sInstruction = arrParagraphs[nCurrentRound].sInstruction;
+                    re.oAudio.bShowInstructionText = true;
+                    $scope.$parent.vm.Helper.GetNextAudioInstructionFromList();
                 }
 
-                re.oAudio.sParagraph = null;                
+                re.oAudio.sParagraph = null;
                 re.oAudio.displayedResponse = null;
                 re.oAudioRecorder.autoStart = false;
 

@@ -3,7 +3,7 @@ app.controller('WordFindingController', ['$scope', '$timeout', '$interval', '$sc
 function WordFindingController($scope, $timeout, $interval, $sce, Constants, CommonFactory, DataService, Upload) {
     var wo = this;
     var bFirst = true;
-    wo.bShowStartButton = true;
+    wo.bShowStartButton = false;
     wo.sTextOnPlayButton = "Start Practice";
     var cRandomCharacter = null;
     var arrCharacters = Constants.VoiceAssessment.arrCharacters;
@@ -35,7 +35,6 @@ function WordFindingController($scope, $timeout, $interval, $sce, Constants, Com
     }
 
     wo.oAudio = {
-        bShowStartButton: false,
         bShowProgressBar: false,
         nMaxTime: null,
         nSpentTime: 0,
@@ -70,6 +69,10 @@ function WordFindingController($scope, $timeout, $interval, $sce, Constants, Com
             $scope.$parent.vm.Helper.ShowHidePager(false);
             // Turn on practice mode
             $scope.$parent.vm.currentAssessment.arrQuestions[0].sMode = "Practice";
+            $scope.$parent.vm.EndOfAudioPlayCallback = this.AfterInstructionPlayed;
+        },
+        AfterInstructionPlayed: function() {
+            wo.bShowStartButton = true;
         },
         PlayNext: function(sType) {
             if (sType == "next") {

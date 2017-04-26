@@ -10,21 +10,27 @@ function BufferLoader(context, urlList, callback, AudioServiceCall) {
 BufferLoader.prototype.loadBuffer = function(url, index) {
     var loader = this;
     this.AudioServiceCall(url).then(function(response) {
-        loader.context.decodeAudioData(
-            response,
-            function(buffer) {
-                if (!buffer) {
-                    alert('error decoding file data: ' + url);
-                    return;
+        if (response.byteLength) {
+            loader.context.decodeAudioData(
+                response,
+                function(buffer) {
+                    if (!buffer) {
+                        alert('error decoding file data: ' + url);
+                        return;
+                    }
+                    loader.bufferList[index] = buffer;
+                    if (++loader.loadCount == loader.urlList.length)
+                        loader.onload(loader.bufferList);
+                },
+                function(error) {
+                    console.error('decodeAudioData error', error);
                 }
-                loader.bufferList[index] = buffer;
-                if (++loader.loadCount == loader.urlList.length)
-                    loader.onload(loader.bufferList);
-            },
-            function(error) {
-                console.error('decodeAudioData error', error);
-            }
-        );
+            );
+        } else {
+            loader.bufferList[index] = null;
+            if (++loader.loadCount == loader.urlList.length)
+                loader.onload(loader.bufferList);
+        }
     });
 }
 

@@ -4,7 +4,7 @@ function SyncVoice($scope, $timeout, $interval, Constants, CommonFactory, DataSe
     //recorderServiceProvider.withResampling(16000);
     var sv = this;
     var bFirst = true;
-        
+
     var context = DataService.CreateOrGetContext();
     var source = context.createBufferSource(); // creates a sound source
 
@@ -68,7 +68,7 @@ function SyncVoice($scope, $timeout, $interval, Constants, CommonFactory, DataSe
                     sv.oAudio.displayedResponse = null;
                     $timeout(function() {
                         sv.oAudio.StartProgressBar();
-                    }, Constants.Assessments.ProgressStartDelay);                    
+                    }, Constants.Assessments.ProgressStartDelay);
                     sv.oAudioRecorder.bShowAudioRecorder = true;
                     $interval.cancel(oIntervalPromise);
                 } else if (nTimer == nBufferRecordLength) {
@@ -152,7 +152,6 @@ function SyncVoice($scope, $timeout, $interval, Constants, CommonFactory, DataSe
                 sv.arrVoiceOPAndIP[i].oVoice = oVoice;
                 sv.arrVoiceOPAndIP[i].sStatus = 'voiceAdded';
             });
-            sv.oAudio.bShowStartButton = true;
             $scope.$apply();
         },
         AudioSyncVoiceUpload: function() {
@@ -180,6 +179,10 @@ function SyncVoice($scope, $timeout, $interval, Constants, CommonFactory, DataSe
                 DataService.GetSyncVoiceAssessment
             );
             bufferLoader.load();
+            $scope.$parent.vm.EndOfAudioPlayCallback = this.AfterInstructionPlayed;
+        },
+        AfterInstructionPlayed: function() {
+            sv.oAudio.bShowStartButton = true;
         },
     }
     sv.Helper.Init();

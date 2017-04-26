@@ -10,6 +10,7 @@ function AssessmentsCtrl($scope, $state, Constants, DataService, CommonFactory) 
     vm.tempAssessments = [];
     vm.assessments = [];
     vm.arrDropDowns = Constants.Assessments.arrDropDowns;
+    vm.EndOfAudioPlayCallback = null;
 
     var context = DataService.CreateOrGetContext();
     var source = context.createBufferSource(); // creates a sound source
@@ -129,7 +130,7 @@ function AssessmentsCtrl($scope, $state, Constants, DataService, CommonFactory) 
                 // If responseTextId property is not present, then that one has not been assessed
 
                 //if (!bItemToBeAssessedFound && oItem.responseTextId === undefined && false) {
-                    if (!bItemToBeAssessedFound && oItem.responseTextId === undefined) {     
+                    if (!bItemToBeAssessedFound && oItem.responseTextId === undefined) {
                     bItemToBeAssessedFound = true;
                     vm.currentTabIndex = vm.assessments.length;
                 }
@@ -180,7 +181,16 @@ function AssessmentsCtrl($scope, $state, Constants, DataService, CommonFactory) 
         InitCurrentTab: function() {
             vm.currentTab = [vm.tabs[vm.currentTabIndex]];
             vm.currentAssessment = vm.assessments[vm.currentTabIndex];
-            vm.Helper.PlaySound(vm.currentAssessment.oAudioInstruction.oAudio);
+            // If this assessment does not have any audio, then skip
+            if (vm.currentAssessment.oAudioInstruction.oAudio) {
+                if (vm.currentAssessment.oAudioInstruction.sType === 'list') {
+                    // if this is a list, then the instruction will be in the zero'th index                    
+                    vm.currentAssessment.oAudioInstruction.nNextIndexToBePlayed = 0;
+                    this.GetNextAudioInstructionFromList();
+                } else {
+                    vm.Helper.PlaySound(vm.currentAssessment.oAudioInstruction.oAudio);
+                }
+            }
             this.TransitionState('assessments.' + vm.currentTab[0].state);
         },
         ShowHidePager: function(bShow, sMessage) {
@@ -221,14 +231,30 @@ function AssessmentsCtrl($scope, $state, Constants, DataService, CommonFactory) 
             source.start(0); // play the sourc            
         },
         EndOfAudioPlay: function() {
-            console.log("Done playing instruction");
+            if(vm.EndOfAudioPlayCallback){
+                vm.EndOfAudioPlayCallback();
+                $scope.$apply();
+            }
+            //console.log("Done playing instruction");
+        },
+        GetNextAudioInstructionFromList: function() {
+            var nNextIndexToBePlayed = vm.currentAssessment.oAudioInstruction.nNextIndexToBePlayed++;
+            vm.Helper.PlaySound(vm.currentAssessment.oAudioInstruction.oAudio[nNextIndexToBePlayed]);
         },
         FinishedLoadingAudio(arrBuffers) {
-            arrBuffers.forEach(function(oAudio, i) {
-                vm.assessments[i].oAudioInstruction.oAudio = oAudio;
-                vm.assessments[i].oAudioInstruction.sStatus = 'voiceAdded';
+            var nBufferIndex = 0;
+            vm.assessments.forEach(function(oAssessment, index) {
+                oAudioInstruction = vm.assessments[index].oAudioInstruction;
+                if (oAudioInstruction.sType === 'list') {
+                    oAudioInstruction.nSubListLength
+                    for (var i = 0; i < oAudioInstruction.nSubListLength; i++) {
+                        oAudioInstruction.oAudio.push(arrBuffers[nBufferIndex++]);
+                    }
+                } else {
+                    oAudioInstruction.oAudio = arrBuffers[nBufferIndex++];
+                }
             });
-            console.log(vm.assessments);
+            //console.log(vm.assessments);
             vm.Helper.InitCurrentTab();
             vm.Helper.ShowHidePager(true, null);
             $scope.$apply();
@@ -236,11 +262,29 @@ function AssessmentsCtrl($scope, $state, Constants, DataService, CommonFactory) 
         GetAssessmentAudioInstruction: function() {
             var arrInstructions = [];
             for (var i = 0; i < vm.assessments.length; i++) {
-                var oAudioInstruction = {
-                    oAudio: null,
-                    sStatus: 'created'
+                var oAudioInstruction = null;
+                // sentenceRepetition has 3 sub_audio
+                var sAssessmentName = "reading";
+                if (vm.assessments[i].nickName === sAssessmentName) {
+                    var arrSuffix = ["_0", "_1", "_2", "_3"];
+                    oAudioInstruction = {
+                        oAudio: [],
+                        sStatus: 'created',
+                        sType: 'list',
+                        nSubListLength: arrSuffix.length,
+                        nNextIndexToBePlayed: 0
+                    }
+                    arrSuffix.forEach(function(sSuffix) {
+                        arrInstructions.push(sAssessmentName + sSuffix);
+                    });
+                } else {
+                    oAudioInstruction = {
+                        oAudio: null,
+                        sStatus: 'created',
+                        sType: 'single'
+                    }
+                    arrInstructions.push(vm.assessments[i].nickName);
                 }
-                arrInstructions.push(vm.assessments[i].nickName);
                 vm.assessments[i].oAudioInstruction = oAudioInstruction;
             }
             var bufferLoader = new BufferLoader(
