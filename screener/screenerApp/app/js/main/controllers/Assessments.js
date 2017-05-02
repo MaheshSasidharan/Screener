@@ -129,8 +129,8 @@ function AssessmentsCtrl($scope, $state, Constants, DataService, CommonFactory) 
                 // This is to find, which assessment has already been completed
                 // If responseTextId property is not present, then that one has not been assessed
 
-                //if (!bItemToBeAssessedFound && oItem.responseTextId === undefined && false) {
-                    if (!bItemToBeAssessedFound && oItem.responseTextId === undefined) {
+                if (!bItemToBeAssessedFound && oItem.responseTextId === undefined && false) {
+                    //if (!bItemToBeAssessedFound && oItem.responseTextId === undefined) {
                     bItemToBeAssessedFound = true;
                     vm.currentTabIndex = vm.assessments.length;
                 }
@@ -164,8 +164,8 @@ function AssessmentsCtrl($scope, $state, Constants, DataService, CommonFactory) 
             this.GetAssessmentAudioInstruction();
             delete vm.tempAssessments;
 
-            //if (!bItemToBeAssessedFound && false) {
-                if (!bItemToBeAssessedFound) {
+            if (!bItemToBeAssessedFound && false) {
+                //if (!bItemToBeAssessedFound) {
                 // Could not find any assessment which was not completed before. So all assessments have been completed.
                 DataService.bAssessmentsCompleted = true;
                 this.TransitionState('home');

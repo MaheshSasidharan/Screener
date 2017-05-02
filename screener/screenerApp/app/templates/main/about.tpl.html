@@ -1,16 +1,42 @@
-<!--
-<button class="btn btn-sm" ng-mouseover="vm.enabled = true" ng-mouseleave="vm.enabled = false">Test</button>
+<button ng-show="false" class="btn btn-sm" ng-mouseover="vm.enabled = true" ng-mouseleave="vm.enabled = false">Test</button>
+<button ng-show="false" class="btn btn-sm" ng-click="vm.Stop()">STOP</button>
+<div ng-show="vm.GazeGrid.bShowGridStatBox" class="TestButtons">
+    <div ng-show="!vm.GazeGrid.bShowGridStats">
+        <h3>Stare at Grid number {{vm.GazeGrid.nSelectedGridNum}} for 5 seconds</h3>
+    </div>
+    <div ng-show="vm.GazeGrid.bShowGridStats">
+        <h3>Here are the results for Grid {{vm.GazeGrid.nSelectedGridNum}}</h3>
 
-
-
-<button class="btn btn-sm" ng-click="vm.Stop()">STOP</button>
-<button class="TestBox" ng-click="vm.Stop()" ng-style="{'left': vm.MyData.x, 'top': vm.MyData.y}">MOVING BUTTON</button>
-
-<div ng-repeat="i in vm.data">
-	X -- {{i.x}} -- Y {{i.y}}
+        <h5>Correct X coordinates <b>{{vm.Stats.rightXPer | number:2}}%</b></h5>
+        <h5>Correct Y coordinates <b>{{vm.Stats.rightYPer | number:2}}%</b></h5>
+        <h5>Correct XY coordinates <b>{{vm.Stats.rightXYPer | number:2}}%</b></h5>
+    </div>
+    <div ng-show="false">
+        <button class="btn btn-sm" ng-click="vm.Play()">Play</button>
+        <button class="btn btn-sm" ng-click="vm.Pause()">Pause</button>
+        <button class="btn btn-sm" ng-click="vm.Resume()">Resume</button>
+        <button class="btn btn-sm" ng-click="vm.Stop()">Stop</button>
+    </div>
 </div>
--->
-
+<div class="ClickArea" ng-click="vm.Helper.ClickAreaOnClick()" ng-style="{'left': vm.MyData.x, 'top': vm.MyData.y}" ng-class="{'ClickAreaShow' : vm.ClickArea.status == 'show', 'ClickAreaClicked' : vm.ClickArea.clicked == 'clicked'}"></div>
+<div ng-repeat="i in vm.data">
+    X -- {{i.x}} -- Y {{i.y}}
+</div>
+<div class="GA_Container">
+    <div class="ImageSetContainer center-block" ng-show="vm.GazeGrid.bShow">
+        <!-- Solutions -->
+        <table class="table table-bordered" id="GazeGrid">
+            <tbody>
+                <tr ng-repeat="row in vm.GazeGrid.gridData track by $index" class="row">
+                    <td ng-repeat="col in row track by $index" class="col-md-3">
+                        {{col}}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!--
 <h1>About</h1>
 <p>The Michaelson lab investigates how variation in the genome affects the development and function of the mind. We take a systems biology approach to studying neurodevelopmental conditions, and we have extramurally-supported research programs involving computational methodology, animal models, and human subjects research.
     <br>
@@ -26,3 +52,4 @@
 <p>Students and trainees in our lab generally have a background in or appreciable exposure to genetics, and a strong desire and aptitude to leverage high-performance computing power to come to a better understanding of genome biology.</p>
 <p><a title="Jacob J. Michaelson, PhD, professional profile" href="http://www.medicine.uiowa.edu/dept_primary_apr.aspx?appointment=Psychiatry&amp;id=jmichaelson">Jacob J. Michaelson, PhD, professional profile</a></p>
 </div>
+-->

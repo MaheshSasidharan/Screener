@@ -1,14 +1,101 @@
-/*#webgazerVideoFeed {
-    display:none !important;
+#webgazerVideoFeed {
+    display: none !important;
 }
 
 canvas#overlay {
     display: none;
-}*/
+}
 
-.TestBox {
+.TestButtons {
     position: absolute;
-    top: 0;
-    left: 0;
-    transition: all 1s ease-out;
+    right: 0;
+    top: 60px;
+}
+
+
+/******/
+
+.ClickArea {
+    position: absolute;
+    display: none;
+}
+
+.ClickAreaShow {
+    display: block;
+    transition: all 3s linear;
+    background: rgba(255, 0, 0, 0.3);
+    position: absolute;
+    animation: pulsateM 1s infinite cubic-bezier(.76, .14, .85, .6);
+    animation-direction: alternate;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+}
+
+.ClickAreaShow::before {
+    background: rgba( 255, 0, 0, 0.2);
+    animation: pulsateSmall 2s infinite ease-in;
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    width: inherit;
+    height: inherit;
+}
+
+.ClickAreaClicked {
+    background: rgba(0, 255, 0, 0.3);
+    /*animation: clickedGreen 1s cubic-bezier(.76, .14, .85, .6);*/
+}
+
+
+/*******/
+
+@keyframes pulsateM {
+    0% {
+        -webkit-transform: scale(0.75, 0.75);
+    }
+    100% {
+        -webkit-transform: scale(1, 1);
+    }
+}
+
+@keyframes pulsateSmall {
+    0% {
+        -webkit-transform: scale(0, 0);
+        opacity: 0.0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        -webkit-transform: scale(1.15, 1.15);
+        opacity: 0.0;
+    }
+}
+
+@keyframes clickedGreen {
+    0% {
+        -webkit-transform: rotateY(0deg);
+    }
+    100% {
+        -webkit-transform: rotateY(180deg);
+    }
+}
+
+
+/*************/
+
+
+/*Grid*/
+
+.GA_Container td {
+    height: 300px;
+    width: 300px;
+    vertical-align: middle !important;
+}
+
+.GA_Container .table {
+    border-color: transparent;
+    table-layout: fixed;
+    word-wrap: break-word;
 }

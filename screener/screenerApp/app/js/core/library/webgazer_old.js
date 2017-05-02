@@ -10429,19 +10429,7 @@ var mosseFilterResponses = function() {
     var clockStart = performance.now();
     webgazer.params.dataTimestep = 50;
     var paused = false;
-
-    // Register close to gazedot
-    webgazer.ShowHideGazeGot = function(sType){
-    	if(sType === 'show'){
-    		webgazer.showPredictionPoints(true);
-    		//gazeDot.style.display = 'block';
-    	}else{ // 'hide'
-    		//gazeDot.style.display = 'none';
-    		webgazer.showPredictionPoints(false);
-    	}
-    }
-
-
+    var cb = null;
     //registered callback for loop
     var nopCallback = function(data, time) {};
     var callback = nopCallback;
@@ -10500,7 +10488,7 @@ var mosseFilterResponses = function() {
         try {
             return blinkDetector.detectBlink(curTracker.getEyePatches(canvas, width, height));
         } catch(err) {
-            //console.log(err);
+            console.log(err);
             return null;
         }
     }
@@ -10613,6 +10601,10 @@ var mosseFilterResponses = function() {
         recordScreenPosition(event.clientX, event.clientY, eventTypes[0]); // eventType[0] === 'click'
     };
 
+    var clickListener_Custom = function(x, y) {
+        recordScreenPosition(x, y, eventTypes[0]); // eventType[0] === 'click'
+    };
+
     /**
      * Records mouse movement data and passes it to the regression model
      * @param {Event} event - The listened event
@@ -10706,7 +10698,7 @@ var mosseFilterResponses = function() {
         videoElementCanvas.style.display = 'none';
         document.body.appendChild(videoElementCanvas);
 
-        addMouseEventListeners();
+        //addMouseEventListeners();
 
         document.body.appendChild(gazeDot);
 
@@ -10716,6 +10708,10 @@ var mosseFilterResponses = function() {
         clockStart = performance.now();
 
         loop();
+
+        if(cb){
+        	cb();
+        }
     }
 
     
@@ -10856,6 +10852,16 @@ var mosseFilterResponses = function() {
      */
     webgazer.addMouseEventListeners = function() {
         addMouseEventListeners();
+        return webgazer;
+    };
+
+    webgazer.addMouseEventListeners_Custom = function(x, y) {
+        clickListener_Custom(x, y);
+        return webgazer;
+    };
+
+    webgazer.addCallback_Custom = function(customcb) {
+        cb = customcb;
         return webgazer;
     };
 

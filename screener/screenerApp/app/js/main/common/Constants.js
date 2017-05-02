@@ -140,90 +140,113 @@ function Constants() {
         },
         AudioAssessment: {
             arrVoices: [{
-                Prefix: '1_1',
-                RecordLength: 2
-            }, {
-                Prefix: '1_2',
-                RecordLength: 2
-            }, {
-                Prefix: '1_3',
-                RecordLength: 2
-            }, {
-                Prefix: '1_4',
-                RecordLength: 2
-            }, {
-                Prefix: '1_5',
-                RecordLength: 3
-            }, {
-                Prefix: '1_6',
-                RecordLength: 3
-            }, {
-                Prefix: '1_7',
-                RecordLength: 3
-            }, {
-                Prefix: '1_8',
-                RecordLength: 4
-            }, {
-                Prefix: '1_9',
-                RecordLength: 3
-            }, {
-                Prefix: '1_10',
-                RecordLength: 4
-            }, {
-                Prefix: '1_11',
-                RecordLength: 3
-            }, {
-                Prefix: '1_12',
-                RecordLength: 3
-            }, {
-                Prefix: '1_13',
-                RecordLength: 4
-            }, {
-                Prefix: '1_14',
-                RecordLength: 4
-            }, {
-                Prefix: '1_15',
-                RecordLength: 3
-            }, {
-                Prefix: '1_16',
-                RecordLength: 4
-            }, {
-                Prefix: '1_17',
-                RecordLength: 4
-            }, {
-                Prefix: '1_18',
-                RecordLength: 4
-            }, {
-                Prefix: '1_19',
-                RecordLength: 4
-            }, {
-                Prefix: '1_20',
-                RecordLength: 4
-            }, {
-                Prefix: '1_21',
-                RecordLength: 5
-            }, {
-                Prefix: '1_22',
-                RecordLength: 5
-            }, {
-                Prefix: '1_23',
-                RecordLength: 5
-            }, {
-                Prefix: '1_24',
-                RecordLength: 5
-            }, {
-                Prefix: '1_25',
-                RecordLength: 8
-            }, {
-                Prefix: '1_26',
-                RecordLength: 8
-            }, {
-                Prefix: '1_27',
-                RecordLength: 7
-            }, {
-                Prefix: '1_28',
-                RecordLength: 8
-            }]
+                    Prefix: '1_1',
+                    RecordLength: 2
+                }, {
+                    Prefix: '1_2',
+                    RecordLength: 2
+                },
+                /*
+                {
+                    Prefix: '1_3',
+                    RecordLength: 2
+                }, {
+                    Prefix: '1_4',
+                    RecordLength: 2
+                }, {
+                    Prefix: '1_5',
+                    RecordLength: 3
+                }, {
+                    Prefix: '1_6',
+                    RecordLength: 3
+                }, {
+                    Prefix: '1_7',
+                    RecordLength: 3
+                }, 
+                */
+                {
+                    Prefix: '1_8',
+                    RecordLength: 4
+                },
+                /* {
+                    Prefix: '1_9',
+                    RecordLength: 3
+                }, {
+                    Prefix: '1_10',
+                    RecordLength: 4
+                }, 
+
+                */
+                {
+                    Prefix: '1_11',
+                    RecordLength: 3
+                },
+                /*{
+                    Prefix: '1_12',
+                    RecordLength: 3
+                }, {
+                    Prefix: '1_13',
+                    RecordLength: 4
+                }, {
+                    Prefix: '1_14',
+                    RecordLength: 4
+                }, 
+                */
+                {
+                    Prefix: '1_15',
+                    RecordLength: 3
+                },
+                /*{
+                    Prefix: '1_16',
+                    RecordLength: 4
+                }, {
+                    Prefix: '1_17',
+                    RecordLength: 4
+                }, {
+                    Prefix: '1_18',
+                    RecordLength: 4
+                }, 
+                */
+                {
+                    Prefix: '1_19',
+                    RecordLength: 4
+                },
+                /*{
+                    Prefix: '1_20',
+                    RecordLength: 4
+                }, {
+                    Prefix: '1_21',
+                    RecordLength: 5
+                }, {
+                    Prefix: '1_22',
+                    RecordLength: 5
+                }, 
+                */
+                {
+                    Prefix: '1_23',
+                    RecordLength: 5
+                }, {
+                    Prefix: '1_24',
+                    RecordLength: 5
+                }, {
+                    Prefix: '1_25',
+                    RecordLength: 8
+                },
+                /* {
+                    Prefix: '1_26',
+                    RecordLength: 8
+                }, 
+                */
+                {
+                    Prefix: '1_27',
+                    RecordLength: 7
+                },
+                /*{
+                    Prefix: '1_28',
+                    RecordLength: 8
+                }
+                */
+            ]
         },
         SyncVoiceAssessment: {
             audioRecordLength: 8, //3, //10, // seconds
