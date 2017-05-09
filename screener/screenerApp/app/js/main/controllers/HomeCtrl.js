@@ -12,6 +12,8 @@ app.controller('HomeCtrl', ['$scope', '$state', '$location', 'Factory_Constants'
     vm.bAssessmentsCompleted = DataService.bAssessmentsCompleted;
     vm.sAssessmentCompletedText = DataService.isMobileDevice ? Constants.Home.EmailSaved : Constants.Home.AssessmentCompleted;
 
+    vm.sStatus = 'getConset'; // 'startAssessment'
+
     vm.oService = {
         SaveUserSource: function(source) {
             return DataService.SaveUserSource(source).then(function(data) {
@@ -26,8 +28,12 @@ app.controller('HomeCtrl', ['$scope', '$state', '$location', 'Factory_Constants'
 
     vm.Helper = {
         StartAssessment: function() {
-            $state.transitionTo('screener.setup');
-            //$state.transitionTo('screener.assessments');
+            if (vm.sStatus === 'getConset') {
+                vm.sStatus = 'startAssessment'
+            } else {
+                $state.transitionTo('screener.setup');
+                //$state.transitionTo('screener.assessments');
+            }
         }
     }
 
