@@ -23,6 +23,7 @@ app.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', functio
     });
 
     $urlRouterProvider.when('/', '/screener');
+    $locationProvider.hashPrefix('');
     //$urlRouterProvider.otherwise('/app');
     //$locationProvider.html5Mode(true);
 }]);
