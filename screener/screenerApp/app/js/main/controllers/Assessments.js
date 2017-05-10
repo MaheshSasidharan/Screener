@@ -213,7 +213,7 @@ function AssessmentsCtrl($scope, $state, Constants, DataService, CommonFactory) 
             var oPersonal = CommonFactory.FindItemInArray(vm.assessments, 'nickName', 'personal', 'item');
             if (oPersonal) {
                 oPersonal.description = Constants.PersonalAssessment.EnterEmail;
-                var arrQuestions = CommonFactory.FindItemInArray(oPersonal.arrQuestions, 'questionId', '16', 'item');
+                var arrQuestions = CommonFactory.FindItemInArray(oPersonal.arrQuestions, 'questionId', '18', 'item');
                 oPersonal.arrQuestions = [];
                 if (arrQuestions) {
                     oPersonal.arrQuestions.push(arrQuestions);

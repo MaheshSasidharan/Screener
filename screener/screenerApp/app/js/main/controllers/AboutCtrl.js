@@ -1,5 +1,7 @@
 // app.controller('AboutCtrl', ['$scope', function($scope) {}]);
-app.controller('AboutCtrl', ['$scope', '$timeout', function($scope, $timeout) {}]);
+app.controller('AboutCtrl', ['$scope', '$timeout', function($scope, $timeout) {
+    
+}]);
 
 // app.controller('AboutCtrl', ['$scope', '$timeout', function($scope, $timeout) {
 //     var vm = this;

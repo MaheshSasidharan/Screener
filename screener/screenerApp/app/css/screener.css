@@ -216,8 +216,15 @@
     text-align: center;
 }
 
+.SC_VideoControl{
+    width: 0;
+}
 
 /* Overriding Material Design */
 ul li {
     margin-top: 0px;
+}
+
+.SC_RecollectPic1SetContainer td:hover{
+    cursor: default;
 }

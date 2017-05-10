@@ -1,0 +1,24 @@
+<div ng-include="'templates/assessments/questions.html'"></div>
+<script type="text/ng-template" id="15">
+    <div class="SC_assessmentInnerContainer">
+        <div class="text-center">
+            <md-button class="md-raised md-primary" ng-click="rp2.Helper.PlayNext('next')" ng-show="rp2.bShowStartButton">{{rp2.sTextOnPlayButton}}</md-button>
+        </div>
+        <div ng-show="rp2.oCurrentSet">
+            <div class="ImageSetContainer ImageSetContainer_Solution center-block">
+                <!-- Solutions -->
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr ng-repeat="arrURLs in rp2.oCurrentSet.arrURLs track by $index">                        
+                            <td ng-repeat="oPic in arrURLs track by $index" ng-click="rp2.Helper.AnswerSelected(oPic)" ng-class="{'PicSelected': oPic.bSelected}">
+                            {{oPic}}
+                                <img ng-src="{{oPic.sPicURL}}" />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <md-button class="md-raised md-warn" ng-click="rp2.Helper.PlayNext('next')">DONE</md-button>
+            </div>
+        </div>
+    </div>
+</script>

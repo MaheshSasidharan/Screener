@@ -40,6 +40,28 @@ function SetupCtrl($scope, $state, Constants, CommonFactory, DataService) {
     }
 
     se.Helper = {
+        GetUserMedia: function() {
+            if (this.HasGetUserMedia()) {
+                // Check if phone is being used
+                DataService.isMobileDevice = navigator.userAgent.match(/iPad|iPhone|iPod|android/i) != null || screen.width <= 480;
+
+                if (DataService.isMobileDevice || DataService.oSetUpIssues.bHasSetupIssue()) {
+                    se.Helper.Init();
+                    return;
+                }
+                navigator.webkitGetUserMedia({ audio: true, video: true }, function() {
+                    se.Helper.Init();
+                }, function() {
+                    CommonFactory.Notification.error({ message: Constants.Miscellaneous.FailedMediaAccess, delay: null });
+                });
+            } else {
+                CommonFactory.Notification.error({ message: Constants.Miscellaneous.NoBrowserSupport, delay: null });
+            }
+        },
+        HasGetUserMedia: function() {
+            return !!(navigator.getUserMedia || navigator.webkitGetUserMedia ||
+                navigator.mozGetUserMedia || navigator.msGetUserMedia);
+        },
         Init: function() {
             //this.InitAudioContext();
             //context = DataService.oAudioContext;

@@ -12,13 +12,14 @@ function MatrixController($scope, $timeout, $interval, $sce, Constants, CommonFa
     ma.bShowStartButton = false;
     ma.sTextOnPlayButton = "Start Practice";
 
+    var sGetPicEndPoint = "GetMatrixAssessment";
 
     ma.oService = {
         GetSourceAddress: function() {
             return DataService.GetSourceAddress();
         },
         GetPicNamesMatrixAssessment: function() {
-            return DataService.GetPicNamesMatrixAssessment().then(function(data) {
+            return DataService.GetPicNamesMatrixAssessment(Constants.MatrixAssessment.sAssessmentType).then(function(data) {
                 if (data.status) {
                     return data.arrPicNames;
                 } else {
@@ -64,7 +65,7 @@ function MatrixController($scope, $timeout, $interval, $sce, Constants, CommonFa
                                         arrImages[arrImages.length - 1][sSetType].arroPics = [];
                                     }
                                     var sSource = ma.oService.GetSourceAddress();
-                                    var sMatrixAssessment = sSource + "GetMatrixAssessment";
+                                    var sMatrixAssessment = sSource + sGetPicEndPoint;
 
                                     var sTempSetName = arrImages[arrImages.length - 1].sSetName;
                                     var sTempSetType = arrImages[arrImages.length - 1][sSetType].sSetType;

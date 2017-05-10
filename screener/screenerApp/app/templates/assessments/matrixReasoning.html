@@ -1,5 +1,5 @@
 <div ng-include="'templates/assessments/questions.html'"></div>
-<script type="text/ng-template" id="11">
+<script type="text/ng-template" id="12">
     <div class="SC_assessmentInnerContainer">
         <div class="text-center">
             <md-button class="md-raised md-primary" ng-click="ma.Helper.PlayNext('next')" ng-show="ma.bShowStartButton">{{ma.sTextOnPlayButton}}</md-button>            
@@ -24,7 +24,7 @@
                     <tbody>
                         <tr ng-repeat="arrURLs in ma.oCurrentSet.solutionSets.arrURLs track by $index">
                             <td ng-repeat="oPic in arrURLs track by $index" ng-click="ma.Helper.AnswerSelected(oPic)" ng-class="{'PicSelected': ma.oCurrentPic.sPicName === oPic.sPicName}">
-                                <img ng-src="{{oPic.sPicURL}}" /> {{selectedPic}}
+                                <img ng-src="{{oPic.sPicURL}}" />
                             </td>
                         </tr>
                     </tbody>

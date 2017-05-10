@@ -201,7 +201,7 @@ function SaveResponseFile(oSaveItem, req) {
 
                     oResponse.forEach(function(oItem) {
 
-                        if (oItem.questionId === 7 || oItem.questionId === 8 || oItem.questionId === 11 || oItem.questionId === 19) {
+                        if (oItem.questionId === 7 || oItem.questionId === 9 || oItem.questionId === 12 || oItem.questionId === 21) {
                             oItem.response = JSON.parse(oItem.response);
                         }
 
@@ -243,7 +243,7 @@ router.post('/ReadingUpload', function(req, res, next) {
         var userDir = req.session.id;
         Helper.CreateUserDirectories(userDir, false);
         var buf = new Buffer(req.body.oSaveItem.blob, 'base64'); // decode
-        Helper.SaveFileToDisk(["AllUsersAssessments", userDir, "audio", "Reading", req.body.oSaveItem.character + ".wav"], buf, res);
+        Helper.SaveFileToDisk(["AllUsersAssessments", userDir, "video", "Reading", req.body.oSaveItem.character + ".webm"], buf, res);
     } else {
         return res.json({ status: false });
     }
@@ -365,7 +365,7 @@ router.get('/GetMetronomeClickAssessment', function(req, res, next) {
 
 router.get('/GetSyncVoiceAssessment', function(req, res, next) {
     var nAssmntNum = req.query.nAssmntNum;
-    var pattern = "AssessmentAssets/syncVoice/" + nAssmntNum + "_[a-z]*.wav";
+    var pattern = "AssessmentAssets/syncVoice/" + nAssmntNum + "_[a-z]*.mp3";
     var mg = new glob.Glob(pattern, { 'nocase': true }, cb);
 
     function cb(er, files) {
@@ -433,7 +433,8 @@ router.post('/AudioPicturePromptVoiceUpload', function(req, res, next) {
 });
 
 router.get('/GetPicNamesMatrixAssessment', function(req, res, next) {
-    var initPath = "AssessmentAssets/matrixPics/";
+    var sAssessmentType = req.query.sAssessmentType;
+    var initPath = "AssessmentAssets/" + sAssessmentType + "/";
     var pattern = initPath + "**/*";
     var mg = new glob.Glob(pattern, { 'nocase': true }, cb);
 
@@ -476,7 +477,30 @@ router.get('/GetMatrixAssessment', function(req, res, next) {
     }
 });
 
-router.get('/GetPicNamesPicturePrompt', function(req, res, next) {
+router.get('/GetRecolletAssessment', function(req, res, next) {
+    var sRecollectPicType = req.query.sRecollectPicType;
+    var sSetType = req.query.sSetType;
+    var sPicName = req.query.sPicName;
+    var pattern = "AssessmentAssets/" + sRecollectPicType + "/" + sSetType + "/" + sPicName;
+    var mg = new glob.Glob(pattern, { 'nocase': true }, cb);
+
+    function cb(er, files) {
+        if (files.length) { // Found matches
+            if (files.length > 1) { // Found multiple matches
+                res.json({ code: 405, status: false, msg: "Multiple matches found" });
+            }
+            var root = __dirname.split('/routes')[0];
+            var img = fs.readFileSync(root + "/bin/" + files[0]);
+            var fileExtenstion = files[0].substring(files[0].indexOf(".") + 1);
+            res.writeHead(200, { 'Content-Type': 'image/' + fileExtenstion });
+            res.end(img, 'binary');
+        } else {
+            res.json({ code: 404, status: false, msg: "File not found" });
+        }
+    }
+});
+
+router.get('/GetPicNamesPicturePrompt', function(req, res, next) {    
     var initPath = "AssessmentAssets/picturePrompt/";
     var pattern = initPath + "**/*";
     var mg = new glob.Glob(pattern, { 'nocase': true }, cb);

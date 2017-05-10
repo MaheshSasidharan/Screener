@@ -94,8 +94,8 @@ function DataService($http, Constants, CommonFactory) {
             GetSourceAddress: function() {
                 return Helper.app + Helper.Assessments.controller;
             },
-            GetPicNamesMatrixAssessment: function() {
-                return $http.get(Helper.app + Helper.Assessments.controller + 'GetPicNamesMatrixAssessment')
+            GetPicNamesMatrixAssessment: function(sAssessmentType) {
+                return $http.get(Helper.app + Helper.Assessments.controller + 'GetPicNamesMatrixAssessment?sAssessmentType=' + sAssessmentType)
                     .then(
                         Helper.Miscellaneous.ReturnDataDotData,
                         Helper.Miscellaneous.FailedInService)

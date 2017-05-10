@@ -130,6 +130,17 @@ function Constants() {
             //     1.5
             // ]            
         },
+        MatrixAssessment: {
+            sAssessmentType: "matrixPics"
+        },
+        RecollectPic1: {
+            sAssessmentType: "recollectPic1",
+            nDisplaySeconds: 10,
+        },
+        RecollectPic2: {
+            sAssessmentType: "recollectPic2",
+            nDisplaySeconds: 30,
+        },
         MetronomeAssessment: {
             totalClicks: 20,
             arrVoices: [

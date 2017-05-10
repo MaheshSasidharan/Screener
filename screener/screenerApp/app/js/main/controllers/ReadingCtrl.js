@@ -1,6 +1,67 @@
 app.controller('ReadingController', ['$scope', '$timeout', '$interval', '$sce', 'Factory_Constants', 'Factory_CommonRoutines', 'Factory_DataService', ReadingController]);
 
-function ReadingController($scope, $timeout, $interval, $sce, Constants, CommonFactory, DataService, Upload) {
+
+function ReadingController($scope, $timeout, $interval, $sce, Constants, CommonFactory, DataService) {
+    var re = this;
+
+    var mediaStream = null;
+    var recorder = null;
+
+    re.oService = {
+        ReadingUpload: function(blob, sParagraphType) {
+            CommonFactory.BlobToBase64(blob, function(base64) { // encode
+                var oSaveItem = { 'blob': base64, 'character': sParagraphType };
+                DataService.ReadingUpload(oSaveItem).then(function(data) {
+
+                });
+            });
+        }
+    }
+
+    re.Helper = {
+        CaptureUserMedia: function(success_callback) {
+            var session = {
+                audio: true,
+                video: true
+            };
+
+            navigator.getUserMedia(session, success_callback, function(error) {
+                alert('Unable to capture your camera. Please check console logs.');
+                console.error(error);
+            });
+        },
+        StartRecording: function() {
+            video = document.querySelector('video');
+            this.CaptureUserMedia(function(stream) {
+                mediaStream = stream;
+
+                video.src = window.URL.createObjectURL(stream);
+                video.play();
+                video.muted = false;
+                video.controls = false;
+
+                recorder = RecordRTC(stream, {
+                    type: 'video'
+                });
+
+                recorder.startRecording();
+            });
+        },
+        StopRecording: function() {
+            recorder.stopRecording(this.PostFiles);
+            // var blob = recorder.getBlob();
+            // re.oService.ReadingUpload('test111');            
+        },
+        PostFiles: function() {
+            var blob = recorder.getBlob();
+            re.oService.ReadingUpload(blob, 'test111');
+            if (mediaStream) mediaStream.stop();
+        }
+    }
+}
+
+
+function ReadingController($scope, $timeout, $interval, $sce, Constants, CommonFactory, DataService) {
     var re = this;
     var bFirst = true;
     re.bShowStartButton = false;
@@ -10,22 +71,19 @@ function ReadingController($scope, $timeout, $interval, $sce, Constants, CommonF
     var sParagraphType = null;
     var arrParagraphs = Constants.ReadingAssessment.arrParagraphs;
     var nTotalRounds = arrParagraphs.length;
-
-    re.SoundBuffer = null;
     var oIntervalPromise = null;
     var context = DataService.CreateOrGetContext();
-    var source = context.createBufferSource(); // creates a sound source    
-
-    re.TestAudio = null;
-    re.arrBuffers = null;
-
+    var source = context.createBufferSource(); // creates a sound source
     var nCurrentRound = -1;
     var nInstructionManagerCounter = -1;
     var audioIndex = -1;
 
+    var mediaStream = null;
+    var recorder = null;
+
     re.oService = {
-        ReadingUpload: function(sParagraphType) {
-            CommonFactory.BlobToBase64(re.oAudioRecorder.recorded, function(base64) { // encode
+        ReadingUpload: function(blob, sParagraphType) {
+            CommonFactory.BlobToBase64(blob, function(base64) { // encode
                 var oSaveItem = { 'blob': base64, 'character': sParagraphType };
                 DataService.ReadingUpload(oSaveItem).then(function(data) {
 
@@ -94,7 +152,7 @@ function ReadingController($scope, $timeout, $interval, $sce, Constants, CommonF
             }
         },
         PlayNext: function(sType) {
-            if (sType == "next") {                
+            if (sType == "next") {
                 re.bShowStartButton = false;
                 re.oAudio.bShowInstructionText = false;
                 sParagraph = arrParagraphs[nCurrentRound].sParagraph;
@@ -102,8 +160,8 @@ function ReadingController($scope, $timeout, $interval, $sce, Constants, CommonF
                 var nRecordLength = arrParagraphs[nCurrentRound].RecordLength;
                 nCurrentRound++;
                 re.oAudio.nMaxTime = nRecordLength * 1000;
-                re.oAudioRecorder.timeLimit = nRecordLength;
-                re.oAudioRecorder.StartRecorderCountDown();
+                re.oVideoRecorder.timeLimit = nRecordLength * 1000;
+                re.oVideoRecorder.StartRecorderCountDown();
                 if (bFirst) {
                     re.sTextOnPlayButton = "Next";
                     bFirst = false;
@@ -111,60 +169,100 @@ function ReadingController($scope, $timeout, $interval, $sce, Constants, CommonF
                     re.sTextOnPlayButton = "Next";
                 }
             }
+        },
+        PostFiles: function() {
+            var blob = recorder.getBlob();
+            re.oService.ReadingUpload(blob, sParagraphType);
+            if (mediaStream) mediaStream.stop();
+        },
+        CaptureUserMedia: function(success_callback) {
+            var session = {
+                audio: true,
+                video: true
+            };
+
+            navigator.getUserMedia(session, success_callback, function(error) {
+                alert('Unable to capture your camera. Please check console logs.');
+                console.error(error);
+            });
         }
     }
 
-    re.oAudioRecorder = {
+    re.oVideoRecorder = {
         recorded: null,
         timeLimit: 3, // make this 3
         autoStart: false,
+        recordingState: "stopped",
         StartRecorderCountDown: function() {
             var nTimer = 3; // make this 3
             re.oAudio.displayedResponse = nTimer;
             var oIntervalPromise = $interval(function() {
                 if (nTimer == 0) {
-                    re.oAudioRecorder.recorded = null;;
+                    re.oVideoRecorder.recorded = null;;
                     re.oAudio.displayedResponse = null;
                     re.oAudio.sParagraph = sParagraph;
                     // re.oAudio.sInstruction = null;;
                     re.oAudio.bShowInstructionText = false;
-                    re.oAudioRecorder.autoStart = true;
+                    //re.oVideoRecorder.autoStart = true;                    
+                    re.oVideoRecorder.StartRecording();
                     $timeout(function() {
                         re.oAudio.StartProgressBar();
                     }, Constants.Assessments.ProgressStartDelay);
+                    $timeout(function() {
+                        re.oVideoRecorder.StopRecording();
+                    }, re.oVideoRecorder.timeLimit);
                     $interval.cancel(oIntervalPromise);
                 } else {
                     re.oAudio.displayedResponse = --nTimer;
                 }
             }, 1000, 4);
         },
-        OnRecordStart: function() {
-            //console.log("RECORDING STARTED");
+        StartRecording: function() {
+            re.oVideoRecorder.recordingState = "recording";
+            var video = document.querySelector('video');
+            re.Helper.CaptureUserMedia(function(stream) {
+                mediaStream = stream;
+
+                video.src = window.URL.createObjectURL(stream);
+                video.play();
+                video.muted = false;
+                video.controls = false;
+
+                recorder = RecordRTC(stream, {
+                    type: 'video'
+                });
+
+                recorder.startRecording();
+            });
         },
-        OnRecordAndConversionComplete: function() {
-            $timeout(function() {
-                re.oService.ReadingUpload(sParagraphType);
-                if (nCurrentRound === nTotalRounds) {
-                    $scope.$parent.vm.Helper.ShowHidePager(true, Constants.Miscellaneous.AssessmentCompleteNext);
-                    //re.oAudio.sInstruction = null;
-                    re.oAudio.bShowInstructionText = false;
-                } else {
-                    $scope.$parent.vm.currentAssessment.arrQuestions[0].sMode = "Final";
-                    re.oAudio.sInstruction = arrParagraphs[nCurrentRound].sInstruction;
-                    re.oAudio.bShowInstructionText = true;
-                    $scope.$parent.vm.Helper.GetNextAudioInstructionFromList();
-                }
+        StopRecording: function() {
+            if (re.oVideoRecorder.recordingState === "recording") {
+                $timeout(function() {
+                    re.oVideoRecorder.recordingState = "stopped";
+                    recorder.stopRecording(re.Helper.PostFiles);
+                    if (nCurrentRound === nTotalRounds) {
+                        $scope.$parent.vm.Helper.ShowHidePager(true, Constants.Miscellaneous.AssessmentCompleteNext);
+                        //re.oAudio.sInstruction = null;
+                        re.oAudio.bShowInstructionText = false;
+                    } else {
+                        $scope.$parent.vm.currentAssessment.arrQuestions[0].sMode = "Final";
+                        re.oAudio.sInstruction = arrParagraphs[nCurrentRound].sInstruction;
+                        re.oAudio.bShowInstructionText = true;
+                        $scope.$parent.vm.Helper.GetNextAudioInstructionFromList();
+                    }
 
-                re.oAudio.sParagraph = null;
-                re.oAudio.displayedResponse = null;
-                re.oAudioRecorder.autoStart = false;
+                    re.oAudio.sParagraph = null;
+                    re.oAudio.displayedResponse = null;
+                    //re.oVideoRecorder.autoStart = false;
 
-                // Stop Progress bar
-                re.oAudio.nSpentTime = 0;
-                re.oAudio.bShowProgressBar = false;
-            }, 0);
+                    // Stop Progress bar
+                    re.oAudio.nSpentTime = 0;
+                    re.oAudio.bShowProgressBar = false;
+                }, 0);
+            }
         }
     }
 
     re.Helper.Init();
+
 }

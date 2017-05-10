@@ -38,9 +38,9 @@ var Helper = {
                 fs.mkdirSync(root + "/audio" + "/SentenceRepetition");
                 fs.mkdirSync(root + "/audio" + "/WordFinding");
                 fs.mkdirSync(root + "/audio" + "/SyncVoice");
-                fs.mkdirSync(root + "/audio" + "/PicturePrompt");
-                fs.mkdirSync(root + "/audio" + "/Reading");
+                fs.mkdirSync(root + "/audio" + "/PicturePrompt");                
                 fs.mkdirSync(root + "/video");
+                fs.mkdirSync(root + "/video" + "/Reading");
                 fs.mkdirSync(root + "/image");
                 fs.mkdirSync(root + "/text");
             }
