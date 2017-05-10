@@ -6,12 +6,12 @@
     </uib-tabset>
     <div class="scale-fade" ui-view></div>
     <!-- Bottom section -->
-    <div ng-show="vm.bShowPager || true">
-    <!-- <div ng-show="vm.bShowPager"> -->
+    <!-- <div ng-show="vm.bShowPager || true"> -->
+    <div ng-show="vm.bShowPager">
         <hr>
         <ul class="pager">
-            <li class="previous" ng-show="true">
-            <!-- <li class="previous" ng-show="false"> -->
+            <!-- <li class="previous" ng-show="true"> -->
+            <li class="previous" ng-show="false">
                 <md-button class="md-raised md-primary md-hue-1" ng-click="vm.Helper.PreviousAssessment()" ng-disabled="vm.currentTabIndex == 0">Previous</md-button>
             </li>
             <li class="next">
