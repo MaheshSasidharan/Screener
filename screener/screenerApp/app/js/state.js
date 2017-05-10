@@ -35,6 +35,10 @@ app.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
               templateUrl: 'templates/assessments/timeDuration.html',
               controller: 'TimeDuration as td'
             })
+            .state('screener.assessments.recollectpic1', {
+              templateUrl: 'templates/assessments/recollectPic1.html',
+              controller: 'RecollectPic1 as rp1'
+            })            
             .state('screener.assessments.metronome', {
               templateUrl: 'templates/assessments/metronome.html',
               controller: 'Metronome as me'
@@ -58,7 +62,11 @@ app.config(['$stateProvider','$urlRouterProvider', function($stateProvider,$urlR
             .state('screener.assessments.wordFinding', {
               templateUrl: 'templates/assessments/wordFinding.html',
               controller: 'WordFindingController as wo'
-            })
+            })            
+            .state('screener.assessments.recollectpic2', {
+              templateUrl: 'templates/assessments/recollectPic2.html',
+              controller: 'RecollectPic2 as rp2'
+            }) 
             .state('screener.assessments.reading', {
               templateUrl: 'templates/assessments/reading.html',
               controller: 'ReadingController as re'
