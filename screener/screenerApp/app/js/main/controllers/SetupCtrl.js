@@ -19,7 +19,8 @@ function SetupCtrl($scope, $state, Constants, CommonFactory, DataService) {
 
     se.oStatus = {
         bAudioTested: false,
-        bSpeakerTested: false
+        bSpeakerTested: false,
+        bCameraTested: false
     }
 
     se.oAudioRecorder = {
@@ -37,6 +38,42 @@ function SetupCtrl($scope, $state, Constants, CommonFactory, DataService) {
 
     se.oSpeaker = {
         bShowSpeaker: false
+    }
+
+    se.oVideo = {
+        bShowVideo: false,
+        CaptureUserMedia: function(success_callback) {
+            var session = {
+                audio: true,
+                video: true
+            };
+
+            navigator.getUserMedia(session, success_callback, function(error) {
+                alert('Unable to capture your camera. Please check console logs.');
+                console.error(error);
+            });
+        },
+        StartRecording: function() {
+            var video = document.querySelector('video');
+            this.CaptureUserMedia(function(stream) {
+                mediaStream = stream;
+
+                video.src = window.URL.createObjectURL(stream);
+                video.play();
+                video.muted = false;
+                video.controls = false;
+
+                recorder = RecordRTC(stream, {
+                    type: 'video'
+                });
+
+                recorder.startRecording();
+            });
+        },
+        StopRecording: function() {
+            recorder.stopRecording();
+            se.oVideo.bShowVideo = false;
+        }
     }
 
     se.Helper = {
@@ -131,9 +168,16 @@ function SetupCtrl($scope, $state, Constants, CommonFactory, DataService) {
                 se.sButtonIcon = "volume_down";
                 return;
             }
+            if (!se.oStatus.bCameraTested) {
+                se.bSecondButtonShow = true;
+                se.sSecondButtonText = Constants.Setup.ButtonStatus.CheckCamera;
+                se.sButtonIcon = "settings_voice";
+                return;
+            }
             // If all have been tested
             DataService.oSetUpIssues.bHasMicrophoneIssue = false;
             DataService.oSetUpIssues.bHasSpeakerIssue = false;
+            DataService.oSetUpIssues.bHasCameraIssue = false;            
             this.Transition();
         },
         SecondButton: function() {
@@ -149,6 +193,10 @@ function SetupCtrl($scope, $state, Constants, CommonFactory, DataService) {
                 se.audioIndex = 0;
                 se.oSpeaker.bShowSpeaker = true;
                 se.Helper.PlayAudio();
+                return;
+            }
+            if (!se.oStatus.bCameraTested) {                
+                se.oVideo.bShowVideo = true;                
                 return;
             }
         },
@@ -171,7 +219,7 @@ function SetupCtrl($scope, $state, Constants, CommonFactory, DataService) {
                 this.StopSound(); // Stop sound if it is still playing
                 if (sType === 'ok') {
                     se.oStatus.bSpeakerTested = true;
-                    se.sFirstButtonText = Constants.Setup.ButtonStatus.StartAssessment;
+                    se.sFirstButtonText = Constants.Setup.ButtonStatus.CheckCameraFirst;
                     DataService.oSetUpIssues.bHasSpeakerIssue = false;
                 } else {
                     se.bFacingIssuesShow = true;
@@ -180,6 +228,18 @@ function SetupCtrl($scope, $state, Constants, CommonFactory, DataService) {
                     CommonFactory.Notification.error({ message: Constants.Setup.ButtonStatus.NotWorkingSpeakerNotification, delay: null });
                 }
                 se.oSpeaker.bShowSpeaker = false;
+            }  else if (!se.oStatus.bCameraTested) {
+                se.oVideo.StopRecording() // Stop camera
+                if (sType === 'ok') {
+                    se.oStatus.bCameraTested = true;
+                    se.sFirstButtonText = Constants.Setup.ButtonStatus.StartAssessment;
+                    DataService.oSetUpIssues.bHasCameraIssue = false;
+                } else {
+                    se.bFacingIssuesShow = true;
+                    se.sFirstButtonText = Constants.Setup.ButtonStatus.NotWorkingCamera;
+                    DataService.oSetUpIssues.bHasCameraIssue = true;
+                    CommonFactory.Notification.error({ message: Constants.Setup.ButtonStatus.NotWorkingCameraNotification, delay: null });
+                }
             }
             se.bOKNotOKShow = false;
             se.bSecondButtonShow = false;

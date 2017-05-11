@@ -3,7 +3,9 @@ CREATE View vw_AssessmentQuestions as (
 	FROM Questions q 
 	RIGHT JOIN Assessments a 
 		ON q.assessmentId = a.assessmentId
+	WHERE a.active = 1	
 	ORDER BY a.sequence
+	
 );
 /*
 CREATE View vw_AssessmentQuestions as (

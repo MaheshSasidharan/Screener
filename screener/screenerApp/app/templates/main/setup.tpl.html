@@ -1,5 +1,5 @@
 <div class="SC_assessmentInnerContainer SC_audioContainer">
-    <h2>Before we get started, we need to make sure your speakers/headphones and microphone are working properly.</h2>
+    <h2>Before we get started, we need to make sure your speakers/headphones, microphone and web camera are working properly.</h2>
     <div class="text-center">
         <md-button class="md-raised md-primary" ng-click="se.Helper.FirstButton()" ng-show="se.bFirstButtonShow">
             {{se.sFirstButtonText}}
@@ -98,10 +98,17 @@
         <br>
         <h3>You can adjust your speaker volume now.</h3>
         <md-button class="md-fab" aria-label="Cached" ng-click="se.Helper.PlayAudio()">
-                    <md-icon md-svg-src="css/icons/cached.svg"></md-icon>
+            <md-icon md-svg-src="css/icons/cached.svg"></md-icon>
         </md-button>
     </div>
+    <div class="SC_VideoRecorder" ng-show="se.oVideo.bShowVideo">
+        <video class="SC_SetupVideoControl" autoplay></video>
+        <div id="webcamcontrols">
+            <button class="btn btn-success btn-md" ng-click="se.oVideo.StartRecording();">Start</button>
+            <md-button class="md-raised md-warn" ng-click="se.oVideo.StopRecording();">Stop</md-button>
+        </div>
+    </div>
     <div class="btn-danger" ng-show="se.bFacingIssuesShow" ng-click="se.Helper.Transition()">
-        <label class="btn btn-lg btn-danger" >STOP !!!</label>
+        <label class="btn btn-lg btn-danger">STOP !!!</label>
     </div>
 </div>

@@ -127,8 +127,9 @@ function DataService($http, Constants, CommonFactory) {
             oSetUpIssues: {
                 bHasMicrophoneIssue: false,
                 bHasSpeakerIssue: false,
+                bHasCameraIssue: false,
                 bHasSetupIssue: function() {
-                    return (this.bHasMicrophoneIssue || this.bHasSpeakerIssue);
+                    return (this.bHasMicrophoneIssue || this.bHasSpeakerIssue || this.bHasCameraIssue);
                 }
             },
             oAudioContext: null,
