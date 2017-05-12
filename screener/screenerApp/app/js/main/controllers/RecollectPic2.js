@@ -101,9 +101,12 @@ function RecollectPic2($scope, $timeout, $interval, $sce, Constants, CommonFacto
         GetMartixImages: function() {
             if (arrImages.length === rp2.nCurrentPicSetIndex) {
                 rp2.oCurrentSet = null;
-                $scope.$parent.vm.Helper.ShowHidePager(true, Constants.Miscellaneous.AssessmentCompleteNext);
-                rp2.bShowStartButton = false;
-                $scope.$parent.vm.currentAssessment.arrQuestions[0].response = JSON.stringify(arrImageResponse);
+                if ($scope.$parent) {
+                    $scope.$parent.vm.Helper.ShowHidePager(true, Constants.Miscellaneous.AssessmentCompleteNext);
+                    rp2.bShowStartButton = false;
+                    $scope.$parent.vm.currentAssessment.arrQuestions[0].response = JSON.stringify(arrImageResponse);
+                }
+                // After callback make sure no vm is present in object
                 return;
             }
             rp2.bShowStartButton = false;
@@ -152,7 +155,7 @@ function RecollectPic2($scope, $timeout, $interval, $sce, Constants, CommonFacto
                 oIMG.bSelected = !oIMG.bSelected;
                 oPic.bSelected = oIMG.bSelected;
             } else {
-                var oIMG = {                    
+                var oIMG = {
                     sPicName: oPic.sPicName,
                     bSelected: true,
                     nSelectCount: 1,
@@ -162,7 +165,7 @@ function RecollectPic2($scope, $timeout, $interval, $sce, Constants, CommonFacto
                 }
                 arrImageResponse.push(oIMG);
                 oPic.bSelected = oIMG.bSelected;
-            }            
+            }
             //rp2.Helper.PlayNext('next');
         }
     }

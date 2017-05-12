@@ -15,7 +15,7 @@
     background-color: #039BE5 !important;
 }
 
-.GMD_body {
+.GMD_container, .GMD_body {
     background-color: #E1F5FE;
 }
 

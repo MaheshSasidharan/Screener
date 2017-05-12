@@ -139,9 +139,6 @@ function RecollectPic1($scope, $timeout, $interval, Constants, CommonFactory, Da
             responseTime = new Date();
 
             // Get next after n seconds
-            nDisplaySeconds
-
-
             if (timeoutObject) {
                 $timeout.cancel(timeoutObject);
             }
