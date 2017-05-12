@@ -1,6 +1,6 @@
 app.controller('ReadingController', ['$scope', '$timeout', '$interval', '$sce', 'Factory_Constants', 'Factory_CommonRoutines', 'Factory_DataService', ReadingController]);
 
-
+/*
 function ReadingController($scope, $timeout, $interval, $sce, Constants, CommonFactory, DataService) {
     var re = this;
 
@@ -37,7 +37,7 @@ function ReadingController($scope, $timeout, $interval, $sce, Constants, CommonF
 
                 video.src = window.URL.createObjectURL(stream);
                 video.play();
-                video.muted = false;
+                video.muted = true;
                 video.controls = false;
 
                 recorder = RecordRTC(stream, {
@@ -59,7 +59,7 @@ function ReadingController($scope, $timeout, $interval, $sce, Constants, CommonF
         }
     }
 }
-
+*/
 
 function ReadingController($scope, $timeout, $interval, $sce, Constants, CommonFactory, DataService) {
     var re = this;
@@ -225,7 +225,7 @@ function ReadingController($scope, $timeout, $interval, $sce, Constants, CommonF
 
                 video.src = window.URL.createObjectURL(stream);
                 video.play();
-                video.muted = false;
+                video.muted = true;
                 video.controls = false;
 
                 recorder = RecordRTC(stream, {

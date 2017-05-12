@@ -10,8 +10,7 @@
                 <table class="table table-bordered">
                     <tbody>
                         <tr ng-repeat="arrURLs in rp2.oCurrentSet.arrURLs track by $index">                        
-                            <td ng-repeat="oPic in arrURLs track by $index" ng-click="rp2.Helper.AnswerSelected(oPic)" ng-class="{'PicSelected': oPic.bSelected}">
-                            {{oPic}}
+                            <td ng-repeat="oPic in arrURLs track by $index" ng-click="rp2.Helper.AnswerSelected(oPic)" ng-class="{'PicSelected': oPic.bSelected}">                            
                                 <img ng-src="{{oPic.sPicURL}}" />
                             </td>
                         </tr>

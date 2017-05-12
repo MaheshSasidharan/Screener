@@ -5,6 +5,8 @@ function SetupCtrl($scope, $state, Constants, CommonFactory, DataService) {
     se.arrVoiceOPAndIP = [];
     var context = null;
     var source = null;
+    var video = null;
+    var recorder = null;
 
     se.bFirstButtonShow = false;
     se.sFirstButtonText = "";
@@ -54,13 +56,13 @@ function SetupCtrl($scope, $state, Constants, CommonFactory, DataService) {
             });
         },
         StartRecording: function() {
-            var video = document.querySelector('video');
+            video = document.querySelector('video');
             this.CaptureUserMedia(function(stream) {
                 mediaStream = stream;
 
                 video.src = window.URL.createObjectURL(stream);
                 video.play();
-                video.muted = false;
+                video.muted = true;
                 video.controls = false;
 
                 recorder = RecordRTC(stream, {
@@ -71,7 +73,8 @@ function SetupCtrl($scope, $state, Constants, CommonFactory, DataService) {
             });
         },
         StopRecording: function() {
-            recorder.stopRecording();
+            if (recorder) { recorder.stopRecording(); }
+            if (video) { video.pause(); }
             se.oVideo.bShowVideo = false;
         }
     }
@@ -157,27 +160,36 @@ function SetupCtrl($scope, $state, Constants, CommonFactory, DataService) {
             CommonFactory.Notification.clearAll();
             se.bFirstButtonShow = false;
             if (!se.oStatus.bAudioTested) {
+                this.SecondButton();
+                /*
                 se.bSecondButtonShow = true;
                 se.sSecondButtonText = Constants.Setup.ButtonStatus.CheckMicrophone;
                 se.sButtonIcon = "settings_voice";
+                */
                 return;
             }
             if (!se.oStatus.bSpeakerTested) {
+                this.SecondButton();
+                /*
                 se.bSecondButtonShow = true;
                 se.sSecondButtonText = Constants.Setup.ButtonStatus.CheckSpeaker;
                 se.sButtonIcon = "volume_down";
+                */
                 return;
             }
             if (!se.oStatus.bCameraTested) {
+                this.SecondButton();
+                /*
                 se.bSecondButtonShow = true;
                 se.sSecondButtonText = Constants.Setup.ButtonStatus.CheckCamera;
                 se.sButtonIcon = "settings_voice";
+                */
                 return;
             }
             // If all have been tested
             DataService.oSetUpIssues.bHasMicrophoneIssue = false;
             DataService.oSetUpIssues.bHasSpeakerIssue = false;
-            DataService.oSetUpIssues.bHasCameraIssue = false;            
+            DataService.oSetUpIssues.bHasCameraIssue = false;
             this.Transition();
         },
         SecondButton: function() {
@@ -195,8 +207,8 @@ function SetupCtrl($scope, $state, Constants, CommonFactory, DataService) {
                 se.Helper.PlayAudio();
                 return;
             }
-            if (!se.oStatus.bCameraTested) {                
-                se.oVideo.bShowVideo = true;                
+            if (!se.oStatus.bCameraTested) {
+                se.oVideo.bShowVideo = true;
                 return;
             }
         },
@@ -228,7 +240,7 @@ function SetupCtrl($scope, $state, Constants, CommonFactory, DataService) {
                     CommonFactory.Notification.error({ message: Constants.Setup.ButtonStatus.NotWorkingSpeakerNotification, delay: null });
                 }
                 se.oSpeaker.bShowSpeaker = false;
-            }  else if (!se.oStatus.bCameraTested) {
+            } else if (!se.oStatus.bCameraTested) {
                 se.oVideo.StopRecording() // Stop camera
                 if (sType === 'ok') {
                     se.oStatus.bCameraTested = true;
